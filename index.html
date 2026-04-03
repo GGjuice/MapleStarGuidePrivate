@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>楓星攻略站 | MapleStory Worlds Artale</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== CSS 變數：全站色彩系統 ===== */
+    :root {
+      --bg-base:     #0a0c0e;
+      --bg-card:     #111418;
+      --bg-panel:    #161b22;
+      --border:      #2a3040;
+      --orange:      #f97316;
+      --orange-dim:  #c2530f;
+      --green:       #22c55e;
+      --green-dim:   #15803d;
+      --blue:        #3b82f6;
+      --purple:      #a855f7;
+      --gold:        #eab308;
+      --text-main:   #e2e8f0;
+      --text-muted:  #64748b;
+      --text-dim:    #94a3b8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    /* ===== 標題字型 ===== */
+    .font-orbitron { font-family: 'Orbitron', sans-serif; }
+
+    /* ===== 背景裝飾網格 ===== */
+    .bg-grid {
+      background-image:
+        linear-gradient(rgba(249,115,22,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(249,115,22,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* ===== 光暈效果 ===== */
+    .glow-orange { box-shadow: 0 0 20px rgba(249,115,22,0.25), 0 0 40px rgba(249,115,22,0.1); }
+    .glow-green  { box-shadow: 0 0 20px rgba(34,197,94,0.25),  0 0 40px rgba(34,197,94,0.1); }
+    .text-glow-orange { text-shadow: 0 0 20px rgba(249,115,22,0.6); }
+    .text-glow-green  { text-shadow: 0 0 20px rgba(34,197,94,0.5); }
+
+    /* ===== 側欄導航 ===== */
+    #sidebar {
+      background: var(--bg-panel);
+      border-right: 1px solid var(--border);
+      transition: transform 0.3s ease;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text-dim);
+      font-weight: 500;
+      border: 1px solid transparent;
+      margin-bottom: 0.25rem;
+    }
+    .nav-item:hover {
+      background: rgba(249,115,22,0.1);
+      color: var(--orange);
+      border-color: rgba(249,115,22,0.3);
+    }
+    .nav-item.active {
+      background: rgba(249,115,22,0.15);
+      color: var(--orange);
+      border-color: rgba(249,115,22,0.5);
+      box-shadow: inset 3px 0 0 var(--orange);
+    }
+
+    /* ===== 卡片 ===== */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+    }
+    .card-hover:hover {
+      border-color: rgba(249,115,22,0.4);
+      box-shadow: 0 4px 20px rgba(249,115,22,0.1);
+      transition: all 0.2s;
+    }
+
+    /* ===== 搜尋框 ===== */
+    .search-input {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      border-radius: 0.5rem;
+      padding: 0.6rem 1rem 0.6rem 2.5rem;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(249,115,22,0.15);
+    }
+    .search-input::placeholder { color: var(--text-muted); }
+
+    /* ===== 表格 ===== */
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th {
+      background: rgba(249,115,22,0.1);
+      color: var(--orange);
+      font-weight: 700;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 2px solid var(--orange-dim);
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .data-table th:hover { background: rgba(249,115,22,0.2); }
+    .data-table td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .data-table tbody tr {
+      transition: background 0.15s;
+    }
+    .data-table tbody tr:hover {
+      background: rgba(255,255,255,0.04);
+    }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+
+    /* ===== 掉落物標籤顏色 ===== */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge-skill {
+      background: rgba(59,130,246,0.2);
+      color: #93c5fd;
+      border: 1px solid rgba(59,130,246,0.4);
+    }
+    .badge-equip {
+      background: rgba(168,85,247,0.2);
+      color: #d8b4fe;
+      border: 1px solid rgba(168,85,247,0.4);
+    }
+    .badge-equip-rare {
+      background: rgba(234,179,8,0.15);
+      color: #fde047;
+      border: 1px solid rgba(234,179,8,0.4);
+    }
+    .badge-material {
+      background: rgba(34,197,94,0.15);
+      color: #86efac;
+      border: 1px solid rgba(34,197,94,0.3);
+    }
+    .badge-common {
+      background: rgba(100,116,139,0.2);
+      color: #94a3b8;
+      border: 1px solid rgba(100,116,139,0.3);
+    }
+
+    /* ===== 選擇框 ===== */
+    select.filter-select {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      border-radius: 0.5rem;
+      padding: 0.6rem 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+      cursor: pointer;
+    }
+    select.filter-select:focus { border-color: var(--orange); }
+    select.filter-select option { background: var(--bg-panel); }
+
+    /* ===== 手機側欄遮罩 ===== */
+    #overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 40;
+    }
+    #overlay.show { display: block; }
+
+    /* ===== 分頁切換動畫 ===== */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ===== 技能書頁：職業篩選按鈕 ===== */
+    .skill-job-btn {
+      padding: 0.3rem 0.8rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .skill-job-btn:hover {
+      border-color: rgba(59,130,246,0.5);
+      color: #93c5fd;
+    }
+    .skill-job-btn.active {
+      background: rgba(59,130,246,0.15);
+      border-color: rgba(59,130,246,0.6);
+      color: #93c5fd;
+    }
+
+    /* ===== 練等攻略：職業按鈕 ===== */
+    .job-btn {
+      padding: 0.5rem 1.1rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-dim);
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .job-btn:hover {
+      border-color: rgba(249,115,22,0.4);
+      color: var(--orange);
+    }
+    .job-btn.active {
+      background: rgba(249,115,22,0.15);
+      border-color: rgba(249,115,22,0.6);
+      color: var(--orange);
+    }
+
+    /* ===== 練等攻略：職業面板 ===== */
+    .job-panel { display: none; }
+    .job-panel.active { display: block; animation: fadeIn 0.2s ease; }
+
+    /* ===== 練等攻略：資料列 ===== */
+    .lv-row {
+      display: grid;
+      grid-template-columns: 90px 1fr 1fr 2fr;
+      gap: 0.75rem;
+      align-items: start;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .lv-row:hover { background: rgba(255,255,255,0.03); }
+    .lv-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.2rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .lv-map, .lv-mob {
+      font-size: 0.875rem;
+      color: var(--text-dim);
+      padding-top: 0.15rem;
+    }
+    .lv-mob { color: var(--green); }
+    .lv-drops {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    /* 掉落物標籤 */
+    .drop-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 9999px;
+      white-space: nowrap;
+    }
+    .drop-equip  { background: rgba(168,85,247,0.2); color: #d8b4fe; border: 1px solid rgba(168,85,247,0.35); }
+    .drop-skill  { background: rgba(59,130,246,0.2);  color: #93c5fd; border: 1px solid rgba(59,130,246,0.35); }
+    .drop-scroll { background: rgba(234,179,8,0.15);  color: #fde047; border: 1px solid rgba(234,179,8,0.35); }
+
+    /* 手機：lv-row 改為 2 欄堆疊 */
+    @media (max-width: 640px) {
+      .lv-row {
+        grid-template-columns: 80px 1fr;
+        grid-template-rows: auto auto;
+      }
+      .lv-map { grid-column: 2; }
+      .lv-mob { grid-column: 1 / -1; color: var(--green); }
+      .lv-drops { grid-column: 1 / -1; }
+    }
+
+    /* 備註列：跨全欄，灰色小字 */
+    .lv-note {
+      padding: 0.45rem 1rem 0.6rem 1.5rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      border-left: 3px solid rgba(249,115,22,0.25);
+      margin-left: 1rem;
+      margin-right: 1rem;
+      margin-bottom: 0.25rem;
+      border-radius: 0 0 0.25rem 0.25rem;
+      background: rgba(255,255,255,0.015);
+    }
+
+    /* ===== 練等色塊 ===== */
+    .level-block {
+      border-left: 4px solid var(--orange);
+      background: var(--bg-card);
+      border-radius: 0 0.5rem 0.5rem 0;
+      padding: 1.25rem 1.5rem;
+    }
+    .level-block.lv30  { border-color: #22c55e; }
+    .level-block.lv60  { border-color: #3b82f6; }
+    .level-block.lv90  { border-color: #a855f7; }
+    .level-block.lv90p { border-color: #eab308; }
+
+    /* ===== Boss 卡片 ===== */
+    .boss-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      transition: all 0.2s;
+    }
+    .boss-card:hover {
+      border-color: rgba(249,115,22,0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 20px rgba(249,115,22,0.1);
+    }
+
+    /* ===== 橫向捲動表格容器 ===== */
+    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    /* ===== 排序箭頭 ===== */
+    .sort-asc::after  { content: " ▲"; font-size: 0.65rem; }
+    .sort-desc::after { content: " ▼"; font-size: 0.65rem; }
+
+    /* ===== 首頁 hero 漸層線 ===== */
+    .hero-line {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--orange), var(--green), transparent);
+    }
+
+    /* 捲軸樣式 */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-base); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--orange-dim); }
+  </style>
+</head>
+<body class="bg-grid">
+
+<!-- ===== 手機遮罩 ===== -->
+<div id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ===== 主要佈局 ===== -->
+<div class="flex min-h-screen">
+
+  <!-- ===== 側欄 ===== -->
+  <aside id="sidebar" class="fixed md:sticky top-0 left-0 h-screen w-64 flex flex-col z-50 md:z-auto -translate-x-full md:translate-x-0 transition-transform duration-300">
+    <!-- Logo -->
+    <div class="p-5 border-b border-[var(--border)]">
+      <div class="font-orbitron text-xl font-black leading-tight">
+        <span class="text-[var(--orange)] text-glow-orange">楓星</span>
+        <span class="text-white">攻略站</span>
+      </div>
+      <div class="text-[var(--text-muted)] text-xs mt-1">MapleStory Worlds · 楓星</div>
+    </div>
+
+    <!-- 導航選單 -->
+    <nav class="flex-1 p-4 overflow-y-auto">
+      <div class="text-[var(--text-muted)] text-xs uppercase tracking-widest mb-3 px-1">主選單</div>
+
+      <!-- 各分頁按鈕 -->
+      <div class="nav-item active" onclick="switchTab('home')" id="nav-home">
+        <span class="text-lg">🏠</span><span>首頁</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('drops')" id="nav-drops">
+        <span class="text-lg">🗺️</span><span>地圖掉落</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('skills')" id="nav-skills">
+        <span class="text-lg">📘</span><span>技能書掉落</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('equips')" id="nav-equips">
+        <span class="text-lg">⚔️</span><span>裝備掉落</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('boss')" id="nav-boss">
+        <span class="text-lg">💀</span><span>每日 Boss</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('leveling')" id="nav-leveling">
+        <span class="text-lg">📈</span><span>練等攻略</span>
+      </div>
+    </nav>
+
+    <!-- 底部版本資訊 -->
+    <div class="p-4 border-t border-[var(--border)]">
+      <div class="text-[var(--text-muted)] text-xs">資料最後更新</div>
+      <div class="text-[var(--orange)] text-sm font-semibold mt-0.5">2026 年 4 月 2 日</div>
+    </div>
+  </aside>
+
+  <!-- ===== 主內容區 ===== -->
+  <main class="flex-1 min-w-0">
+
+    <!-- 頂部 Header -->
+    <header class="sticky top-0 z-30 bg-[var(--bg-panel)] border-b border-[var(--border)] px-4 md:px-6 py-3 flex items-center gap-3">
+      <!-- 手機漢堡選單 -->
+      <button class="md:hidden text-[var(--text-dim)] hover:text-[var(--orange)] transition-colors p-1" onclick="openSidebar()">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+
+      <!-- 右側標題 -->
+      <div class="ml-auto text-[var(--text-muted)] text-sm">
+        楓星
+      </div>
+    </header>
+
+    <!-- ===== 分頁內容 ===== -->
+    <div class="p-4 md:p-6">
+
+      <!-- ==================== 首頁 ==================== -->
+      <div id="tab-home" class="tab-content active">
+        <!-- Hero 區塊 -->
+        <div class="card p-6 md:p-10 mb-6 relative overflow-hidden">
+          <!-- 背景裝飾 -->
+          <div class="absolute inset-0 opacity-5" style="background: radial-gradient(ellipse at 20% 50%, #f97316 0%, transparent 60%), radial-gradient(ellipse at 80% 50%, #22c55e 0%, transparent 60%);"></div>
+          <div class="relative z-10 text-center">
+            <div class="font-orbitron text-4xl md:text-6xl font-black mb-2 text-glow-orange" style="color: var(--orange);">楓星攻略站</div>
+            <div class="font-orbitron text-sm md:text-base text-[var(--green)] text-glow-green tracking-widest mb-4">MAPLESTORY WORLDS · MAPLE STAR</div>
+            <div class="hero-line mx-auto max-w-xs mb-6"></div>
+            <p class="text-[var(--text-dim)] max-w-xl mx-auto leading-relaxed">
+              專為 MapleStory Worlds MapleStar 台服版本打造的完整攻略資料庫。<br />
+              涵蓋地圖掉落、技能書、裝備、每日 Boss 及練等攻略。
+            </p>
+          </div>
+        </div>
+
+        <!-- 快速搜尋 -->
+        <div class="card p-5 mb-6">
+          <h2 class="text-[var(--orange)] font-bold text-lg mb-3 flex items-center gap-2">
+            <span>🔍</span> 快速搜尋
+          </h2>
+          <div class="relative max-w-lg">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+            </svg>
+            <input type="text" placeholder="輸入地圖名、怪物名、物品名…" class="search-input pl-10 py-3 text-base" oninput="quickSearch(this.value)" id="quickSearchInput" />
+          </div>
+          <!-- 快速搜尋結果 -->
+          <div id="quickResults" class="mt-4 hidden">
+            <div class="table-scroll">
+              <table class="data-table" id="quickResultTable">
+                <thead>
+                  <tr>
+                    <th>地圖</th>
+                    <th>怪物</th>
+                    <th>掉落物品</th>
+                    <th>類型</th>
+                  </tr>
+                </thead>
+                <tbody id="quickResultBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 快速進入功能卡 -->
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="card card-hover p-5 cursor-pointer" onclick="switchTab('drops')">
+            <div class="text-3xl mb-2">🗺️</div>
+            <div class="font-bold text-[var(--text-main)]">地圖掉落</div>
+            <div class="text-[var(--text-muted)] text-sm mt-1">查詢怪物與掉落道具</div>
+          </div>
+          <div class="card card-hover p-5 cursor-pointer" onclick="switchTab('skills')">
+            <div class="text-3xl mb-2">📘</div>
+            <div class="font-bold text-[var(--text-main)]">技能書掉落</div>
+            <div class="text-[var(--text-muted)] text-sm mt-1">技能書取得方式整理</div>
+          </div>
+          <div class="card card-hover p-5 cursor-pointer" onclick="switchTab('equips')">
+            <div class="text-3xl mb-2">⚔️</div>
+            <div class="font-bold text-[var(--text-main)]">裝備掉落</div>
+            <div class="text-[var(--text-muted)] text-sm mt-1">裝備掉落地點查詢</div>
+          </div>
+          <div class="card card-hover p-5 cursor-pointer" onclick="switchTab('boss')">
+            <div class="text-3xl mb-2">💀</div>
+            <div class="font-bold text-[var(--text-main)]">每日 Boss</div>
+            <div class="text-[var(--text-muted)] text-sm mt-1">Boss 重置與次數資訊</div>
+          </div>
+          <div class="card card-hover p-5 cursor-pointer" onclick="switchTab('leveling')">
+            <div class="text-3xl mb-2">📈</div>
+            <div class="font-bold text-[var(--text-main)]">練等攻略</div>
+            <div class="text-[var(--text-muted)] text-sm mt-1">各等級段練功路線</div>
+          </div>
+          <div class="card p-5 opacity-50">
+            <div class="text-3xl mb-2">🔧</div>
+            <div class="font-bold text-[var(--text-main)]">更多功能</div>
+            <div class="text-[var(--text-muted)] text-sm mt-1">開發中，敬請期待</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== 地圖掉落 ==================== -->
+      <div id="tab-drops" class="tab-content">
+        <div class="flex flex-col sm:flex-row gap-3 mb-5 items-start sm:items-center justify-between">
+          <h1 class="text-xl font-bold text-[var(--orange)] flex items-center gap-2">
+            <span>🗺️</span> 地圖掉落總覽
+          </h1>
+          <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+            <!-- 搜尋框 -->
+            <div class="relative flex-1 sm:flex-none">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+              </svg>
+              <input id="dropsSearch" type="text" placeholder="搜尋…" class="search-input w-full sm:w-52" oninput="renderDrops()" />
+            </div>
+            <!-- 類型篩選 -->
+            <select id="dropsTypeFilter" class="filter-select" onchange="renderDrops()">
+              <option value="">所有類型</option>
+              <option value="skill">技能書</option>
+              <option value="equip">裝備</option>
+              <option value="material">材料</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-scroll">
+            <table class="data-table" id="dropsTable">
+              <thead>
+                <tr>
+                  <th onclick="sortDrops('mapName')">地圖名稱</th>
+                  <th onclick="sortDrops('monster')">怪物</th>
+                  <th onclick="sortDrops('dropName')">掉落物品</th>
+                  <th onclick="sortDrops('type')">類型</th>
+                </tr>
+              </thead>
+              <tbody id="dropsBody"></tbody>
+            </table>
+          </div>
+          <div id="dropsEmpty" class="hidden text-center py-10 text-[var(--text-muted)]">😕 找不到符合的資料</div>
+        </div>
+      </div>
+
+      <!-- ==================== 技能書掉落 ==================== -->
+      <div id="tab-skills" class="tab-content">
+        <div class="flex flex-col sm:flex-row gap-3 mb-4 items-start sm:items-center justify-between">
+          <h1 class="text-xl font-bold text-[var(--blue)] flex items-center gap-2">
+            <span>📘</span> 技能書掉落
+          </h1>
+          <div class="relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+            </svg>
+            <input id="skillsSearch" type="text" placeholder="搜尋技能書或怪物…" class="search-input w-56" oninput="renderSkills()" />
+          </div>
+        </div>
+
+        <!-- 職業篩選按鈕 -->
+        <div class="flex flex-wrap gap-2 mb-4">
+          <button class="skill-job-btn active" data-job="" onclick="filterSkillJob(this)">全部職業</button>
+          <button class="skill-job-btn" data-job="冒險家" onclick="filterSkillJob(this)">冒險家</button>
+          <button class="skill-job-btn" data-job="黑騎士" onclick="filterSkillJob(this)">黑騎士</button>
+          <button class="skill-job-btn" data-job="聖騎士" onclick="filterSkillJob(this)">聖騎士</button>
+          <button class="skill-job-btn" data-job="英雄" onclick="filterSkillJob(this)">英雄</button>
+          <button class="skill-job-btn" data-job="主教" onclick="filterSkillJob(this)">主教</button>
+          <button class="skill-job-btn" data-job="冰雷" onclick="filterSkillJob(this)">冰雷</button>
+          <button class="skill-job-btn" data-job="火毒" onclick="filterSkillJob(this)">火毒</button>
+          <button class="skill-job-btn" data-job="箭神" onclick="filterSkillJob(this)">箭神</button>
+          <button class="skill-job-btn" data-job="神射手" onclick="filterSkillJob(this)">神射手</button>
+          <button class="skill-job-btn" data-job="夜使者" onclick="filterSkillJob(this)">夜使者</button>
+          <button class="skill-job-btn" data-job="暗影神偷" onclick="filterSkillJob(this)">暗影神偷</button>
+          <button class="skill-job-btn" data-job="影武者" onclick="filterSkillJob(this)">影武者</button>
+          <button class="skill-job-btn" data-job="槍神" onclick="filterSkillJob(this)">槍神</button>
+          <button class="skill-job-btn" data-job="拳霸" onclick="filterSkillJob(this)">拳霸</button>
+          <button class="skill-job-btn" data-job="重砲指揮官" onclick="filterSkillJob(this)">重砲指揮官</button>
+          <button class="skill-job-btn" data-job="惡魔殺手" onclick="filterSkillJob(this)">惡魔殺手</button>
+          <button class="skill-job-btn" data-job="煉獄巫師" onclick="filterSkillJob(this)">煉獄巫師</button>
+          <button class="skill-job-btn" data-job="狂豹獵人" onclick="filterSkillJob(this)">狂豹獵人</button>
+          <button class="skill-job-btn" data-job="機甲戰神" onclick="filterSkillJob(this)">機甲戰神</button>
+          <button class="skill-job-btn" data-job="狂狼勇士" onclick="filterSkillJob(this)">狂狼勇士</button>
+          <button class="skill-job-btn" data-job="龍魔導士" onclick="filterSkillJob(this)">龍魔導士</button>
+          <button class="skill-job-btn" data-job="精靈遊俠" onclick="filterSkillJob(this)">精靈遊俠</button>
+          <button class="skill-job-btn" data-job="幻影俠盜" onclick="filterSkillJob(this)">幻影俠盜</button>
+          <button class="skill-job-btn" data-job="劍豪" onclick="filterSkillJob(this)">劍豪</button>
+          <button class="skill-job-btn" data-job="陰陽師" onclick="filterSkillJob(this)">陰陽師</button>
+        </div>
+
+        <div class="card">
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th onclick="sortSkills('job')">職業</th>
+                  <th onclick="sortSkills('name')">技能書名稱</th>
+                  <th onclick="sortSkills('monsters')">掉落怪物</th>
+                </tr>
+              </thead>
+              <tbody id="skillsBody"></tbody>
+            </table>
+          </div>
+          <div id="skillsEmpty" class="hidden text-center py-10 text-[var(--text-muted)]">😕 找不到符合的資料</div>
+        </div>
+      </div>
+
+      <!-- ==================== 裝備掉落 ==================== -->
+      <div id="tab-equips" class="tab-content">
+        <div class="flex flex-col sm:flex-row gap-3 mb-5 items-start sm:items-center justify-between">
+          <h1 class="text-xl font-bold" style="color: var(--purple);">
+            <span>⚔️</span> 裝備掉落
+          </h1>
+          <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+            <div class="relative flex-1 sm:flex-none">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+              </svg>
+              <input id="equipsSearch" type="text" placeholder="搜尋裝備…" class="search-input w-full sm:w-52" oninput="renderEquips()" />
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-scroll">
+            <table class="data-table" id="equipsTable">
+              <thead>
+                <tr>
+                  <th onclick="sortEquips('name')">裝備名稱</th>
+                  <th onclick="sortEquips('mapName')">掉落地圖</th>
+                  <th onclick="sortEquips('monster')">掉落怪物</th>
+                </tr>
+              </thead>
+              <tbody id="equipsBody"></tbody>
+            </table>
+          </div>
+          <div id="equipsEmpty" class="hidden text-center py-10 text-[var(--text-muted)]">😕 找不到符合的資料</div>
+        </div>
+      </div>
+
+      <!-- ==================== 每日 Boss ==================== -->
+      <div id="tab-boss" class="tab-content">
+        <div class="flex flex-col sm:flex-row gap-3 mb-5 items-start sm:items-center justify-between">
+          <h1 class="text-xl font-bold text-[var(--orange)] flex items-center gap-2">
+            <span>💀</span> 每日 Boss
+          </h1>
+          <div class="relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+            </svg>
+            <input id="bossSearch" type="text" placeholder="搜尋 Boss…" class="search-input w-52" oninput="renderBoss()" />
+          </div>
+        </div>
+
+        <!-- Boss 卡片區 -->
+        <div id="bossGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        <div id="bossEmpty" class="hidden text-center py-10 text-[var(--text-muted)]">😕 找不到符合的 Boss</div>
+      </div>
+
+      <!-- ==================== 練等攻略 ==================== -->
+      <div id="tab-leveling" class="tab-content">
+        <h1 class="text-xl font-bold text-[var(--orange)] flex items-center gap-2 mb-5">
+          <span>📈</span> 練等攻略
+        </h1>
+
+        <!-- ===== 職業選擇按鈕列 ===== -->
+        <!-- 新增職業：複製一個 job-btn，改 data-job 和顯示名稱，同時在下方新增對應的 job-panel -->
+        <div class="flex flex-wrap gap-2 mb-6" id="jobTabs">
+          <button class="job-btn active" data-job="nightlord" onclick="switchJob(this)">🗡️ 暗影神偷</button>
+          <button class="job-btn" data-job="cannoneer" onclick="switchJob(this)">💣 重砲指揮官</button>
+          <button class="job-btn" data-job="berserker" onclick="switchJob(this)">⚔️ 狂狼勇士</button>
+          <!-- TODO: 新增其他職業按鈕，例如：
+          <button class="job-btn" data-job="bowmaster" onclick="switchJob(this)">🏹 弓箭手</button>
+          <button class="job-btn" data-job="mage" onclick="switchJob(this)">🔮 法師</button>
+          -->
+        </div>
+
+        <!-- ===== 職業攻略內容區 ===== -->
+        <!-- 每個 job-panel 的 data-job 要對應上方按鈕的 data-job -->
+
+        <!-- ======== 暗影神偷 ======== -->
+        <div class="job-panel" data-job="nightlord">
+          <div class="card overflow-hidden">
+            <!-- 表頭 -->
+            <div class="grid grid-cols-4 text-xs font-bold uppercase tracking-wider px-4 py-3 border-b border-[var(--border)]" style="background:rgba(249,115,22,0.1); color:var(--orange);">
+              <div>等級</div>
+              <div>地圖</div>
+              <div>怪物</div>
+              <div>建議掉落物</div>
+            </div>
+
+            <!-- ===== 暗影神偷資料列 ===== -->
+            <!-- 格式：lv-row / 等級範圍 / 地圖（沒有留空）/ 怪物 / 掉落物（沒有留空） -->
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">10–30</div>
+              <div class="lv-map">菇菇神社</div>
+              <div class="lv-mob">織田武士</div>
+              <div class="lv-drops">—</div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">30–45</div>
+              <div class="lv-map">—</div>
+              <div class="lv-mob">CD</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-equip">40等手杖</span>
+                <span class="drop-tag drop-scroll">手杖攻擊60%</span>
+              </div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">45–65</div>
+              <div class="lv-map">—</div>
+              <div class="lv-mob">月妙</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-equip">60等手杖</span>
+              </div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">65–80</div>
+              <div class="lv-map">—</div>
+              <div class="lv-mob">進化妖魔</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-scroll">手攻60%</span>
+              </div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(249,115,22,0.15);color:#fdba74;">80–100</div>
+              <div class="lv-map">C-2</div>
+              <div class="lv-mob">—</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-equip">女盜賊 頭</span>
+                <span class="drop-tag drop-equip">上衣</span>
+                <span class="drop-tag drop-equip">褲裙</span>
+                <span class="drop-tag drop-equip">鞋</span>
+                <span class="drop-tag drop-scroll">手攻60%</span>
+                <span class="drop-tag drop-scroll">上衣幸運60%</span>
+              </div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(239,68,68,0.15);color:#fca5a5;">100–110</div>
+              <div class="lv-map">—</div>
+              <div class="lv-mob">金綠水靈</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-skill">手杖專家20</span>
+              </div>
+            </div>
+
+            <div class="lv-row" style="border-bottom:none;">
+              <div class="lv-badge" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">110–120</div>
+              <div class="lv-map">新東京右上</div>
+              <div class="lv-mob">伊魯薇達 + 魯比</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-equip">90等手杖</span>
+                <span class="drop-tag drop-equip">100等賊手</span>
+                <span class="drop-tag drop-equip">鞋</span>
+                <span class="drop-tag drop-equip">75耳環</span>
+                <span class="drop-tag drop-equip">披風</span>
+                <span class="drop-tag drop-scroll">手杖耳幸60%</span>
+              </div>
+            </div>
+
+          </div><!-- /card -->
+        </div><!-- /job-panel nightlord -->
+
+        <!-- TODO: 在此新增其他職業的 job-panel，格式如下：
+        <div class="job-panel hidden" data-job="bowmaster">
+          <div class="card overflow-hidden">
+            ... 同上格式填入資料列 ...
+          </div>
+        </div>
+        -->
+
+        <!-- ======== 重砲指揮官 ======== -->
+        <div class="job-panel" data-job="cannoneer">
+          <div class="card overflow-hidden">
+            <div class="grid grid-cols-4 text-xs font-bold uppercase tracking-wider px-4 py-3 border-b border-[var(--border)]" style="background:rgba(249,115,22,0.1); color:var(--orange);">
+              <div>等級</div>
+              <div>地圖</div>
+              <div>怪物</div>
+              <div>建議掉落物</div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">10–20</div>
+              <div class="lv-map">茅茨山丘</div>
+              <div class="lv-mob">綠菇菇 (12)</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-scroll">20等火砲鋼鐵火箭砲</span>
+              </div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">20–30</div>
+              <div class="lv-map">石巨人寺院3</div>
+              <div class="lv-mob">混種火焰石巨人 (28)</div>
+              <div class="lv-drops">—</div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">30–38</div>
+              <div class="lv-map">副本·地鐵</div>
+              <div class="lv-mob">—</div>
+              <div class="lv-drops">—</div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">30–38</div>
+              <div class="lv-map">菇菇王國</div>
+              <div class="lv-mob">—</div>
+              <div class="lv-drops">—</div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">30–38</div>
+              <div class="lv-map">名人大道東部區域</div>
+              <div class="lv-mob">小孩模特兒 (38)</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-scroll">35等火砲T-泰坦</span>
+                <span class="drop-tag drop-scroll">套服敏捷卷軸60%</span>
+                <span class="drop-tag drop-scroll">裝飾品各屬性卷軸70%</span>
+              </div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">38–50</div>
+              <div class="lv-map">7層8層A區域</div>
+              <div class="lv-mob">最新曲CD (41)<br/>退流行的歌曲CD (42)</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-scroll">套服敏捷卷軸60%</span>
+              </div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">50–55</div>
+              <div class="lv-map">鳥山入口<br/>鳥山深處</div>
+              <div class="lv-mob">月妙 (55)</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-equip">40等藍月耳環</span>
+                <span class="drop-tag drop-equip">50等藍色冒險家披風</span>
+                <span class="drop-tag drop-scroll">頭盔敏捷卷軸60%</span>
+                <span class="drop-tag drop-scroll">鞋子跳躍卷軸10%</span>
+              </div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">55–70</div>
+              <div class="lv-map">狐狸山坡</div>
+              <div class="lv-mob">三尾狐 (62)</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-equip">55等聖十字耳環</span>
+              </div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">65–75</div>
+              <div class="lv-map">時間之路1</div>
+              <div class="lv-mob">進化妖魔 (74)</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-scroll">手套攻擊卷軸60%</span>
+              </div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">70–78</div>
+              <div class="lv-map">日落之路：薩赫勒地區1</div>
+              <div class="lv-mob">沙漠地鼠 (77)</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-scroll">80等火砲萊諾</span>
+              </div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">78–85</div>
+              <div class="lv-map">卡帕萊特研究所：研究所B-1區</div>
+              <div class="lv-mob">鍶礦穗太 (86)</div>
+              <div class="lv-drops">—</div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">80–105</div>
+              <div class="lv-map">卡帕萊特研究所：研究所C-2區</div>
+              <div class="lv-mob">洛伊德 (88)<br/>奈慾洛伊德 (89)</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-scroll">手套攻擊卷軸60%</span>
+              </div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">90–100</div>
+              <div class="lv-map">隱藏地圖：閒人勿入</div>
+              <div class="lv-mob">筆伊迪 (93)</div>
+              <div class="lv-drops">—</div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(249,115,22,0.15);color:#fdba74;">100–110</div>
+              <div class="lv-map">金勾海賊團基地2</div>
+              <div class="lv-mob">船員克魯 (103)<br/>大副凱丁 (105)</div>
+              <div class="lv-drops">—</div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(249,115,22,0.15);color:#fdba74;">105–125</div>
+              <div class="lv-map">彎曲的時間</div>
+              <div class="lv-mob">多立百烈 (114)</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-scroll">100等火砲黃金火箭砲</span>
+              </div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(239,68,68,0.15);color:#fca5a5;">120–130</div>
+              <div class="lv-map">龍森林入口</div>
+              <div class="lv-mob">藍色雙角龍 (127)</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-scroll">披風幸運運卷軸60%</span>
+                <span class="drop-tag drop-skill">神聖小孩子咒語20</span>
+              </div>
+            </div>
+
+            <div class="lv-row" style="border-bottom:none;">
+              <div class="lv-badge" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">130–150</div>
+              <div class="lv-map">翼龍峽谷</div>
+              <div class="lv-mob">赤翼龍 (134)<br/>藍翼龍 (137)<br/>黑翼龍 (141)</div>
+              <div class="lv-drops">—</div>
+            </div>
+
+          </div>
+        </div><!-- /job-panel cannoneer -->
+
+        <!-- ======== 狂狼勇士 ======== -->
+        <div class="job-panel" data-job="berserker">
+          <div class="card overflow-hidden">
+            <div class="grid grid-cols-4 text-xs font-bold uppercase tracking-wider px-4 py-3 border-b border-[var(--border)]" style="background:rgba(249,115,22,0.1); color:var(--orange);">
+              <div>等級</div>
+              <div>地圖</div>
+              <div>怪物</div>
+              <div>建議掉落物</div>
+            </div>
+
+            <!-- 12~15 -->
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">12–15</div>
+              <div class="lv-map">弓手村右邊</div>
+              <div class="lv-mob">綠菇菇 / 刺菇菇</div>
+              <div class="lv-drops">—</div>
+            </div>
+
+            <!-- 15~30 -->
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">15–30</div>
+              <div class="lv-map">劍豪老家</div>
+              <div class="lv-mob">石巨人全家桶<br/><span style="color:var(--text-muted);font-size:0.75rem;">白→黑→黑白混</span></div>
+              <div class="lv-drops">—</div>
+            </div>
+
+            <!-- 30~40 -->
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">30–40</div>
+              <div class="lv-map">次元之境</div>
+              <div class="lv-mob">組隊副本·地鐵<br/><span style="color:var(--text-muted);font-size:0.75rem;">一週限3場</span></div>
+              <div class="lv-drops">—</div>
+            </div>
+            <div class="lv-note">
+              💬 早早40去CD避免後面沒圖練，練累了再去解掉拿手套跟勳章。組隊任務次元之境一週僅限3場（30~70）。
+            </div>
+
+            <!-- 40~45 -->
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">40–45</div>
+              <div class="lv-map">台北101</div>
+              <div class="lv-mob">CD</div>
+              <div class="lv-drops">—</div>
+            </div>
+
+            <!-- 45~50 -->
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">45–50</div>
+              <div class="lv-map">奇幻村右邊第一張</div>
+              <div class="lv-mob">土龍</div>
+              <div class="lv-drops">—</div>
+            </div>
+
+            <!-- 50~64 -->
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">50–64</div>
+              <div class="lv-map">—</div>
+              <div class="lv-mob">月妙 / 三尾狐</div>
+              <div class="lv-drops">—</div>
+            </div>
+
+            <!-- 64~78 -->
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">64–78</div>
+              <div class="lv-map">時間之路 &lt;1&gt;</div>
+              <div class="lv-mob">進化妖魔</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-scroll">手攻60%</span>
+              </div>
+            </div>
+            <div class="lv-note">
+              💬 外面那張小妖魔會掉機器人製作配方，可以開掉寶打。
+            </div>
+
+            <!-- 78~85 -->
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">78–85</div>
+              <div class="lv-map">研究室C-1</div>
+              <div class="lv-mob">洛伊德</div>
+              <div class="lv-drops">—</div>
+            </div>
+            <div class="lv-note">
+              💬 不太推薦打C-2，圖大怪不集中人又多。
+            </div>
+
+            <!-- 85~105+ -->
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">85–105+</div>
+              <div class="lv-map">隱藏圖·閒人勿入</div>
+              <div class="lv-mob">賽伊迪</div>
+              <div class="lv-drops">—</div>
+            </div>
+            <div class="lv-note">
+              💬 追求舒適可以練到110，扛MISS雖然經驗比較差但地形很舒服。
+            </div>
+
+            <!-- 105~125+ -->
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(249,115,22,0.15);color:#fdba74;">105–125+</div>
+              <div class="lv-map">隱藏圖·彎曲的時間</div>
+              <div class="lv-mob">多利百列</div>
+              <div class="lv-drops">—</div>
+            </div>
+            <div class="lv-note">
+              💬 怪有冰抗，不要開寒冰屬性。
+            </div>
+
+            <!-- 105~128+ 次選A -->
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(249,115,22,0.1);color:#fdba74;border:1px dashed rgba(249,115,22,0.4);">105–128+<br/><span style="font-size:0.65rem;">次選</span></div>
+              <div class="lv-map">隱藏圖·毀壞的時間</div>
+              <div class="lv-mob">怨靈發條熊隊長 (116)<br/><span style="color:var(--text-muted);font-size:0.75rem;">黃DT</span></div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-skill">天使祝福製作法</span>
+              </div>
+            </div>
+            <div class="lv-note">
+              💬 有掉寶就開，地形很屎，純打寶就好。
+            </div>
+
+            <!-- 105~128+ 次選B -->
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(249,115,22,0.1);color:#fdba74;border:1px dashed rgba(249,115,22,0.4);">105–128+<br/><span style="font-size:0.65rem;">次選</span></div>
+              <div class="lv-map">隱藏圖·糾結的時間</div>
+              <div class="lv-mob">巨人維京 (122)</div>
+              <div class="lv-drops">—</div>
+            </div>
+            <div class="lv-note">
+              💬 剛需熊掌或者一刀狼衝，不然很難受。
+            </div>
+
+            <!-- 125~130+ -->
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(239,68,68,0.15);color:#fca5a5;">125–130+</div>
+              <div class="lv-map">隱藏圖·赤翼龍巢穴<br/>峽谷西側路</div>
+              <div class="lv-mob">赤翼龍</div>
+              <div class="lv-drops">—</div>
+            </div>
+            <div class="lv-note">
+              💬 右下有傳送點，傳到左上平台進入。弱冰，記得開寒冰屬性。
+            </div>
+
+            <!-- 130~150 -->
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(239,68,68,0.15);color:#fca5a5;">130–150</div>
+              <div class="lv-map">隱藏圖·深山兇屋</div>
+              <div class="lv-mob">寒霜冰龍</div>
+              <div class="lv-drops">—</div>
+            </div>
+            <div class="lv-note">
+              💬 藍翼跟冰龍有冰抗，不要開寒冰屬性。翼龍峽谷左下荊棘進入，會有寒霜冰龍，貼著打吸血不要斷就行。會上錯亂debuff，上下左右顛倒。
+            </div>
+
+            <!-- 150~155 -->
+            <div class="lv-row" style="border-bottom:none;">
+              <div class="lv-badge" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">150–155</div>
+              <div class="lv-map">菇菇神社·本能寺南門</div>
+              <div class="lv-mob">織田軍武士 (155)</div>
+              <div class="lv-drops">—</div>
+            </div>
+            <div class="lv-note" style="border-bottom:none;">
+              💬 偏累，但能一刀的話經驗比翼龍多不少，10分260左右。
+            </div>
+
+          </div>
+        </div><!-- /job-panel berserker -->
+
+    </div><!-- /p-4 md:p-6 -->
+  </main>
+</div>
+
+<script>
+/* ================================================================
+   📦 資料區 —— 修改此區域來更新攻略資料
+   格式說明：
+   - mapName : 地圖名稱
+   - monster : 怪物名稱
+   - drops   : 掉落陣列
+     - name   : 道具名稱
+     - type   : "skill" = 技能書 / "equip" = 裝備 / "material" = 材料
+================================================================ */
+const mapsData = [
+  {
+    mapName: "神木村",
+    monster: "變種侏儒怪",
+    drops: [
+      { name: "卡牌風暴20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "神木村",
+    monster: "萊西",
+    drops: [
+      { name: "黑卡20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "神木村",
+    monster: "闇黑龍王",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "玩具城",
+    monster: "多利百烈",
+    drops: [
+      { name: "黑卡20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "雪域廢礦",
+    monster: "狼人",
+    drops: [
+      { name: "艾麗亞的祈禱20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "雪域廢礦",
+    monster: "白狼人",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "雪域廢礦",
+    monster: "小獵犬",
+    drops: [
+      { name: "幻影千刃IV(盜亦有道IV)20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "水世界",
+    monster: "烏賊怪",
+    drops: [
+      { name: "靈魂竊取20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "水世界",
+    monster: "骨駭魚",
+    drops: [
+      { name: "幻影千刃IV(盜亦有道IV)20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "金綠水靈",
+    drops: [
+      { name: "手杖專家(進階手杖)20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "後負荷",
+    drops: [
+      { name: "艾麗亞的祈禱20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "奧芙赫班",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "歐佩龍",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "強力馬貝立克B",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "尼貝隆根戰艦",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "杜那斯",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "情資收集機A",
+    drops: [
+      { name: "幻影千刃IV(盜亦有道IV)20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "貝魯加墨特",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "沙漠",
+    monster: "哈摩斯庫拉",
+    drops: [
+      { name: "卡牌風暴20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "武陵桃園",
+    monster: "罈壺",
+    drops: [
+      { name: "手杖專家(進階手杖)20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "武陵桃園",
+    monster: "蔘罈壺",
+    drops: [
+      { name: "艾麗亞的祈禱20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "神殿",
+    monster: "回憶守護隊長",
+    drops: [
+      { name: "手杖專家(進階手杖)20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "神殿",
+    monster: "悔恨的守護兵",
+    drops: [
+      { name: "靈魂竊取20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "神殿",
+    monster: "悔恨的守護兵隊長",
+    drops: [
+      { name: "卡牌風暴20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "神殿",
+    monster: "忘卻的守護兵",
+    drops: [
+      { name: "黑卡（死神卡牌）20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "神殿",
+    monster: "皮卡啾",
+    drops: [
+      { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來之門",
+    monster: "西格諾斯",
+    drops: [
+      { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "昭和村",
+    monster: "黑道長老",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "昭和村",
+    monster: "抗霸子",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "昭和村",
+    monster: "天皇蟾蜍",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "無名魔獸",
+    drops: [
+      { name: "幻影千刃IV(盜亦有道IV)30", type: "skill" },
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "普雷茲首腦",
+    drops: [
+      { name: "手杖專家(進階手杖)30", type: "skill" },
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "奧芙赫班",
+    drops: [
+      { name: "艾麗亞的祈禱30", type: "skill" },
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "杜那斯167",
+    drops: [
+      { name: "卡牌風暴30", type: "skill" },
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "尼伯龍根",
+    drops: [
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "杜那斯162",
+    drops: [
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "貝魯加墨特",
+    drops: [
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "情資收集機",
+    drops: [
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+];
+
+/* ================================================================
+   技能書資料（依職業分類）
+   格式：job = 職業名 / name = 技能書名稱 / monsters = 掉落怪物（逗號分隔）
+================================================================ */
+const skillBookData = [
+  /* ===== 冒險家 ===== */
+  { job:"冒險家", name:"楓葉祝福 20",   monsters:"白狼人、闇黑龍王、貝魯加墨特、杜那斯、強力馬貝力克B、尼貝隆根戰艦、歐佩龍、奧芙赫斑、扛壩子、天皇蟾蜍、情資收集機、普雷茲首腦" },
+  { job:"冒險家", name:"楓葉祝福 30",   monsters:"天皇蟾蜍、貝魯加墨特、杜那斯、尼伯龍根、普雷茲首腦、奧芙赫斑、皮卡啾" },
+
+  /* ===== 黑騎士 ===== */
+  { job:"黑騎士", name:"絕對引力 20",   monsters:"飆車猴、海怒斯（左）、達納托斯、忘卻的守護隊長" },
+  { job:"黑騎士", name:"武神防禦 20",   monsters:"雪吉拉玩偶、黑輪王、情資收集機、悔恨的守護隊長" },
+  { job:"黑騎士", name:"武神防禦 30",   monsters:"噴火龍、利里諾斯" },
+  { job:"黑騎士", name:"究極突刺 20",   monsters:"情報收集機B、強力馬貝力克B" },
+  { job:"黑騎士", name:"究極突刺 30",   monsters:"噴火龍" },
+  { job:"黑騎士", name:"格擋 20",       monsters:"猿人肥肥、船員克魯、萊西、幼年龍、多多" },
+  { job:"黑騎士", name:"格擋 30",       monsters:"尼伯龍根" },
+  { job:"黑騎士", name:"連環攻擊 20",   monsters:"兇惡野狗、圓型負荷" },
+  { job:"黑騎士", name:"連環攻擊 30",   monsters:"貝魯加墨特" },
+  { job:"黑騎士", name:"黑暗之力 20",   monsters:"變身娃娃機、黑暗冥鐘、黑吉拉" },
+  { job:"黑騎士", name:"闇靈治癒 20",   monsters:"AF型機器人、暗黑半人馬、回憶守護隊長" },
+  { job:"黑騎士", name:"黑暗守護 20",   monsters:"暗黑半人馬、時間之眼" },
+
+  /* ===== 聖騎士 ===== */
+  { job:"聖騎士", name:"絕對引力 20",       monsters:"飆車猴、海怒斯（左）、達納托斯、忘卻的守護隊長" },
+  { job:"聖騎士", name:"武神防禦 20",       monsters:"雪吉拉玩偶、黑輪王、情資收集機、悔恨的守護隊長" },
+  { job:"聖騎士", name:"武神防禦 30",       monsters:"噴火龍、利里諾斯" },
+  { job:"聖騎士", name:"究極突刺 20",       monsters:"情報收集機B、強力馬貝力克B" },
+  { job:"聖騎士", name:"究極突刺 30",       monsters:"噴火龍" },
+  { job:"聖騎士", name:"格擋 20",           monsters:"猿人肥肥、船員克魯、萊西、幼年龍、多多" },
+  { job:"聖騎士", name:"格擋 30",           monsters:"尼伯龍根" },
+  { job:"聖騎士", name:"屬性強化 母書",     monsters:"殘暴炎魔、混沌殘暴炎魔" },
+  { job:"聖騎士", name:"守護者精神 20",     monsters:"綠色珍珠奶茶、化石龍、街頭混混" },
+  { job:"聖騎士", name:"鬼神之擊 20",       monsters:"黑輪王、拉圖斯、血腥哈維、殘暴炎魔、混沌殘暴炎魔、槍武士、悔恨的守護隊長" },
+  { job:"聖騎士", name:"鬼神之擊 30",       monsters:"拉圖斯、闇黑龍王" },
+  { job:"聖騎士", name:"騎士衝擊波 20",     monsters:"黑暗冥鐘、哈摩斯庫拉、扛壩子" },
+  { job:"聖騎士", name:"騎士衝擊波 30",     monsters:"利里諾斯" },
+  { job:"聖騎士", name:"聖靈之棍 20",       monsters:"喵仙、蔘罈壺、變種侏儒怪" },
+
+  /* ===== 英雄 ===== */
+  { job:"英雄", name:"絕對引力 20",     monsters:"飆車猴、海怒斯（左）、達納托斯、忘卻的守護隊長" },
+  { job:"英雄", name:"武神防禦 20",     monsters:"雪吉拉玩偶、黑輪王、情資收集機、悔恨的守護隊長" },
+  { job:"英雄", name:"武神防禦 30",     monsters:"噴火龍、利里諾斯" },
+  { job:"英雄", name:"究極突刺 20",     monsters:"情報收集機B、強力馬貝力克B" },
+  { job:"英雄", name:"究極突刺 30",     monsters:"噴火龍" },
+  { job:"英雄", name:"格擋 20",         monsters:"猿人肥肥、船員克魯、萊西、幼年龍、多多" },
+  { job:"英雄", name:"格擋 30",         monsters:"尼伯龍根" },
+  { job:"英雄", name:"進階終極 20",     monsters:"石蟲、後負荷、原型機王、馬貝立克γ、馬貝立克β、多多" },
+  { job:"英雄", name:"進階終極 30",     monsters:"厄運死神" },
+  { job:"英雄", name:"鬥氣爆發 20",     monsters:"紅色珍珠奶茶、黑輪王、馬貝立克β、伊魯薇達、時間之眼" },
+  { job:"英雄", name:"鬥氣爆發 30",     monsters:"闇黑龍王" },
+  { job:"英雄", name:"進階鬥氣 母書",   monsters:"殘暴炎魔、混沌殘暴炎魔" },
+  { job:"英雄", name:"進階鬥氣 20",     monsters:"鯊魚、地獄獵犬、侏儒怪、忘卻的神官" },
+  { job:"英雄", name:"進階鬥氣 30",     monsters:"奧芙赫斑" },
+  { job:"英雄", name:"英勇狂斬 20",     monsters:"侏儒怪、金綠水靈、時間之眼" },
+
+  /* ===== 主教 ===== */
+  { job:"主教", name:"核爆術 20",       monsters:"紅色珍珠奶茶、海怒斯（左）、幽魂發條熊隊長、寒冰半人馬" },
+  { job:"主教", name:"神秘狙擊 20",     monsters:"厄運死神、暗黑三角龍、強力馬貝力克A、後負荷" },
+  { job:"主教", name:"神秘狙擊 30",     monsters:"海怒斯（右）" },
+  { job:"主教", name:"魔力無限 20",     monsters:"橡木甲蟲、強力馬貝力克A、悔恨的神官" },
+  { job:"主教", name:"聖龍精通 20",     monsters:"飆車猴、雪吉拉、古惑女" },
+  { job:"主教", name:"聖龍精通 30",     monsters:"萊伊卡" },
+  { job:"主教", name:"進階祝福 20",     monsters:"致命烏賊怪、怨靈發條熊、千年人蔘、忘卻的祭司" },
+  { job:"主教", name:"天怒 20",         monsters:"達納托斯、千年人蔘、忘卻的守護兵" },
+  { job:"主教", name:"天怒 30",         monsters:"闇黑龍王、利里諾斯" },
+  { job:"主教", name:"天使之箭 母書",   monsters:"殘暴炎魔、混沌殘暴炎魔" },
+  { job:"主教", name:"天使之箭 20",     monsters:"喵仙、鱷魚克洛克、情資收集機、馬貝立克 s" },
+  { job:"主教", name:"天使之箭 30",     monsters:"格瑞芬多" },
+
+  /* ===== 冰雷 ===== */
+  { job:"冰雷", name:"核爆術 20",       monsters:"紅色珍珠奶茶、海怒斯（左）、幽魂發條熊隊長、寒冰半人馬" },
+  { job:"冰雷", name:"神秘狙擊 20",     monsters:"厄運死神、暗黑三角龍、強力馬貝力克A、後負荷" },
+  { job:"冰雷", name:"神秘狙擊 30",     monsters:"海怒斯（右）" },
+  { job:"冰雷", name:"魔力無限 20",     monsters:"橡木甲蟲、強力馬貝力克A、悔恨的神官" },
+  { job:"冰雷", name:"暴風雪 20",       monsters:"猿人肥肥、通道守門人、百烈、罈壺、蔘罈壺" },
+  { job:"冰雷", name:"暴風雪 30",       monsters:"闇黑龍王" },
+  { job:"冰雷", name:"閃電連擊 20",     monsters:"貝爾芬、鱷魚克洛克、雪毛怪人、回憶守護兵" },
+  { job:"冰雷", name:"閃電連擊 30",     monsters:"杜那斯" },
+  { job:"冰雷", name:"寒霜冰龍 20",     monsters:"燒杯怪、獨眼蝙蝠、邪惡綿羊、忘卻的神官" },
+  { job:"冰雷", name:"寒霜冰龍 30",     monsters:"貝魯加墨特" },
+  { job:"冰雷", name:"崩潰之星 20",     monsters:"雪吉拉、回憶的祭司、悔恨的祭司" },
+  { job:"冰雷", name:"崩潰之星 30",     monsters:"厄運死神、萊伊卡" },
+
+  /* ===== 火毒 ===== */
+  { job:"火毒", name:"核爆術 20",       monsters:"紅色珍珠奶茶、海怒斯（左）、幽魂發條熊隊長、寒冰半人馬" },
+  { job:"火毒", name:"神秘狙擊 20",     monsters:"厄運死神、暗黑三角龍、強力馬貝力克A、後負荷" },
+  { job:"火毒", name:"神秘狙擊 30",     monsters:"海怒斯（右）" },
+  { job:"火毒", name:"魔力無限 20",     monsters:"橡木甲蟲、強力馬貝力克A、悔恨的神官" },
+  { job:"火毒", name:"劇毒麻痺 20",     monsters:"骨骸魚、火焰半人馬、街頭混混、下忍、織田軍的武士、後勤補給車、伊魯薇達" },
+  { job:"火毒", name:"劇毒麻痺 30",     monsters:"杜那斯" },
+  { job:"火毒", name:"火流星 20",       monsters:"幽魂發條熊、幼年龍、悔恨的祭司" },
+  { job:"火毒", name:"火流星 30",       monsters:"闇黑龍王、利里諾斯" },
+  { job:"火毒", name:"地獄爆發 20",     monsters:"深山人蔘、狼人、暗黑半人馬" },
+  { job:"火毒", name:"地獄爆發 30",     monsters:"格瑞芬多" },
+  { job:"火毒", name:"火炎神 20",       monsters:"化石龍長老、伊魯薇達" },
+  { job:"火毒", name:"火炎神 30",       monsters:"雪毛怪人" },
+
+  /* ===== 箭神 ===== */
+  { job:"箭神", name:"會心之眼 20",     monsters:"紅色珍珠奶茶、海怒斯（左）、苔蘚菇菇、黑暗冥鐘、小丑瑞奇、煉獄獵犬、進化迅猛龍" },
+  { job:"箭神", name:"會心之眼 30",     monsters:"格瑞芬多" },
+  { job:"箭神", name:"四連殺爆發 20",   monsters:"幽魂女巫、白狼人、橡木甲蟲、邪惡綿羊、萊西、槍武士" },
+  { job:"箭神", name:"四連殺爆發 30",   monsters:"拉圖斯" },
+  { job:"箭神", name:"進階終極 20",     monsters:"石蟲、後負荷、原型機王、馬貝立克γ、馬貝立克β、多多" },
+  { job:"箭神", name:"進階終極 30",     monsters:"厄運死神" },
+  { job:"箭神", name:"召喚鳳凰 20",     monsters:"喵仙、馬貝立克D、古惑女、後勤補給車" },
+  { job:"箭神", name:"弓術精通 20",     monsters:"雪毛怪人、地獄獵犬、血腥哈維、火焰半人馬、格瑞芬多、進化迅猛龍、忘卻的祭司" },
+  { job:"箭神", name:"弓術精通 30",     monsters:"雪毛怪人" },
+  { job:"箭神", name:"暴風神射 20",     monsters:"情報收集機A" },
+  { job:"箭神", name:"暴風神射 30",     monsters:"萊伊卡" },
+
+  /* ===== 神射手 ===== */
+  { job:"神射手", name:"會心之眼 20",   monsters:"紅色珍珠奶茶、海怒斯（左）、苔蘚菇菇、黑暗冥鐘、小丑瑞奇、煉獄獵犬、進化迅猛龍" },
+  { job:"神射手", name:"會心之眼 30",   monsters:"格瑞芬多" },
+  { job:"神射手", name:"四連殺爆發 20", monsters:"幽魂女巫、白狼人、橡木甲蟲、邪惡綿羊、萊西、槍武士" },
+  { job:"神射手", name:"四連殺爆發 30", monsters:"拉圖斯" },
+  { job:"神射手", name:"光速神弩 20",   monsters:"苔蘚蝸牛、邪惡綿羊、上忍、織田軍武士隊長" },
+  { job:"神射手", name:"必殺狙擊 20",   monsters:"AF型機器人、悔恨的守護兵、利里諾斯" },
+  { job:"神射手", name:"必殺狙擊 30",   monsters:"闇黑龍王" },
+  { job:"神射手", name:"弩術精通 20",   monsters:"地獄獵犬、格瑞芬多、馬貝立克D、忘卻的祭司" },
+  { job:"神射手", name:"弩術精通 30",   monsters:"奧芙赫斑" },
+  { job:"神射手", name:"召喚銀隼 20",   monsters:"惡魔綿羊、侏儒怪、雙刀龍戰士、多多" },
+
+  /* ===== 夜使者 ===== */
+  { job:"夜使者", name:"瞬身迴避 20",       monsters:"海怒斯（左）、蟠猴、小獵犬、利里諾斯" },
+  { job:"夜使者", name:"瞬身迴避 30",       monsters:"噴火龍" },
+  { job:"夜使者", name:"忍影瞬殺 20",       monsters:"海怒斯（左）、遠古木妖、苔蘚菇菇、維京、百烈、忘卻的守護兵" },
+  { job:"夜使者", name:"忍影瞬殺 30",       monsters:"雪毛怪人" },
+  { job:"夜使者", name:"致命的飛毒殺 20",   monsters:"維京、女忍、馬貝立克 s" },
+  { job:"夜使者", name:"致命的飛毒殺 30",   monsters:"尼伯龍根" },
+  { job:"夜使者", name:"挑釁 20",           monsters:"小丑瑞奇、哈摩斯庫拉、格瑞芬多、赤翼龍" },
+  { job:"夜使者", name:"挑釁 30",           monsters:"噴火龍" },
+  { job:"夜使者", name:"三飛閃 母書",       monsters:"殘暴炎魔、混沌殘暴炎魔" },
+  { job:"夜使者", name:"三飛閃 20",         monsters:"遠古木妖、厄運死神、暴走族組長、後勤補給車" },
+  { job:"夜使者", name:"三飛閃 30",         monsters:"闇黑龍王" },
+  { job:"夜使者", name:"無形標 20",         monsters:"通道守門人、哈門庫魯" },
+  { job:"夜使者", name:"無形標 30",         monsters:"格瑞芬多" },
+  { job:"夜使者", name:"忍術風影 20",       monsters:"雪毛怪人、狼人、惡魔綿羊、短刃龍戰士" },
+
+  /* ===== 暗影神偷 ===== */
+  { job:"暗影神偷", name:"瞬身迴避 20",     monsters:"海怒斯（左）、蟠猴、小獵犬、利里諾斯" },
+  { job:"暗影神偷", name:"瞬身迴避 30",     monsters:"噴火龍" },
+  { job:"暗影神偷", name:"忍影瞬殺 20",     monsters:"海怒斯（左）、遠古木妖、苔蘚菇菇、維京、百烈、忘卻的守護兵" },
+  { job:"暗影神偷", name:"忍影瞬殺 30",     monsters:"雪毛怪人" },
+  { job:"暗影神偷", name:"致命的飛毒殺 20", monsters:"維京、女忍、馬貝立克 s" },
+  { job:"暗影神偷", name:"致命的飛毒殺 30", monsters:"尼伯龍根" },
+  { job:"暗影神偷", name:"挑釁 20",         monsters:"小丑瑞奇、哈摩斯庫拉、格瑞芬多、赤翼龍" },
+  { job:"暗影神偷", name:"挑釁 30",         monsters:"噴火龍" },
+  { job:"暗影神偷", name:"致命暗殺 20",     monsters:"野狗、深山人蔘、小獵犬、多多" },
+  { job:"暗影神偷", name:"致命暗殺 30",     monsters:"普雷茲首腦" },
+  { job:"暗影神偷", name:"煙霧彈 20",       monsters:"苔蘚蝸牛、小丑柏菲、幼年龍" },
+  { job:"暗影神偷", name:"煙霧彈 30",       monsters:"闇黑龍王" },
+  { job:"暗影神偷", name:"瞬步連擊 20",     monsters:"幽魂發條熊、故障的DF型機器人、黑吉拉、萊伊卡" },
+  { job:"暗影神偷", name:"瞬步連擊 30",     monsters:"奧芙赫斑" },
+
+  /* ===== 影武者 ===== */
+  { job:"影武者", name:"絕殺刃 母書",   monsters:"殘暴炎魔、混沌殘暴炎魔" },
+  { job:"影武者", name:"幻影箭 母書",   monsters:"殘暴炎魔、混沌殘暴炎魔" },
+  { job:"影武者", name:"怪物大爆炸 30", monsters:"雪毛怪人、厄運死神、闇黑龍王" },
+  { job:"影武者", name:"荊棘特效 30",   monsters:"厄運死神、闇黑龍王" },
+  { job:"影武者", name:"飛毒殺 30",     monsters:"闇黑龍王" },
+  { job:"影武者", name:"幻影替身 30",   monsters:"闇黑龍王、多多" },
+  { job:"影武者", name:"短刀護佑 30",   monsters:"萊伊卡" },
+
+  /* ===== 槍神 ===== */
+  { job:"槍神", name:"戰艦鯨魚號 20",   monsters:"時髦野狗、黑輪王、雙刀龍戰士、銀綠水靈" },
+  { job:"槍神", name:"戰艦鯨魚號 30",   monsters:"闇黑龍王" },
+  { job:"槍神", name:"瞬迅雷 20",       monsters:"飆車猴、綠色珍珠奶茶、石蟲、噴火龍" },
+  { job:"槍神", name:"瞬迅雷 30",       monsters:"尼伯龍根" },
+  { job:"槍神", name:"瞬冰火連擊 20",   monsters:"尖鼻鯊魚、藍翼龍、流氓、馬貝立克α" },
+  { job:"槍神", name:"海鷗特戰隊 20",   monsters:"幽魂女巫、金屬甲蟲、下忍、中忍、馬貝立克 s" },
+  { job:"槍神", name:"海鷗特戰隊 30",   monsters:"格瑞芬多" },
+  { job:"槍神", name:"砲台章魚王 20",   monsters:"特貝爾芬、小丑柏菲、白狼人、藍色雙角龍" },
+  { job:"槍神", name:"心靈控制 20",     monsters:"礦石依多、羅比、女忍、馬貝立克β、多多" },
+  { job:"槍神", name:"精準砲擊 20",     monsters:"殭屍、煉獄獵犬" },
+  { job:"槍神", name:"海盜魚雷 20",     monsters:"獨眼蝙蝠、哈維、不良少年、流氓、情資收集機" },
+  { job:"槍神", name:"海盜加農砲 20",   monsters:"雙刀龍戰士、銀綠水靈" },
+  { job:"槍神", name:"海盜加農砲 30",   monsters:"萊伊卡" },
+
+  /* ===== 拳霸 ===== */
+  { job:"拳霸", name:"戰艦鯨魚號 20",   monsters:"時髦野狗、黑輪王、雙刀龍戰士、銀綠水靈" },
+  { job:"拳霸", name:"戰艦鯨魚號 30",   monsters:"闇黑龍王" },
+  { job:"拳霸", name:"魔龍降臨 20",     monsters:"雪吉拉玩偶、雪毛怪人、格瑞芬多、藍翼龍、金綠水靈" },
+  { job:"拳霸", name:"元氣彈 20",       monsters:"致命烏賊怪、噴火龍、上忍、馬貝力克γ" },
+  { job:"拳霸", name:"鬥神降世 20",     monsters:"貝爾芬、進化迅猛龍" },
+  { job:"拳霸", name:"時間置換 20",     monsters:"蟠猴、獨角迅猛龍、利里諾斯" },
+  { job:"拳霸", name:"時間置換 30",     monsters:"格瑞芬多" },
+  { job:"拳霸", name:"最終極速 20",     monsters:"船員克魯、變種侏儒怪、噴火龍、忘卻的神官" },
+  { job:"拳霸", name:"閃爆破 20",       monsters:"罈壺、格瑞芬多、羅比" },
+  { job:"拳霸", name:"閃爆破 30",       monsters:"噴火龍" },
+  { job:"拳霸", name:"閃索命 20",       monsters:"厄運死神、赤翼龍、織田軍的武士、多多" },
+  { job:"拳霸", name:"閃索命 30",       monsters:"萊伊卡" },
+  { job:"拳霸", name:"閃連殺 20",       monsters:"幼龍保護者、中忍、忍者頭目" },
+  { job:"拳霸", name:"閃連殺 30",       monsters:"杜那斯" },
+
+  /* ===== 重砲指揮官 ===== */
+  { job:"重砲指揮官", name:"戰艦鯨魚號 20",     monsters:"時髦野狗、黑輪王、雙刀龍戰士、銀綠水靈" },
+  { job:"重砲指揮官", name:"戰艦鯨魚號 30",     monsters:"闇黑龍王" },
+  { job:"重砲指揮官", name:"炎熱加農砲 20",     monsters:"變身娃娃機、格瑞芬多、強力馬貝力克A" },
+  { job:"重砲指揮官", name:"炎熱加農砲 30",     monsters:"闇黑龍王" },
+  { job:"重砲指揮官", name:"加農砲連擊 20",     monsters:"烏賊怪、噴火龍、女忍、情資收集機" },
+  { job:"重砲指揮官", name:"加農砲連擊 30",     monsters:"闇黑龍王" },
+  { job:"重砲指揮官", name:"加農砲火箭 20",     monsters:"殭屍、礦山殭屍" },
+  { job:"重砲指揮官", name:"加農砲火箭 30",     monsters:"闇黑龍王" },
+  { job:"重砲指揮官", name:"神聖小猴子咒語 20", monsters:"特貝爾芬、深山人蔘、藍色雙角龍、暗黑三角龍、馬貝立克A" },
+  { job:"重砲指揮官", name:"神聖小猴子咒語 30", monsters:"闇黑龍王" },
+  { job:"重砲指揮官", name:"百烈精神 20",       monsters:"獨眼蝙蝠、哈維、伊魯薇達" },
+  { job:"重砲指揮官", name:"百烈精神 30",       monsters:"闇黑龍王" },
+
+  /* ===== 惡魔殺手 ===== */
+  { job:"惡魔殺手", name:"進階武器精通 20",   monsters:"野狗、小丑猴、黑翼龍" },
+  { job:"惡魔殺手", name:"進階武器精通 30",   monsters:"普雷茲首腦" },
+  { job:"惡魔殺手", name:"惡魔衝擊 20",       monsters:"兇惡野狗、紅色綠水靈、織田軍武士隊長" },
+  { job:"惡魔殺手", name:"魔力吶喊 20",       monsters:"黃色珍珠奶茶、變身娃娃機、黑輪王、骨骸魚" },
+  { job:"惡魔殺手", name:"堅毅肌膚 20",       monsters:"綠色珍珠奶茶、藍翼龍" },
+  { job:"惡魔殺手", name:"堅硬肌膚 30",       monsters:"貝魯加墨特" },
+  { job:"惡魔殺手", name:"黑暗拘束 20",       monsters:"海怒斯（右）" },
+  { job:"惡魔殺手", name:"惡魔末日烈焰 20",   monsters:"金屬甲蟲、流氓、原型機王、馬貝力克α" },
+  { job:"惡魔殺手", name:"變形 20",           monsters:"火焰半人馬、下忍、槍武士" },
+  { job:"惡魔殺手", name:"變形 30",           monsters:"貝魯加墨特" },
+
+  /* ===== 煉獄巫師 ===== */
+  { job:"煉獄巫師", name:"格擋 20",           monsters:"猿人肥肥、船員克魯、萊西、幼年龍" },
+  { job:"煉獄巫師", name:"黑暗世紀 20",       monsters:"野狗、黑輪王、故障的DF型機器人、暗黑三角龍" },
+  { job:"煉獄巫師", name:"黑暗世紀 30",       monsters:"闇黑龍王" },
+  { job:"煉獄巫師", name:"魔法屏障 20",       monsters:"闇黑龍王" },
+  { job:"煉獄巫師", name:"進階黃色繩索 20",   monsters:"兇惡野狗、燒杯怪" },
+  { job:"煉獄巫師", name:"進階黃色繩索 30",   monsters:"闇黑龍王" },
+  { job:"煉獄巫師", name:"颶風 20",           monsters:"闇黑龍王" },
+  { job:"煉獄巫師", name:"颶風 30",           monsters:"闇黑龍王" },
+  { job:"煉獄巫師", name:"終極攻擊 20",       monsters:"刺棘魚、礦石依多、D洛伊" },
+  { job:"煉獄巫師", name:"終極攻擊 30",       monsters:"普雷茲首腦" },
+  { job:"煉獄巫師", name:"進階黑色繩索 20",   monsters:"寒冰半人馬、不良少年" },
+
+  /* ===== 狂豹獵人 ===== */
+  { job:"狂豹獵人", name:"會心之眼 20",   monsters:"紅色珍珠奶茶、海怒斯（左）、苔蘚菇菇、黑暗冥鐘、小丑瑞奇、煉獄獵犬、進化迅猛龍" },
+  { job:"狂豹獵人", name:"會心之眼 30",   monsters:"格瑞芬多" },
+  { job:"狂豹獵人", name:"弩術精通 20",   monsters:"地獄獵犬、格瑞芬多、馬貝立克D、忘卻的祭司" },
+  { job:"狂豹獵人", name:"弩術精通 30",   monsters:"奧芙赫斑" },
+  { job:"狂豹獵人", name:"進階終極 20",   monsters:"石蟲、後負荷、原型機王、馬貝立克γ、馬貝立克β、多多" },
+  { job:"狂豹獵人", name:"進階終極 30",   monsters:"厄運死神" },
+  { job:"狂豹獵人", name:"音爆 20",       monsters:"時髦野狗、雪吉拉玩偶、AF型機器人" },
+  { job:"狂豹獵人", name:"音爆 30",       monsters:"闇黑龍王" },
+  { job:"狂豹獵人", name:"化學彈丸 20",   monsters:"黃色珍珠奶茶、獨角迅猛龍、中忍、上忍" },
+  { job:"狂豹獵人", name:"狂獸附體 20",   monsters:"小企鵝王玩偶、情資收集機" },
+  { job:"狂豹獵人", name:"狂獸附體 30",   monsters:"闇黑龍王" },
+  { job:"狂豹獵人", name:"狂野帕爾坎 20", monsters:"故障的DF型機器人、哈門庫魯、古惑女" },
+  { job:"狂豹獵人", name:"閃光箭雨 20",   monsters:"闇黑龍王" },
+  { job:"狂豹獵人", name:"閃光箭雨 30",   monsters:"闇黑龍王" },
+
+  /* ===== 機甲戰神 ===== */
+  { job:"機甲戰神", name:"戰鬥機器：巨人錘 20",  monsters:"小丑猴、黑吉拉、回憶守護兵" },
+  { job:"機甲戰神", name:"戰鬥機器：巨人錘 30",  monsters:"闇黑龍王" },
+  { job:"機甲戰神", name:"雷射衝擊波 20",        monsters:"怨靈發條熊、藍色雙角龍、獨角迅猛龍" },
+  { job:"機甲戰神", name:"合金盔甲：導彈罐 20",  monsters:"通道守門人、礦山殭屍、短刃龍戰士、忘卻的守護隊長" },
+  { job:"機甲戰神", name:"賽福提 25",            monsters:"百烈" },
+  { job:"機甲戰神", name:"機器人工廠：RM1 20",   monsters:"黑暗萊西、寒冰半人馬" },
+  { job:"機甲戰神", name:"擴音器：AF-111 20",    monsters:"幼龍保護者、回憶守護兵" },
+
+  /* ===== 狂狼勇士 ===== */
+  { job:"狂狼勇士", name:"進階終極 20",   monsters:"石蟲、後負荷、原型機王、馬貝力克γ、多多" },
+  { job:"狂狼勇士", name:"進階終極 30",   monsters:"厄運死神" },
+  { job:"狂狼勇士", name:"靈魂戰鬥 20",   monsters:"黃色珍珠奶茶、噴火龍、紅色綠水靈、馬貝立克A" },
+  { job:"狂狼勇士", name:"靈魂戰鬥 30",   monsters:"多多" },
+  { job:"狂狼勇士", name:"宙斯之盾 母書", monsters:"殘暴炎魔、混沌殘暴炎魔" },
+  { job:"狂狼勇士", name:"宙斯之盾 20",   monsters:"烏賊怪、化石龍、不良少年、織田軍武士隊長、萊伊卡" },
+  { job:"狂狼勇士", name:"宙斯之盾 30",   monsters:"格瑞芬多、闇黑龍王" },
+  { job:"狂狼勇士", name:"攻擊戰術 20",   monsters:"海怒斯（右）、殭屍、礦山殭屍、織田軍的武士" },
+  { job:"狂狼勇士", name:"防禦戰術 母書", monsters:"殘暴炎魔、混沌殘暴炎魔" },
+  { job:"狂狼勇士", name:"防禦戰術 20",   monsters:"燒杯怪、短刃龍戰士" },
+  { job:"狂狼勇士", name:"防禦戰術 30",   monsters:"海怒斯（右）、雪毛怪人、萊伊卡" },
+  { job:"狂狼勇士", name:"極冰暴風 母書", monsters:"殘暴炎魔、混沌殘暴炎魔" },
+  { job:"狂狼勇士", name:"極冰暴風 20",   monsters:"冥鐘、大副凱丁、黑翼龍" },
+  { job:"狂狼勇士", name:"極冰暴風 30",   monsters:"闇黑龍王" },
+  { job:"狂狼勇士", name:"終極之矛 母書", monsters:"殘暴炎魔、混沌殘暴炎魔" },
+  { job:"狂狼勇士", name:"終極之矛 20",   monsters:"小丑瑞奇、大副凱丁、血腥哈維、回憶守護隊長、悔恨的神官" },
+  { job:"狂狼勇士", name:"終極之矛 30",   monsters:"闇黑龍王、多多" },
+  { job:"狂狼勇士", name:"終極攻擊 20",   monsters:"煉獄獵犬、扛壩子、馬貝力克α" },
+  { job:"狂狼勇士", name:"終極攻擊 30",   monsters:"杜那斯" },
+
+  /* ===== 龍魔導士 ===== */
+  { job:"龍魔導士", name:"魔法激發 母書", monsters:"殘暴炎魔、混沌殘暴炎魔" },
+  { job:"龍魔導士", name:"魔法激發 20",   monsters:"刺棘魚、赤翼龍、情報收集機A、情報收集機B、悔恨的守護兵" },
+  { job:"龍魔導士", name:"魔法激發 30",   monsters:"普雷茲首腦" },
+  { job:"龍魔導士", name:"四連殺 20",     monsters:"鯊魚、海怒斯（右）、化石龍長老、回憶的祭司" },
+  { job:"龍魔導士", name:"四連殺 30",     monsters:"格瑞芬多" },
+  { job:"龍魔導士", name:"龍神的祝福 20", monsters:"幽魂發條熊隊長、惡魔綿羊" },
+  { job:"龍魔導士", name:"龍神的祝福 25", monsters:"闇黑龍王、萊伊卡" },
+  { job:"龍魔導士", name:"火輪舞 母書",   monsters:"殘暴炎魔、混沌殘暴炎魔" },
+  { job:"龍魔導士", name:"火輪舞 20",     monsters:"蟠猴、噴火龍、馬貝立克S" },
+  { job:"龍魔導士", name:"龍神之怒 母書", monsters:"殘暴炎魔、混沌殘暴炎魔" },
+  { job:"龍魔導士", name:"龍神之怒 20",   monsters:"D洛伊、化石龍長老、忍者頭目" },
+  { job:"龍魔導士", name:"龍神之怒 30",   monsters:"利里諾斯、萊伊卡" },
+  { job:"龍魔導士", name:"靈魂之石 母書", monsters:"殘暴炎魔、混沌殘暴炎魔" },
+  { job:"龍魔導士", name:"靈魂之石 20",   monsters:"雪吉拉、雪毛怪人、格瑞芬多、馬貝立克A、伊魯薇達" },
+  { job:"龍魔導士", name:"烈焰爆擊 20",   monsters:"厄運死神、馬貝立克S、圓型負荷" },
+  { job:"龍魔導士", name:"烈焰爆擊 30",   monsters:"闇黑龍王" },
+
+  /* ===== 精靈遊俠 ===== */
+  { job:"精靈遊俠", name:"進階終極 20",         monsters:"石蟲、後負荷、原型機王、馬貝立克γ、馬貝立克β、多多" },
+  { job:"精靈遊俠", name:"進階終極 30",         monsters:"厄運死神" },
+  { job:"精靈遊俠", name:"遠古意志 20",         monsters:"時髦野狗、小企鵝王玩偶、怨靈發條熊" },
+  { job:"精靈遊俠", name:"遠古意志 30",         monsters:"普雷茲首腦" },
+  { job:"精靈遊俠", name:"進階雙弩槍精通 20",   monsters:"小丑猴、冥鐘、暴走族組長" },
+  { job:"精靈遊俠", name:"伊修塔爾之環 20",     monsters:"小企鵝王玩偶、黑暗萊西、原型機王、馬貝立克γ" },
+  { job:"精靈遊俠", name:"伊修塔爾之環 30",     monsters:"尼伯龍根" },
+  { job:"精靈遊俠", name:"破防射擊 20",         monsters:"尖鼻鯊魚、街頭混混、暴走族組長、忍者頭目" },
+  { job:"精靈遊俠", name:"傳說之槍 20",         monsters:"噴火龍" },
+  { job:"精靈遊俠", name:"閃電之鋒 20",         monsters:"格瑞芬多" },
+
+  /* ===== 幻影俠盜 ===== */
+  { job:"幻影俠盜", name:"靈魂竊取 20",     monsters:"烏賊怪、情報收集機B、悔恨的守護兵" },
+  { job:"幻影俠盜", name:"幻影千仞 IV 20",  monsters:"骨骸魚、小獵犬、情報收集機A" },
+  { job:"幻影俠盜", name:"手杖專家 20",     monsters:"罈壺、金綠水靈、回憶守護隊長" },
+  { job:"幻影俠盜", name:"手杖專家 30",     monsters:"普雷茲首腦" },
+  { job:"幻影俠盜", name:"艾麗亞祝禱 20",   monsters:"蔘罈壺、狼人、後負荷" },
+  { job:"幻影俠盜", name:"艾麗雅祝禱 30",   monsters:"奧芙赫斑" },
+  { job:"幻影俠盜", name:"連犽突進 20",     monsters:"哈門庫魯" },
+  { job:"幻影俠盜", name:"連犽突進 30",     monsters:"貝魯加墨特" },
+  { job:"幻影俠盜", name:"卡牌風暴 20",     monsters:"哈摩斯庫拉、變種侏儒怪、悔恨的守護隊長" },
+  { job:"幻影俠盜", name:"黑卡 20",         monsters:"萊西、忘卻的守護兵、多立百烈" },
+
+  /* ===== 劍豪 ===== */
+  { job:"劍豪", name:"迅速 20",       monsters:"鯊魚、貝爾芬" },
+  { job:"劍豪", name:"鷹爪閃 20",     monsters:"達納托斯、伊魯薇達、暴走族組長" },
+  { job:"劍豪", name:"神速無雙 20",   monsters:"小丑柏菲、紅色綠水靈、羅比" },
+  { job:"劍豪", name:"神速無雙 30",   monsters:"尼伯龍根" },
+  { job:"劍豪", name:"一刀兩斷 20",   monsters:"礦石依多、流氓、馬貝立克β" },
+  { job:"劍豪", name:"一刀兩斷 30",   monsters:"奧芙赫斑" },
+  { job:"劍豪", name:"一閃 20",       monsters:"千年人蔘、馬貝立克S、馬貝立克 s" },
+  { job:"劍豪", name:"剛健 20",       monsters:"黑翼龍、不良少年、女忍" },
+
+  /* ===== 陰陽師 ===== */
+  { job:"陰陽師", name:"華扇 20",       monsters:"致命烏賊怪、幼龍保護者、悔恨的神官" },
+  { job:"陰陽師", name:"華扇 30",       monsters:"杜那斯" },
+  { job:"陰陽師", name:"刺刺櫻 20",     monsters:"苔蘚蝸牛、哈維、化石龍" },
+  { job:"陰陽師", name:"幻醒花狐 20",   monsters:"幽魂發條熊、幽魂發條熊隊長、情資收集機" },
+  { job:"陰陽師", name:"退魔流星符 20", monsters:"幽魂女巫、船員克魯、後勤補給車" },
+  { job:"陰陽師", name:"猩猩火酒 20",   monsters:"維京、上忍" },
+  { job:"陰陽師", name:"猩猩火酒 30",   monsters:"奧芙赫斑" },
+  { job:"陰陽師", name:"妖繪卷 20",     monsters:"特貝爾芬、馬貝立克D、扛壩子" },
+  { job:"陰陽師", name:"妖繪卷 30",     monsters:"貝魯加墨特" },
+  { job:"陰陽師", name:"結界桔梗 20",   monsters:"鱷魚克洛克、忘卻的守護隊長" },
+  { job:"陰陽師", name:"破邪連擊符 20", monsters:"金屬甲蟲、強力馬貝力克B、忍者頭目" },
+];
+
+/* ================================================================
+   Boss 資料
+   - boss      : Boss 名稱
+   - dailyLimit: 每日可挑戰次數
+   - reset     : 重置時間說明
+   - difficulty: 難度標示（1-5）
+   - recommend : 建議等級
+================================================================ */
+const bossesData = [
+  { boss: "拉圖斯",   dailyLimit: 3,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
+  { boss: "東京未來東京王",   dailyLimit: 3,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
+  { boss: "天皇蟾蜍",   dailyLimit: 3,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
+  { boss: "黑道長老",   dailyLimit: 3,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
+  { boss: "困難魔王巴洛谷",     dailyLimit: 3,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
+  { boss: "普通炎魔",       dailyLimit: 3,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
+  { boss: "混沌炎魔",     dailyLimit: 2,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
+  { boss: "普通暗黑龍王", dailyLimit: 3,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
+  { boss: "混沌暗黑龍王",   dailyLimit: 2,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
+  { boss: "普通凡雷恩",   dailyLimit: 1,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
+  { boss: "普通西格諾斯",   dailyLimit: 1,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
+  { boss: "普通阿卡伊農",   dailyLimit: 2,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
+  { boss: "普通森蘭丸",   dailyLimit: 1,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" } 
+];
+
+/* ================================================================
+   工具函式：排序狀態管理
+================================================================ */
+const sortState = {
+  drops:  { col: null, asc: true },
+  skills: { col: null, asc: true },
+  equips: { col: null, asc: true }
+};
+
+/* ================================================================
+   展開地圖資料為「每行一個掉落物」的扁平陣列
+================================================================ */
+function flattenDrops() {
+  const rows = [];
+  mapsData.forEach(map => {
+    map.drops.forEach(drop => {
+      rows.push({
+        mapName:  map.mapName,
+        monster:  map.monster,
+        dropName: drop.name,
+        type:     drop.type
+      });
+    });
+  });
+  return rows;
+}
+
+/* ================================================================
+   取得掉落物徽章 HTML
+================================================================ */
+function getBadge(type) {
+  const map = {
+    skill:    ['badge badge-skill',    '📘 技能書'],
+    equip:    ['badge badge-equip',    '⚔️ 裝備'],
+    material: ['badge badge-material', '🧪 材料']
+  };
+  const [cls, label] = map[type] || ['badge badge-common', '❓ 未知'];
+  return `<span class="${cls}">${label}</span>`;
+}
+
+/* ================================================================
+   渲染：地圖掉落表格
+================================================================ */
+let dropsAllRows = flattenDrops();
+
+function renderDrops() {
+  const search = document.getElementById('dropsSearch').value.toLowerCase();
+  const typeFilter = document.getElementById('dropsTypeFilter').value;
+  const { col, asc } = sortState.drops;
+
+  let rows = dropsAllRows.filter(r => {
+    const matchSearch = !search ||
+      r.mapName.toLowerCase().includes(search) ||
+      r.monster.toLowerCase().includes(search) ||
+      r.dropName.toLowerCase().includes(search);
+    const matchType = !typeFilter || r.type === typeFilter;
+    return matchSearch && matchType;
+  });
+
+  // 排序
+  if (col) {
+    rows.sort((a, b) => {
+      const va = a[col] || '', vb = b[col] || '';
+      return asc ? va.localeCompare(vb, 'zh-TW') : vb.localeCompare(va, 'zh-TW');
+    });
+  }
+
+  const tbody = document.getElementById('dropsBody');
+  const empty = document.getElementById('dropsEmpty');
+  if (rows.length === 0) {
+    tbody.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td class="text-[var(--text-main)] font-medium whitespace-nowrap">${r.mapName}</td>
+      <td class="text-[var(--green)] whitespace-nowrap">${r.monster}</td>
+      <td class="font-semibold whitespace-nowrap">${r.dropName}</td>
+      <td>${getBadge(r.type)}</td>
+    </tr>
+  `).join('');
+}
+
+function sortDrops(col) {
+  if (sortState.drops.col === col) sortState.drops.asc = !sortState.drops.asc;
+  else { sortState.drops.col = col; sortState.drops.asc = true; }
+  renderDrops();
+}
+
+/* ================================================================
+   渲染：技能書頁（依職業分類資料）
+================================================================ */
+
+/* 目前職業篩選狀態 */
+let currentSkillJob = '';
+
+function filterSkillJob(btn) {
+  document.querySelectorAll('.skill-job-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentSkillJob = btn.dataset.job;
+  renderSkills();
+}
+
+function renderSkills() {
+  const search = document.getElementById('skillsSearch').value.toLowerCase();
+  const { col, asc } = sortState.skills;
+
+  let rows = skillBookData.filter(r => {
+    const matchJob  = !currentSkillJob || r.job === currentSkillJob;
+    const matchSearch = !search ||
+      r.name.toLowerCase().includes(search) ||
+      r.job.toLowerCase().includes(search) ||
+      r.monsters.toLowerCase().includes(search);
+    return matchJob && matchSearch;
+  });
+
+  if (col) {
+    rows.sort((a, b) => {
+      const va = a[col] || '', vb = b[col] || '';
+      return asc ? va.localeCompare(vb, 'zh-TW') : vb.localeCompare(va, 'zh-TW');
+    });
+  }
+
+  const tbody = document.getElementById('skillsBody');
+  const empty = document.getElementById('skillsEmpty');
+  if (rows.length === 0) {
+    tbody.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+
+  /* 職業顏色對應 */
+  const jobColor = {
+    '冒險家':'#fde047','黑騎士':'#c084fc','聖騎士':'#fbbf24','英雄':'#f87171',
+    '主教':'#a3e635','冰雷':'#60a5fa','火毒':'#fb923c','箭神':'#34d399',
+    '神射手':'#6ee7b7','夜使者':'#a78bfa','暗影神偷':'#818cf8','影武者':'#c084fc',
+    '槍神':'#38bdf8','拳霸':'#f97316','重砲指揮官':'#fb923c','惡魔殺手':'#f43f5e',
+    '煉獄巫師':'#c026d3','狂豹獵人':'#84cc16','機甲戰神':'#94a3b8','狂狼勇士':'#22d3ee',
+    '龍魔導士':'#f97316','精靈遊俠':'#4ade80','幻影俠盜':'#e879f9',
+    '劍豪':'#fbbf24','陰陽師':'#f472b6'
+  };
+
+  tbody.innerHTML = rows.map(r => {
+    const color = jobColor[r.job] || '#93c5fd';
+    const isMother = r.name.includes('母書');
+    return `
+      <tr>
+        <td class="whitespace-nowrap"><span class="badge" style="background:${color}22;color:${color};border:1px solid ${color}55;">${r.job}</span></td>
+        <td class="font-semibold whitespace-nowrap" style="color:${isMother ? '#fbbf24' : '#93c5fd'};">${r.name}</td>
+        <td class="text-[var(--text-dim)] text-sm">${r.monsters}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function sortSkills(col) {
+  if (sortState.skills.col === col) sortState.skills.asc = !sortState.skills.asc;
+  else { sortState.skills.col = col; sortState.skills.asc = true; }
+  renderSkills();
+}
+
+/* ================================================================
+   渲染：裝備頁
+================================================================ */
+let equipsAllRows = dropsAllRows.filter(r => r.type === 'equip');
+
+function renderEquips() {
+  const search = document.getElementById('equipsSearch').value.toLowerCase();
+  const { col, asc } = sortState.equips;
+
+  let rows = equipsAllRows.filter(r => {
+    return !search ||
+      r.dropName.toLowerCase().includes(search) ||
+      r.mapName.toLowerCase().includes(search) ||
+      r.monster.toLowerCase().includes(search);
+  });
+
+  if (col) {
+    rows.sort((a, b) => {
+      const va = (col === 'name' ? a.dropName : a[col]) || '';
+      const vb = (col === 'name' ? b.dropName : b[col]) || '';
+      return asc ? va.localeCompare(vb, 'zh-TW') : vb.localeCompare(va, 'zh-TW');
+    });
+  }
+
+  const tbody = document.getElementById('equipsBody');
+  const empty = document.getElementById('equipsEmpty');
+  if (rows.length === 0) {
+    tbody.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td class="font-semibold text-[#d8b4fe] whitespace-nowrap">${r.dropName}</td>
+      <td class="text-[var(--text-main)] whitespace-nowrap">${r.mapName}</td>
+      <td class="text-[var(--green)] whitespace-nowrap">${r.monster}</td>
+    </tr>
+  `).join('');
+}
+
+function sortEquips(col) {
+  if (sortState.equips.col === col) sortState.equips.asc = !sortState.equips.asc;
+  else { sortState.equips.col = col; sortState.equips.asc = true; }
+  renderEquips();
+}
+
+/* ================================================================
+   渲染：每日 Boss 卡片
+================================================================ */
+function renderBoss() {
+  const search = document.getElementById('bossSearch').value.toLowerCase();
+  const rows = bossesData.filter(b =>
+    !search || b.boss.toLowerCase().includes(search)
+  );
+  const grid = document.getElementById('bossGrid');
+  const empty = document.getElementById('bossEmpty');
+
+  if (rows.length === 0) {
+    grid.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+
+  /* 難度星星 */
+  function stars(n) {
+    return '★'.repeat(n) + '☆'.repeat(5 - n);
+  }
+  /* 難度顏色 */
+  function diffColor(n) {
+    return ['', '#22c55e', '#84cc16', '#f59e0b', '#f97316', '#ef4444'][n] || '#fff';
+  }
+
+  grid.innerHTML = rows.map(b => `
+    <div class="boss-card">
+      <div class="flex items-start justify-between gap-2 mb-3">
+        <div class="font-bold text-[var(--text-main)] text-base leading-tight">${b.boss}</div>
+        <span style="color:${diffColor(b.difficulty)}" class="text-base shrink-0">${stars(b.difficulty)}</span>
+      </div>
+      <div class="space-y-2 text-sm">
+        <div class="flex items-center gap-2">
+          <span class="text-[var(--text-muted)] w-20 shrink-0">每日次數</span>
+          <span class="font-semibold text-[var(--orange)]">${b.dailyLimit} 次</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-[var(--text-muted)] w-20 shrink-0">重置時間</span>
+          <span class="text-[var(--green)]">${b.reset}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-[var(--text-muted)] w-20 shrink-0">建議等級</span>
+          <span class="text-[var(--text-dim)]">${b.recommend}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+
+/* ================================================================
+   首頁快速搜尋
+================================================================ */
+function quickSearch(value) {
+  const container = document.getElementById('quickResults');
+  const tbody = document.getElementById('quickResultBody');
+
+  if (!value.trim()) {
+    container.classList.add('hidden');
+    return;
+  }
+
+  const q = value.toLowerCase();
+  const rows = dropsAllRows.filter(r =>
+    r.mapName.toLowerCase().includes(q) ||
+    r.monster.toLowerCase().includes(q) ||
+    r.dropName.toLowerCase().includes(q)
+  );
+
+  if (rows.length === 0) {
+    container.classList.remove('hidden');
+    tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-[var(--text-muted)]">😕 找不到符合資料</td></tr>`;
+    return;
+  }
+
+  container.classList.remove('hidden');
+  tbody.innerHTML = rows.slice(0, 20).map(r => `
+    <tr>
+      <td class="text-[var(--text-main)] font-medium whitespace-nowrap">${r.mapName}</td>
+      <td class="text-[var(--green)] whitespace-nowrap">${r.monster}</td>
+      <td class="font-semibold whitespace-nowrap">${r.dropName}</td>
+      <td>${getBadge(r.type)}</td>
+    </tr>
+  `).join('');
+}
+
+/* ================================================================
+   練等攻略：職業分頁切換
+================================================================ */
+function switchJob(btn) {
+  // 更新按鈕 active 狀態
+  document.querySelectorAll('.job-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // 切換面板
+  const job = btn.dataset.job;
+  document.querySelectorAll('.job-panel').forEach(p => {
+    p.classList.toggle('active', p.dataset.job === job);
+  });
+}
+
+/* ================================================================
+   分頁切換
+================================================================ */
+function switchTab(tabName) {
+  // 隱藏所有分頁內容
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  // 移除所有 nav active 狀態
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+  // 顯示目標分頁
+  document.getElementById('tab-' + tabName).classList.add('active');
+  document.getElementById('nav-' + tabName).classList.add('active');
+
+  // 手機上切換後關閉 sidebar
+  if (window.innerWidth < 768) closeSidebar();
+
+  // 重設全站搜尋框
+  document.getElementById('globalSearch').value = '';
+}
+
+/* ================================================================
+   手機 sidebar 開關
+================================================================ */
+function openSidebar() {
+  document.getElementById('sidebar').classList.remove('-translate-x-full');
+  document.getElementById('overlay').classList.add('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+/* ================================================================
+   初始化：頁面載入時渲染所有資料
+================================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  renderDrops();
+  renderSkills();
+  renderEquips();
+  renderBoss();
+  // 預設顯示第一個職業面板
+  const firstPanel = document.querySelector('.job-panel');
+  if (firstPanel) firstPanel.classList.add('active');
+});
+</script>
+</body>
+</html>
