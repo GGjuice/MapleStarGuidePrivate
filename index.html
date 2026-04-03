@@ -257,7 +257,7 @@
     /* ===== 練等攻略：資料列 ===== */
     .lv-row {
       display: grid;
-      grid-template-columns: 90px 1fr 1fr 2fr;
+      grid-template-columns: 90px 160px 180px 1fr;
       gap: 0.75rem;
       align-items: start;
       padding: 0.75rem 1rem;
@@ -364,11 +364,28 @@
       background: linear-gradient(90deg, transparent, var(--orange), var(--green), transparent);
     }
 
-    /* 捲軸樣式 */
+    /* ===== 地圖掉落：合併儲存格樣式 ===== */
+    .map-cell {
+      background: rgba(249,115,22,0.06);
+      color: var(--orange);
+      font-weight: 700;
+      vertical-align: middle;
+      border-right: 2px solid rgba(249,115,22,0.3);
+    }
+    .drop-row.hidden-row { display: none; }
+
+    /* ===== 捲軸樣式 ===== */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg-base); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--orange-dim); }
+
+    /* ===== 手機版：側欄收合 ===== */
+    @media (max-width: 767px) {
+      #sidebar { transform: translateX(-100%) !important; }
+      #sidebar.open { transform: translateX(0) !important; }
+      main { margin-left: 0 !important; }
+    }
   </style>
 </head>
 <body class="bg-grid">
@@ -377,10 +394,10 @@
 <div id="overlay" onclick="closeSidebar()"></div>
 
 <!-- ===== 主要佈局 ===== -->
-<div class="flex min-h-screen">
+<div>
 
   <!-- ===== 側欄 ===== -->
-  <aside id="sidebar" class="fixed md:sticky top-0 left-0 h-screen w-64 flex flex-col z-50 md:z-auto -translate-x-full md:translate-x-0 transition-transform duration-300">
+  <aside id="sidebar" style="position:fixed;top:0;left:0;width:256px;height:100vh;display:flex;flex-direction:column;z-index:50;background:var(--bg-panel);border-right:1px solid var(--border);transform:translateX(0);transition:transform 0.3s ease;">
     <!-- Logo -->
     <div class="p-5 border-b border-[var(--border)]">
       <div class="font-orbitron text-xl font-black leading-tight">
@@ -398,14 +415,11 @@
       <div class="nav-item active" onclick="switchTab('home')" id="nav-home">
         <span class="text-lg">🏠</span><span>首頁</span>
       </div>
-      <div class="nav-item" onclick="switchTab('drops')" id="nav-drops">
-        <span class="text-lg">🗺️</span><span>地圖掉落</span>
-      </div>
       <div class="nav-item" onclick="switchTab('skills')" id="nav-skills">
         <span class="text-lg">📘</span><span>技能書掉落</span>
       </div>
       <div class="nav-item" onclick="switchTab('equips')" id="nav-equips">
-        <span class="text-lg">⚔️</span><span>裝備掉落</span>
+        <span class="text-lg">📜</span><span>卷軸掉落</span>
       </div>
       <div class="nav-item" onclick="switchTab('boss')" id="nav-boss">
         <span class="text-lg">💀</span><span>每日 Boss</span>
@@ -423,7 +437,7 @@
   </aside>
 
   <!-- ===== 主內容區 ===== -->
-  <main class="flex-1 min-w-0">
+  <main style="margin-left:256px;min-width:0;overflow-x:hidden;">
 
     <!-- 頂部 Header -->
     <header class="sticky top-0 z-30 bg-[var(--bg-panel)] border-b border-[var(--border)] px-4 md:px-6 py-3 flex items-center gap-3">
@@ -460,35 +474,6 @@
           </div>
         </div>
 
-        <!-- 快速搜尋 -->
-        <div class="card p-5 mb-6">
-          <h2 class="text-[var(--orange)] font-bold text-lg mb-3 flex items-center gap-2">
-            <span>🔍</span> 快速搜尋
-          </h2>
-          <div class="relative max-w-lg">
-            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
-            </svg>
-            <input type="text" placeholder="輸入地圖名、怪物名、物品名…" class="search-input pl-10 py-3 text-base" oninput="quickSearch(this.value)" id="quickSearchInput" />
-          </div>
-          <!-- 快速搜尋結果 -->
-          <div id="quickResults" class="mt-4 hidden">
-            <div class="table-scroll">
-              <table class="data-table" id="quickResultTable">
-                <thead>
-                  <tr>
-                    <th>地圖</th>
-                    <th>怪物</th>
-                    <th>掉落物品</th>
-                    <th>類型</th>
-                  </tr>
-                </thead>
-                <tbody id="quickResultBody"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
         <!-- 快速進入功能卡 -->
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
           <div class="card card-hover p-5 cursor-pointer" onclick="switchTab('drops')">
@@ -502,9 +487,9 @@
             <div class="text-[var(--text-muted)] text-sm mt-1">技能書取得方式整理</div>
           </div>
           <div class="card card-hover p-5 cursor-pointer" onclick="switchTab('equips')">
-            <div class="text-3xl mb-2">⚔️</div>
-            <div class="font-bold text-[var(--text-main)]">裝備掉落</div>
-            <div class="text-[var(--text-muted)] text-sm mt-1">裝備掉落地點查詢</div>
+            <div class="text-3xl mb-2">📜</div>
+            <div class="font-bold text-[var(--text-main)]">卷軸掉落</div>
+            <div class="text-[var(--text-muted)] text-sm mt-1">怪物卷軸掉落查詢</div>
           </div>
           <div class="card card-hover p-5 cursor-pointer" onclick="switchTab('boss')">
             <div class="text-3xl mb-2">💀</div>
@@ -530,36 +515,104 @@
           <h1 class="text-xl font-bold text-[var(--orange)] flex items-center gap-2">
             <span>🗺️</span> 地圖掉落總覽
           </h1>
-          <div class="flex flex-wrap gap-2 w-full sm:w-auto">
-            <!-- 搜尋框 -->
-            <div class="relative flex-1 sm:flex-none">
-              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
-              </svg>
-              <input id="dropsSearch" type="text" placeholder="搜尋…" class="search-input w-full sm:w-52" oninput="renderDrops()" />
-            </div>
-            <!-- 類型篩選 -->
-            <select id="dropsTypeFilter" class="filter-select" onchange="renderDrops()">
-              <option value="">所有類型</option>
-              <option value="skill">技能書</option>
-              <option value="equip">裝備</option>
-              <option value="material">材料</option>
-            </select>
+          <div class="relative flex-1 sm:flex-none max-w-xs">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+            </svg>
+            <input id="dropsSearch" type="text" placeholder="搜尋地圖、怪物、物品…" class="search-input" oninput="filterDropsTable(this.value)" />
           </div>
         </div>
 
         <div class="card">
           <div class="table-scroll">
-            <table class="data-table" id="dropsTable">
+            <table class="data-table" id="dropsStaticTable">
               <thead>
                 <tr>
-                  <th onclick="sortDrops('mapName')">地圖名稱</th>
-                  <th onclick="sortDrops('monster')">怪物</th>
-                  <th onclick="sortDrops('dropName')">掉落物品</th>
-                  <th onclick="sortDrops('type')">類型</th>
+                  <th style="width:160px;">地圖</th>
+                  <th style="width:200px;">怪物</th>
+                  <th>掉落物品</th>
                 </tr>
               </thead>
-              <tbody id="dropsBody"></tbody>
+              <tbody id="dropsStaticBody">
+                <!-- 台北101 -->
+                <tr class="drop-row" data-map="台北101" data-monster="小孩模特兒" data-drops="35等火砲T-泰坦 套服敏捷卷軸60% 裝飾品各屬性卷軸70%">
+                  <td rowspan="1" class="map-cell">台北101<br/><span style="font-size:0.7rem;color:var(--text-muted);">名人大道東部區域</span></td>
+                  <td class="text-[var(--green)]">小孩模特兒 (38)</td>
+                  <td>
+                    <span class="drop-tag drop-scroll">35等火砲T-泰坦</span>
+                    <span class="drop-tag drop-scroll">套服敏捷卷軸60%</span>
+                    <span class="drop-tag drop-scroll">裝飾品各屬性卷軸70%</span>
+                  </td>
+                </tr>
+
+                <!-- 玩具城 -->
+                <tr class="drop-row" data-map="玩具城" data-monster="粉紅發條熊" data-drops="60等火砲火焰發射器 褲裙敏捷卷軸60%">
+                  <td rowspan="1" class="map-cell">玩具城<br/><span style="font-size:0.7rem;color:var(--text-muted);">天空露臺2</span></td>
+                  <td class="text-[var(--green)]">粉紅發條熊 (51)</td>
+                  <td>
+                    <span class="drop-tag drop-scroll">60等火砲火焰發射器</span>
+                    <span class="drop-tag drop-scroll">褲裙敏捷卷軸60%</span>
+                  </td>
+                </tr>
+
+                <!-- 瑪迦提亞城 - 薩赫勒 -->
+                <tr class="drop-row" data-map="瑪迦提亞城" data-monster="沙漠地鼠" data-drops="80等火砲萊諾 弓攻擊卷軸60%">
+                  <td rowspan="2" class="map-cell" style="vertical-align:top;">瑪迦提亞城</td>
+                  <td class="text-[var(--green)]">沙漠地鼠 (77)<br/><span style="font-size:0.75rem;color:var(--text-muted);">薩赫勒地區1</span></td>
+                  <td>
+                    <span class="drop-tag drop-scroll">80等火砲萊諾</span>
+                    <span class="drop-tag drop-scroll">弓攻擊卷軸60%</span>
+                  </td>
+                </tr>
+                <tr class="drop-row" data-map="瑪迦提亞城" data-monster="強化鋼鐵穗太" data-drops="矛攻擊卷軸60% 拳套攻擊卷軸60% 火砲攻擊卷軸60%">
+                  <td class="text-[var(--green)]">強化鋼鐵穗太 (84)<br/><span style="font-size:0.75rem;color:var(--text-muted);">研究所A-3</span></td>
+                  <td>
+                    <span class="drop-tag drop-scroll">矛攻擊卷軸60%</span>
+                    <span class="drop-tag drop-scroll">拳套攻擊卷軸60%</span>
+                    <span class="drop-tag drop-scroll" style="color:#fca5a5;border-color:rgba(239,68,68,0.4);">火砲攻擊卷軸60%</span>
+                  </td>
+                </tr>
+
+                <!-- 靈藥幻境 -->
+                <tr class="drop-row" data-map="靈藥幻境" data-monster="罐靈 蔘罐靈" data-drops="90等火砲阿貝羅 手杖攻擊卷軸60% 太刀工及亞卷軸60% 艾莉亞祈禱20">
+                  <td rowspan="1" class="map-cell">靈藥幻境<br/><span style="font-size:0.7rem;color:var(--text-muted);">貧瘠的草藥田</span></td>
+                  <td class="text-[var(--green)]">罐靈 (91)<br/>蔘罐靈 (93)</td>
+                  <td>
+                    <span class="drop-tag drop-scroll" style="color:#fca5a5;border-color:rgba(239,68,68,0.4);">90等火砲阿貝羅</span>
+                    <span class="drop-tag drop-scroll">手杖攻擊卷軸60%</span>
+                    <span class="drop-tag drop-scroll">太刀工及亞卷軸60%</span>
+                    <span class="drop-tag drop-skill">艾莉亞祈禱20</span>
+                  </td>
+                </tr>
+
+                <!-- 神木村 - 米納 -->
+                <tr class="drop-row" data-map="神木村" data-monster="金屬甲蟲" data-drops="100等黃金火箭砲 雙手斧攻擊卷軸60% 弓攻擊卷軸60% 雷之鑣">
+                  <td rowspan="2" class="map-cell" style="vertical-align:top;">神木村</td>
+                  <td class="text-[var(--green)]">金屬甲蟲 (105)<br/><span style="font-size:0.75rem;color:var(--text-muted);">米納爾森林東邊境界</span></td>
+                  <td>
+                    <span class="drop-tag drop-scroll" style="color:#fca5a5;border-color:rgba(239,68,68,0.4);">100等黃金火箭砲</span>
+                    <span class="drop-tag drop-scroll">雙手斧攻擊卷軸60%</span>
+                    <span class="drop-tag drop-scroll">弓攻擊卷軸60%</span>
+                    <span class="drop-tag drop-equip">雷之鑣</span>
+                  </td>
+                </tr>
+                <tr class="drop-row" data-map="神木村" data-monster="暗黑半人馬" data-drops="100等火砲黃金火箭砲 雙管槍攻擊卷軸60%">
+                  <td class="text-[var(--green)]">暗黑半人馬 (118)<br/><span style="font-size:0.75rem;color:var(--text-muted);">暗黑半人馬馬領土</span></td>
+                  <td>
+                    <span class="drop-tag drop-scroll" style="color:#fca5a5;border-color:rgba(239,68,68,0.4);">100等火砲黃金火箭砲</span>
+                    <span class="drop-tag drop-scroll">雙管槍攻擊卷軸60%</span>
+                  </td>
+                </tr>
+
+                <!-- 玩具城 彎曲的時間 -->
+                <tr class="drop-row" data-map="玩具城 彎曲的時間" data-monster="多立百烈" data-drops="100等火砲黃金火箭砲">
+                  <td rowspan="1" class="map-cell">玩具城<br/><span style="font-size:0.7rem;color:var(--text-muted);">彎曲的時間</span></td>
+                  <td class="text-[var(--green)]">多立百烈 (114)</td>
+                  <td>
+                    <span class="drop-tag drop-scroll" style="color:#fca5a5;border-color:rgba(239,68,68,0.4);">100等火砲黃金火箭砲</span>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
           <div id="dropsEmpty" class="hidden text-center py-10 text-[var(--text-muted)]">😕 找不到符合的資料</div>
@@ -627,33 +680,31 @@
         </div>
       </div>
 
-      <!-- ==================== 裝備掉落 ==================== -->
+      <!-- ==================== 卷軸掉落 ==================== -->
       <div id="tab-equips" class="tab-content">
         <div class="flex flex-col sm:flex-row gap-3 mb-5 items-start sm:items-center justify-between">
           <h1 class="text-xl font-bold" style="color: var(--purple);">
-            <span>⚔️</span> 裝備掉落
+            <span>📜</span> 卷軸掉落
           </h1>
-          <div class="flex flex-wrap gap-2 w-full sm:w-auto">
-            <div class="relative flex-1 sm:flex-none">
-              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
-              </svg>
-              <input id="equipsSearch" type="text" placeholder="搜尋裝備…" class="search-input w-full sm:w-52" oninput="renderEquips()" />
-            </div>
+          <div class="relative flex-1 sm:flex-none max-w-xs">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+            </svg>
+            <input id="equipsSearch" type="text" placeholder="搜尋地圖、怪物、卷軸…" class="search-input" oninput="filterScrollTable(this.value)" />
           </div>
         </div>
 
         <div class="card">
           <div class="table-scroll">
-            <table class="data-table" id="equipsTable">
+            <table class="data-table" id="scrollTable">
               <thead>
                 <tr>
-                  <th onclick="sortEquips('name')">裝備名稱</th>
-                  <th onclick="sortEquips('mapName')">掉落地圖</th>
-                  <th onclick="sortEquips('monster')">掉落怪物</th>
+                  <th style="width:130px;">地圖</th>
+                  <th style="width:160px;">怪物</th>
+                  <th>掉落卷軸</th>
                 </tr>
               </thead>
-              <tbody id="equipsBody"></tbody>
+              <tbody id="scrollBody"></tbody>
             </table>
           </div>
           <div id="equipsEmpty" class="hidden text-center py-10 text-[var(--text-muted)]">😕 找不到符合的資料</div>
@@ -704,7 +755,7 @@
         <div class="job-panel" data-job="nightlord">
           <div class="card overflow-hidden">
             <!-- 表頭 -->
-            <div class="grid grid-cols-4 text-xs font-bold uppercase tracking-wider px-4 py-3 border-b border-[var(--border)]" style="background:rgba(249,115,22,0.1); color:var(--orange);">
+            <div class="text-xs font-bold uppercase tracking-wider px-4 py-3 border-b border-[var(--border)]" style="background:rgba(249,115,22,0.1); color:var(--orange); display:grid; grid-template-columns:90px 160px 180px 1fr; gap:0.75rem;">
               <div>等級</div>
               <div>地圖</div>
               <div>怪物</div>
@@ -800,7 +851,7 @@
         <!-- ======== 重砲指揮官 ======== -->
         <div class="job-panel" data-job="cannoneer">
           <div class="card overflow-hidden">
-            <div class="grid grid-cols-4 text-xs font-bold uppercase tracking-wider px-4 py-3 border-b border-[var(--border)]" style="background:rgba(249,115,22,0.1); color:var(--orange);">
+            <div class="text-xs font-bold uppercase tracking-wider px-4 py-3 border-b border-[var(--border)]" style="background:rgba(249,115,22,0.1); color:var(--orange); display:grid; grid-template-columns:90px 160px 180px 1fr; gap:0.75rem;">
               <div>等級</div>
               <div>地圖</div>
               <div>怪物</div>
@@ -811,10 +862,9 @@
               <div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">10–20</div>
               <div class="lv-map">茅茨山丘</div>
               <div class="lv-mob">綠菇菇 (12)</div>
-              <div class="lv-drops">
-                <span class="drop-tag drop-scroll">20等火砲鋼鐵火箭砲</span>
-              </div>
+              <div class="lv-drops"><span class="drop-tag drop-scroll">20等火砲鋼鐵火箭砲</span></div>
             </div>
+            <div class="lv-note">💬 弓箭手村往右走一張，可以順便接王年海的任務，加減賺經驗。</div>
 
             <div class="lv-row">
               <div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">20–30</div>
@@ -822,6 +872,7 @@
               <div class="lv-mob">混種火焰石巨人 (28)</div>
               <div class="lv-drops">—</div>
             </div>
+            <div class="lv-note">💬 重砲好刷甚至二轉完可以回來刷到32~33等去台北101。</div>
 
             <div class="lv-row">
               <div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">30–38</div>
@@ -829,6 +880,7 @@
               <div class="lv-mob">—</div>
               <div class="lv-drops">—</div>
             </div>
+            <div class="lv-note">💬 一週可以打三場，如果沒空線就直接去101或是去做菇菇王國。</div>
 
             <div class="lv-row">
               <div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">30–38</div>
@@ -836,6 +888,7 @@
               <div class="lv-mob">—</div>
               <div class="lv-drops">—</div>
             </div>
+            <div class="lv-note">💬 正服要解，給加攻手套跟全屬+2的勳章。</div>
 
             <div class="lv-row">
               <div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">30–38</div>
@@ -847,15 +900,15 @@
                 <span class="drop-tag drop-scroll">裝飾品各屬性卷軸70%</span>
               </div>
             </div>
+            <div class="lv-note">💬 從墮落城市地鐵→墮落城市廣場的地鐵直接過去，西門町到不了。可以刷35等火砲有正浮動就可以先用著，依財力衝火砲攻擊100%。</div>
 
             <div class="lv-row">
               <div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">38–50</div>
               <div class="lv-map">7層8層A區域</div>
               <div class="lv-mob">最新曲CD (41)<br/>退流行的歌曲CD (42)</div>
-              <div class="lv-drops">
-                <span class="drop-tag drop-scroll">套服敏捷卷軸60%</span>
-              </div>
+              <div class="lv-drops"><span class="drop-tag drop-scroll">套服敏捷卷軸60%</span></div>
             </div>
+            <div class="lv-note">💬 不好打多平台怪的可以練到50~52再轉去月妙。</div>
 
             <div class="lv-row">
               <div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">50–55</div>
@@ -868,33 +921,31 @@
                 <span class="drop-tag drop-scroll">鞋子跳躍卷軸10%</span>
               </div>
             </div>
+            <div class="lv-note">💬 維多利亞島六條岔道爬繩上去，天空之城站台→到了直接轉去玩具城→走最右邊坐電梯下去。開始留意耳環/披風，有潛能的可以留下用放大鏡看看有沒有DEX+X，不管素質多爛先用著，之後換武器可以不用點敏捷。</div>
 
             <div class="lv-row">
               <div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">55–70</div>
               <div class="lv-map">狐狸山坡</div>
               <div class="lv-mob">三尾狐 (62)</div>
-              <div class="lv-drops">
-                <span class="drop-tag drop-equip">55等聖十字耳環</span>
-              </div>
+              <div class="lv-drops"><span class="drop-tag drop-equip">55等聖十字耳環</span></div>
             </div>
+            <div class="lv-note">💬 一樣留意耳環，60等可以去玩具城買60等火砲火焰發射器。</div>
 
             <div class="lv-row">
               <div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">65–75</div>
               <div class="lv-map">時間之路1</div>
               <div class="lv-mob">進化妖魔 (74)</div>
-              <div class="lv-drops">
-                <span class="drop-tag drop-scroll">手套攻擊卷軸60%</span>
-              </div>
+              <div class="lv-drops"><span class="drop-tag drop-scroll">手套攻擊卷軸60%</span></div>
             </div>
+            <div class="lv-note">💬 維多利亞島六條岔道爬繩上去，天空之城站台→到了直接轉去玩具城。</div>
 
             <div class="lv-row">
               <div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">70–78</div>
               <div class="lv-map">日落之路：薩赫勒地區1</div>
               <div class="lv-mob">沙漠地鼠 (77)</div>
-              <div class="lv-drops">
-                <span class="drop-tag drop-scroll">80等火砲萊諾</span>
-              </div>
+              <div class="lv-drops"><span class="drop-tag drop-scroll">80等火砲萊諾</span></div>
             </div>
+            <div class="lv-note">💬 天空之城飛到納希綠洲城從右邊數來第二個傳點走一張圖做鬆弛計程車可以到瑪迦提亞城。</div>
 
             <div class="lv-row">
               <div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">78–85</div>
@@ -902,15 +953,15 @@
               <div class="lv-mob">鍶礦穗太 (86)</div>
               <div class="lv-drops">—</div>
             </div>
+            <div class="lv-note">💬 這邊可以跳過，不直很好刷，地鼠打到80直接去C-2。</div>
 
             <div class="lv-row">
               <div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">80–105</div>
               <div class="lv-map">卡帕萊特研究所：研究所C-2區</div>
               <div class="lv-mob">洛伊德 (88)<br/>奈慾洛伊德 (89)</div>
-              <div class="lv-drops">
-                <span class="drop-tag drop-scroll">手套攻擊卷軸60%</span>
-              </div>
+              <div class="lv-drops"><span class="drop-tag drop-scroll">手套攻擊卷軸60%</span></div>
             </div>
+            <div class="lv-note">💬 C-1、C-2都可以刷，會推薦C-2是因為奈慾洛伊德掉的東西好一點。</div>
 
             <div class="lv-row">
               <div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">90–100</div>
@@ -918,6 +969,7 @@
               <div class="lv-mob">筆伊迪 (93)</div>
               <div class="lv-drops">—</div>
             </div>
+            <div class="lv-note">💬 隱藏地圖，在C-2有個平台按上可以進入，掉落沒多少種但有技能書、90手杖。</div>
 
             <div class="lv-row">
               <div class="lv-badge" style="background:rgba(249,115,22,0.15);color:#fdba74;">100–110</div>
@@ -925,25 +977,26 @@
               <div class="lv-mob">船員克魯 (103)<br/>大副凱丁 (105)</div>
               <div class="lv-drops">—</div>
             </div>
+            <div class="lv-note">💬 可以先去前幾張圍牆貼著的草藥田刷90等火砲阿貝羅過渡，雙長條平台很好練。</div>
 
             <div class="lv-row">
               <div class="lv-badge" style="background:rgba(249,115,22,0.15);color:#fdba74;">105–125</div>
               <div class="lv-map">彎曲的時間</div>
               <div class="lv-mob">多立百烈 (114)</div>
-              <div class="lv-drops">
-                <span class="drop-tag drop-scroll">100等火砲黃金火箭砲</span>
-              </div>
+              <div class="lv-drops"><span class="drop-tag drop-scroll">100等火砲黃金火箭砲</span></div>
             </div>
+            <div class="lv-note">💬 扭曲的時間3右上傳點進入。重砲好刷，不然就是去刷自己職業的100~110武器跟60%攻擊/魔攻卷軸，強化裝備。</div>
 
             <div class="lv-row">
               <div class="lv-badge" style="background:rgba(239,68,68,0.15);color:#fca5a5;">120–130</div>
               <div class="lv-map">龍森林入口</div>
               <div class="lv-mob">藍色雙角龍 (127)</div>
               <div class="lv-drops">
-                <span class="drop-tag drop-scroll">披風幸運運卷軸60%</span>
+                <span class="drop-tag drop-scroll">披風幸運卷軸60%</span>
                 <span class="drop-tag drop-skill">神聖小孩子咒語20</span>
               </div>
             </div>
+            <div class="lv-note">💬 場地有點大，需要一點位移技的熟練度。</div>
 
             <div class="lv-row" style="border-bottom:none;">
               <div class="lv-badge" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">130–150</div>
@@ -958,7 +1011,7 @@
         <!-- ======== 狂狼勇士 ======== -->
         <div class="job-panel" data-job="berserker">
           <div class="card overflow-hidden">
-            <div class="grid grid-cols-4 text-xs font-bold uppercase tracking-wider px-4 py-3 border-b border-[var(--border)]" style="background:rgba(249,115,22,0.1); color:var(--orange);">
+            <div class="text-xs font-bold uppercase tracking-wider px-4 py-3 border-b border-[var(--border)]" style="background:rgba(249,115,22,0.1); color:var(--orange); display:grid; grid-template-columns:90px 160px 180px 1fr; gap:0.75rem;">
               <div>等級</div>
               <div>地圖</div>
               <div>怪物</div>
@@ -1766,6 +1819,73 @@ const skillBookData = [
 ];
 
 /* ================================================================
+   卷軸掉落資料
+   格式：map = 地圖 / monster = 怪物 / drops = 掉落卷軸陣列
+   新增資料：{ map: "維多利亞島", monster: "怪物名", drops: ["卷軸A", "卷軸B"] },
+================================================================ */
+const scrollDropData = [
+  /* ===== 墮落城市地鐵 ===== */
+  { map: "維多利亞島", monster: "蝙蝠", drops: ["頭盔智力卷軸100%", "手套敏捷卷軸100%", "雙手劍命中卷軸100%", "單手斧命中卷軸60%", "指虎攻擊卷軸60%", "寵物跳躍力卷軸60%", "披風魔防卷軸10%"] },
+  { map: "維多利亞島", monster: "小幽靈", drops: ["頭盔敏捷卷軸100%", "盾牌力量卷軸100%", "頭盔生命卷軸10%", "寵物速度卷軸10%"] },
+  { map: "維多利亞島", monster: "大幽靈", drops: ["弩攻擊卷軸100%", "槍命中卷軸100%", "頭盔智力卷軸10%"] },
+  { map: "維多利亞島", monster: "冥界幽靈", drops: ["雙手斧命中卷軸100%"] },
+  /* ===== 沼地 ===== */
+  { map: "維多利亞島", monster: "青蛇", drops: ["褲裙跳躍卷軸100%", "褲裙敏捷卷軸100%", "寵物跳躍力卷軸100%", "盾牌防禦卷軸10%", "混沌卷軸60%"] },
+  { map: "維多利亞島", monster: "鱷魚", drops: ["耳環智力卷軸100%", "單手棍命中卷軸100%", "槍命中卷軸100%", "弩攻擊卷軸100%", "披風魔防卷軸10%", "指虎攻擊卷軸10%"] },
+  { map: "維多利亞島", monster: "黑鱷魚", drops: ["頭盔敏捷卷軸100%", "褲裙防禦卷軸100%", "矛命中卷軸100%", "弓攻擊卷軸100%", "單手棍命中卷軸60%", "手杖攻擊力卷軸60%", "雙手棍命中卷軸60%", "指虎攻擊卷軸60%"] },
+  { map: "維多利亞島", monster: "沼澤爛泥怪物", drops: ["褲裙敏捷卷軸100%", "盾牌防禦卷軸100%", "短劍攻擊卷軸100%", "寵物跳躍力卷軸100%"] },
+  { map: "維多利亞島", monster: "三眼章魚", drops: ["單手劍攻擊卷軸10%"] },
+  { map: "維多利亞島", monster: "菇菇寶貝", drops: ["鞋子跳躍卷軸10%"] },
+  { map: "維多利亞島", monster: "菇菇仔", drops: ["披風生命卷軸60%"] },
+  { map: "維多利亞島", monster: "紅寶", drops: ["套服敏捷卷軸10%", "披風魔力卷軸100%"] },
+  { map: "維多利亞島", monster: "藍寶", drops: ["披風生命卷軸60%", "頭盔防禦卷軸100%"] },
+  { map: "維多利亞島", monster: "嫩寶", drops: ["披風魔防卷軸10%"] },
+  { map: "維多利亞島", monster: "憤世嫉俗的 菇菇寶貝", drops: ["鞋子跳躍卷軸10%"] },
+  { map: "維多利亞島", monster: "肥肥", drops: ["鞋子敏捷卷軸10%", "披風幸運卷軸100%"] },
+  { map: "維多利亞島", monster: "木妖", drops: ["上衣防禦卷軸10%", "披風生命卷軸10%"] },
+  { map: "維多利亞島", monster: "綠水靈", drops: ["褲裙防禦卷軸10%", "披風敏捷卷軸100%"] },
+  { map: "維多利亞島", monster: "綠菇菇", drops: ["單手斧攻擊卷軸10%", "寵物速度卷軸100%"] },
+  { map: "維多利亞島", monster: "刺菇菇", drops: ["褲裙防禦卷軸100%", "單手棍命中卷軸10%", "雙手斧攻擊卷軸10%", "槍攻擊卷軸100%"] },
+  { map: "維多利亞島", monster: "哭泣的藍菇菇", drops: ["盾牌防禦卷軸100%", "寵物速度卷軸100%", "雙手劍攻擊卷軸10%"] },
+  { map: "維多利亞島", monster: "藍菇菇", drops: ["雙手劍攻擊卷軸10%", "頭盔生命卷軸100%"] },
+  { map: "維多利亞島", monster: "殭屍菇菇", drops: ["拳套攻擊卷軸100%", "槍攻擊卷軸10%", "火炮攻擊力卷軸10%", "頭盔生命卷軸100%", "混沌卷軸60%"] },
+  { map: "維多利亞島", monster: "煩躁的殭屍菇菇", drops: ["套服敏捷卷軸100%", "套服力量卷軸100%", "火炮攻擊力卷軸10%", "槍攻擊卷軸10%", "混沌卷軸60%"] },
+  { map: "維多利亞島", monster: "石巨人", drops: ["上衣防禦卷軸100%", "弓攻擊卷軸100%", "弓攻擊卷軸60%", "弩攻擊卷軸60%"] },
+  { map: "維多利亞島", monster: "黑曜石巨人", drops: ["套服智力卷軸100%", "矛攻擊卷軸100%", "寵物速度100%", "上衣幸運卷軸60%", "褲裙跳躍卷軸60%", "雙手棍攻擊卷軸60%", "指虎攻擊卷軸10%"] },
+  { map: "維多利亞島", monster: "混種石巨人", drops: ["耳環幸運卷軸100%", "單手劍攻擊卷軸100%", "手套攻擊卷軸60%", "手套生命卷軸60%", "盾牌防禦卷軸60%", "盾牌生命卷軸10%"] },
+  { map: "維多利亞島", monster: "黑木妖", drops: ["手套敏捷卷軸10%"] },
+  { map: "維多利亞島", monster: "斧木妖", drops: ["套服智力卷軸100%", "寵物跳躍力卷軸100%", "單手棍攻擊卷軸10%"] },
+  { map: "維多利亞島", monster: "黑斧木妖", drops: ["套服防禦卷軸100%", "雙手棍命中卷軸100%", "雙手劍命中卷軸60%", "雙手棍攻擊卷軸10%"] },
+  { map: "維多利亞島", monster: "奸笑的發芽木妖", drops: ["矛攻擊卷軸100%", "套服敏捷卷軸60%", "手套敏捷卷軸60%", "寵物速度卷軸60%", "指虎攻擊卷軸10%"] },
+  { map: "維多利亞島", monster: "發芽木妖", drops: ["單手斧攻擊卷軸100%", "套服敏捷卷軸60%", "手套敏捷卷軸60%", "寵物速度卷軸60%", "指虎攻擊卷軸10%"] },
+  { map: "維多利亞島", monster: "木面怪人", drops: ["套服力量卷軸100%", "指虎命中卷軸100%", "盾牌防禦卷軸60%", "披風智力卷軸60%", "槍命中卷軸60%"] },
+  { map: "維多利亞島", monster: "石面怪人", drops: ["雙手斧命中卷軸100%", "雙手棍命中卷軸100%", "長杖魔力卷軸60%", "耳環智力卷軸60%", "槍攻擊卷軸60%", "白衣卷軸1%"] },
+  { map: "維多利亞島", monster: "骷髏犬", drops: ["盾牌力量卷軸100%", "套服力量卷軸60%", "槍攻擊卷軸60%", "雙手劍命中卷軸60%", "手杖攻擊卷軸60%", "手套生命卷軸60%", "鞋子跳躍卷軸10%"] },
+  { map: "維多利亞島", monster: "木乃伊犬", drops: ["上衣幸運卷軸60%", "雙手棍攻擊卷軸60%", "上衣力量卷軸10%", "披風力量卷軸10%", "白衣卷軸1%"] },
+  { map: "維多利亞島", monster: "骷髏士兵", drops: ["單手棍命中卷軸100%", "短杖魔力卷軸60%", "長杖魔力卷軸60%", "槍命中卷軸60%", "拳套攻擊卷軸60%"] },
+  { map: "維多利亞島", monster: "骷髏士官", drops: ["上衣力量卷軸100%", "上衣幸運卷軸100%", "手套攻擊卷軸60%", "雙刀攻擊卷軸60%", "耳環生命卷軸10%", "長杖魔力卷軸10%", "盾牌生命卷軸10%"] },
+  { map: "維多利亞島", monster: "骷髏指揮官", drops: ["耳環智力卷軸60%", "上衣力量卷軸60%", "套服幸運卷軸60%", "雙刀攻擊卷軸60%"] },
+  { map: "維多利亞島", monster: "鋼之肥肥", drops: ["單手棍攻擊卷軸100%", "頭盔敏捷卷軸100%", "上衣防禦卷軸100%"] },
+  { map: "維多利亞島", monster: "鋼之黑肥肥", drops: ["頭盔防禦卷軸100%", "盾牌幸運卷軸100%", "單手斧攻擊卷軸100%", "雙手劍攻擊卷軸60%"] },
+  { map: "維多利亞島", monster: "火肥肥", drops: ["套服幸運卷軸100%", "雙手斧命中卷軸100%"] },
+  { map: "維多利亞島", monster: "藍水靈", drops: ["披風智力卷軸100%", "披風防禦卷軸60%", "寵物速度卷軸60%", "短劍攻擊卷軸10%"] },
+  { map: "維多利亞島", monster: "蝴蝶精", drops: ["鞋子敏捷卷軸100%"] },
+  { map: "維多利亞島", monster: "皇家蝴蝶精", drops: ["上衣防禦卷軸100%", "盾牌力量卷軸100%"] },
+  { map: "維多利亞島", monster: "猴子", drops: ["頭盔生命卷軸100%", "上衣幸運卷軸100%", "槍攻擊卷軸100%", "拳套攻擊卷軸100%", "披風魔力卷軸60%", "矛命中卷軸10%"] },
+  { map: "維多利亞島", monster: "天使猴", drops: ["套服防禦卷軸100%", "褲裙防禦卷軸100%", "鞋子敏捷卷軸100%", "槍命中卷軸100%", "槍命中卷軸60%"] },
+  { map: "維多利亞島", monster: "巫婆", drops: ["上衣防禦卷軸100%", "上衣幸運卷軸100%"] },
+  { map: "維多利亞島", monster: "火獨眼獸", drops: ["套服幸運卷軸100%", "手套生命卷軸100%", "雙手劍命中卷軸100%", "矛攻擊卷軸10%"] },
+  { map: "維多利亞島", monster: "風獨眼獸", drops: ["火槍攻擊卷軸10%", "弓攻擊卷軸10%"] },
+  { map: "維多利亞島", monster: "冰獨眼獸", drops: ["單手劍命中卷軸100%", "耳環生命卷軸100%", "矛命中卷軸60%", "頭盔防禦卷軸60%", "混沌卷軸60%"] },
+  { map: "維多利亞島", monster: "黑獨眼獸", drops: ["雙手棍命中卷軸100%", "盾牌力量卷軸100%"] },
+  { map: "維多利亞島", monster: "緞帶肥肥", drops: ["盾牌防禦卷軸10%"] },
+  { map: "維多利亞島", monster: "藍色緞帶肥肥", drops: ["單手棍攻擊卷軸100%", "盾牌防禦卷軸60%"] },
+  { map: "維多利亞島", monster: "紅螃蟹", drops: ["上衣幸運卷軸100%", "頭盔智力卷軸100%", "短劍攻擊卷軸60%", "指虎攻擊卷軸10%", "寵物跳躍力卷軸10%"] },
+  { map: "維多利亞島", monster: "青螃蟹", drops: ["單手棍攻擊卷軸60%", "上衣幸運卷軸10%"] },
+  { map: "維多利亞島", monster: "烏龜", drops: ["盾牌幸運卷軸100%", "寵物速度卷軸60%", "披風力量卷軸60%", "手套攻擊卷軸10%"] },
+];
+
+/* ================================================================
    Boss 資料
    - boss      : Boss 名稱
    - dailyLimit: 每日可挑戰次數
@@ -1774,19 +1894,21 @@ const skillBookData = [
    - recommend : 建議等級
 ================================================================ */
 const bossesData = [
-  { boss: "拉圖斯",   dailyLimit: 3,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
-  { boss: "東京未來東京王",   dailyLimit: 3,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
-  { boss: "天皇蟾蜍",   dailyLimit: 3,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
-  { boss: "黑道長老",   dailyLimit: 3,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
-  { boss: "困難魔王巴洛谷",     dailyLimit: 3,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
-  { boss: "普通炎魔",       dailyLimit: 3,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
-  { boss: "混沌炎魔",     dailyLimit: 2,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
-  { boss: "普通暗黑龍王", dailyLimit: 3,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
-  { boss: "混沌暗黑龍王",   dailyLimit: 2,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
-  { boss: "普通凡雷恩",   dailyLimit: 1,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
-  { boss: "普通西格諾斯",   dailyLimit: 1,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
-  { boss: "普通阿卡伊農",   dailyLimit: 2,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" },
-  { boss: "普通森蘭丸",   dailyLimit: 1,  reset: "每週一 00:00", difficulty: 1, recommend: "Lv 00+" } 
+  { boss: "普通魔王巴洛谷",  charLimit: 3,  accountLimit: 12, reset: "每週一 00:00", difficulty: 1 },
+  { boss: "困難魔王巴洛谷",  charLimit: 3,  accountLimit: 12, reset: "每週一 00:00", difficulty: 1 },
+  { boss: "普通炎魔",        charLimit: 3,  accountLimit: 9,  reset: "每週一 00:00", difficulty: 1 },
+  { boss: "混沌炎魔",        charLimit: 2,  accountLimit: 6,  reset: "每週一 00:00", difficulty: 1 },
+  { boss: "普通暗黑龍王",    charLimit: 3,  accountLimit: 9,  reset: "每週一 00:00", difficulty: 1 },
+  { boss: "混沌暗黑龍王",    charLimit: 2,  accountLimit: 6,  reset: "每週一 00:00", difficulty: 1 },
+  { boss: "普通皮卡丘",      charLimit: 2,  accountLimit: 6,  reset: "每週一 00:00", difficulty: 1 },
+  { boss: "普通凡雷恩",      charLimit: 1,  accountLimit: 3,  reset: "每週一 00:00", difficulty: 1 },
+  { boss: "普通西格諾斯",    charLimit: 1,  accountLimit: 3,  reset: "每週一 00:00", difficulty: 1 },
+  { boss: "普通阿卡伊農",    charLimit: 2,  accountLimit: 6,  reset: "每週一 00:00", difficulty: 1 },
+  { boss: "普通森蘭丸",      charLimit: 1,  accountLimit: 3,  reset: "每週一 00:00", difficulty: 1 },
+  { boss: "拉圖斯",          charLimit: 3,  accountLimit: 9,  reset: "每週一 00:00", difficulty: 1 },
+  { boss: "東京未來東京王",  charLimit: 1,  accountLimit: 4,  reset: "每週一 00:00", difficulty: 1 },
+  { boss: "天皇蟾蜍",        charLimit: 3,  accountLimit: 9,  reset: "每週一 00:00", difficulty: 1 },
+  { boss: "黑道長老",        charLimit: 3,  accountLimit: 9,  reset: "每週一 00:00", difficulty: 1 },
 ];
 
 /* ================================================================
@@ -1830,13 +1952,37 @@ function getBadge(type) {
 }
 
 /* ================================================================
-   渲染：地圖掉落表格
+   地圖掉落：靜態表格搜尋（合併儲存格版）
+================================================================ */
+function filterDropsTable(value) {
+  const q = value.toLowerCase().trim();
+  const rows = document.querySelectorAll('#dropsStaticBody .drop-row');
+  const empty = document.getElementById('dropsEmpty');
+  let visible = 0;
+
+  rows.forEach(row => {
+    const map     = (row.dataset.map     || '').toLowerCase();
+    const monster = (row.dataset.monster || '').toLowerCase();
+    const drops   = (row.dataset.drops   || '').toLowerCase();
+    const match   = !q || map.includes(q) || monster.includes(q) || drops.includes(q);
+    row.classList.toggle('hidden-row', !match);
+    if (match) visible++;
+  });
+
+  empty.classList.toggle('hidden', visible > 0);
+}
+
+/* ================================================================
+   渲染：地圖掉落表格（舊版，保留供相容）
 ================================================================ */
 let dropsAllRows = flattenDrops();
 
 function renderDrops() {
-  const search = document.getElementById('dropsSearch').value.toLowerCase();
-  const typeFilter = document.getElementById('dropsTypeFilter').value;
+  const searchEl = document.getElementById('dropsSearch');
+  const filterEl = document.getElementById('dropsTypeFilter');
+  if (!searchEl || !filterEl) return;
+  const search = searchEl.value.toLowerCase();
+  const typeFilter = filterEl.value;
   const { col, asc } = sortState.drops;
 
   let rows = dropsAllRows.filter(r => {
@@ -1954,50 +2100,89 @@ function sortSkills(col) {
 }
 
 /* ================================================================
-   渲染：裝備頁
+   卷軸掉落：合併儲存格渲染（相同地圖合併）
 ================================================================ */
-let equipsAllRows = dropsAllRows.filter(r => r.type === 'equip');
 
-function renderEquips() {
-  const search = document.getElementById('equipsSearch').value.toLowerCase();
-  const { col, asc } = sortState.equips;
+/* 依卷軸名稱決定顏色 */
+function getScrollTag(name) {
+  let style = '';
+  if (name.includes('混沌')) {
+    style = 'background:rgba(168,85,247,0.2);color:#d8b4fe;border-color:rgba(168,85,247,0.5);';
+  } else if (name.includes('10%') || name.includes('1%')) {
+    style = 'background:rgba(234,179,8,0.15);color:#fde047;border-color:rgba(234,179,8,0.5);';
+  } else if (name.includes('60%')) {
+    style = 'background:rgba(249,115,22,0.2);color:#fb923c;border-color:rgba(249,115,22,0.5);';
+  } else {
+    // 100%
+    style = 'background:rgba(100,116,139,0.2);color:#94a3b8;border-color:rgba(100,116,139,0.4);';
+  }
+  return `<span class="drop-tag" style="${style}">${name}</span>`;
+}
+function renderScrollTable() {
+  const tbody = document.getElementById('scrollBody');
+  if (!tbody) return;
 
-  let rows = equipsAllRows.filter(r => {
-    return !search ||
-      r.dropName.toLowerCase().includes(search) ||
-      r.mapName.toLowerCase().includes(search) ||
-      r.monster.toLowerCase().includes(search);
+  // 依地圖分組
+  const groups = {};
+  scrollDropData.forEach(entry => {
+    if (!groups[entry.map]) groups[entry.map] = [];
+    groups[entry.map].push(entry);
   });
 
-  if (col) {
-    rows.sort((a, b) => {
-      const va = (col === 'name' ? a.dropName : a[col]) || '';
-      const vb = (col === 'name' ? b.dropName : b[col]) || '';
-      return asc ? va.localeCompare(vb, 'zh-TW') : vb.localeCompare(va, 'zh-TW');
+  let html = '';
+  Object.entries(groups).forEach(([mapName, entries]) => {
+    entries.forEach((entry, idx) => {
+      const drops = entry.drops.map(d => getScrollTag(d)).join(' ');
+
+      if (idx === 0) {
+        html += `<tr class="scroll-row" data-map="${mapName}" data-monster="${entry.monster}" data-drops="${entry.drops.join(' ')}">
+          <td rowspan="${entries.length}" class="map-cell" style="vertical-align:top;">${mapName}</td>
+          <td class="text-[var(--green)] whitespace-nowrap">${entry.monster}</td>
+          <td style="padding:0.5rem 1rem;">${drops}</td>
+        </tr>`;
+      } else {
+        html += `<tr class="scroll-row" data-map="${mapName}" data-monster="${entry.monster}" data-drops="${entry.drops.join(' ')}">
+          <td class="text-[var(--green)] whitespace-nowrap">${entry.monster}</td>
+          <td style="padding:0.5rem 1rem;">${drops}</td>
+        </tr>`;
+      }
     });
+  });
+  tbody.innerHTML = html;
+}
+
+function filterScrollTable(value) {
+  const q = value.toLowerCase().trim();
+  const empty = document.getElementById('equipsEmpty');
+
+  // 搜尋時改用單列模式（不用 rowspan）
+  const tbody = document.getElementById('scrollBody');
+  if (!q) {
+    renderScrollTable();
+    empty.classList.add('hidden');
+    return;
   }
 
-  const tbody = document.getElementById('equipsBody');
-  const empty = document.getElementById('equipsEmpty');
-  if (rows.length === 0) {
+  const matched = scrollDropData.filter(entry =>
+    entry.map.toLowerCase().includes(q) ||
+    entry.monster.toLowerCase().includes(q) ||
+    entry.drops.some(d => d.toLowerCase().includes(q))
+  );
+
+  if (matched.length === 0) {
     tbody.innerHTML = '';
     empty.classList.remove('hidden');
     return;
   }
   empty.classList.add('hidden');
-  tbody.innerHTML = rows.map(r => `
-    <tr>
-      <td class="font-semibold text-[#d8b4fe] whitespace-nowrap">${r.dropName}</td>
-      <td class="text-[var(--text-main)] whitespace-nowrap">${r.mapName}</td>
-      <td class="text-[var(--green)] whitespace-nowrap">${r.monster}</td>
-    </tr>
-  `).join('');
-}
-
-function sortEquips(col) {
-  if (sortState.equips.col === col) sortState.equips.asc = !sortState.equips.asc;
-  else { sortState.equips.col = col; sortState.equips.asc = true; }
-  renderEquips();
+  tbody.innerHTML = matched.map(entry => {
+    const drops = entry.drops.map(d => getScrollTag(d)).join(' ');
+    return `<tr>
+      <td class="map-cell">${entry.map}</td>
+      <td class="text-[var(--green)] whitespace-nowrap">${entry.monster}</td>
+      <td style="padding:0.5rem 1rem;">${drops}</td>
+    </tr>`;
+  }).join('');
 }
 
 /* ================================================================
@@ -2035,16 +2220,16 @@ function renderBoss() {
       </div>
       <div class="space-y-2 text-sm">
         <div class="flex items-center gap-2">
-          <span class="text-[var(--text-muted)] w-20 shrink-0">每日次數</span>
-          <span class="font-semibold text-[var(--orange)]">${b.dailyLimit} 次</span>
+          <span class="text-[var(--text-muted)] w-20 shrink-0">角色場次</span>
+          <span class="font-semibold text-[var(--orange)]">${b.charLimit} 場</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-[var(--text-muted)] w-20 shrink-0">帳號場次</span>
+          <span class="font-semibold text-[var(--blue)]">${b.accountLimit} 場</span>
         </div>
         <div class="flex items-center gap-2">
           <span class="text-[var(--text-muted)] w-20 shrink-0">重置時間</span>
           <span class="text-[var(--green)]">${b.reset}</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="text-[var(--text-muted)] w-20 shrink-0">建議等級</span>
-          <span class="text-[var(--text-dim)]">${b.recommend}</span>
         </div>
       </div>
     </div>
@@ -2052,41 +2237,7 @@ function renderBoss() {
 }
 
 
-/* ================================================================
-   首頁快速搜尋
-================================================================ */
-function quickSearch(value) {
-  const container = document.getElementById('quickResults');
-  const tbody = document.getElementById('quickResultBody');
-
-  if (!value.trim()) {
-    container.classList.add('hidden');
-    return;
-  }
-
-  const q = value.toLowerCase();
-  const rows = dropsAllRows.filter(r =>
-    r.mapName.toLowerCase().includes(q) ||
-    r.monster.toLowerCase().includes(q) ||
-    r.dropName.toLowerCase().includes(q)
-  );
-
-  if (rows.length === 0) {
-    container.classList.remove('hidden');
-    tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-[var(--text-muted)]">😕 找不到符合資料</td></tr>`;
-    return;
-  }
-
-  container.classList.remove('hidden');
-  tbody.innerHTML = rows.slice(0, 20).map(r => `
-    <tr>
-      <td class="text-[var(--text-main)] font-medium whitespace-nowrap">${r.mapName}</td>
-      <td class="text-[var(--green)] whitespace-nowrap">${r.monster}</td>
-      <td class="font-semibold whitespace-nowrap">${r.dropName}</td>
-      <td>${getBadge(r.type)}</td>
-    </tr>
-  `).join('');
-}
+function quickSearch(v) {}
 
 /* ================================================================
    練等攻略：職業分頁切換
@@ -2106,31 +2257,25 @@ function switchJob(btn) {
    分頁切換
 ================================================================ */
 function switchTab(tabName) {
-  // 隱藏所有分頁內容
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-  // 移除所有 nav active 狀態
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
-  // 顯示目標分頁
   document.getElementById('tab-' + tabName).classList.add('active');
-  document.getElementById('nav-' + tabName).classList.add('active');
+  const nav = document.getElementById('nav-' + tabName);
+  if (nav) nav.classList.add('active');
 
-  // 手機上切換後關閉 sidebar
   if (window.innerWidth < 768) closeSidebar();
-
-  // 重設全站搜尋框
-  document.getElementById('globalSearch').value = '';
 }
 
 /* ================================================================
    手機 sidebar 開關
 ================================================================ */
 function openSidebar() {
-  document.getElementById('sidebar').classList.remove('-translate-x-full');
+  document.getElementById('sidebar').classList.add('open');
   document.getElementById('overlay').classList.add('show');
 }
 function closeSidebar() {
-  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebar').classList.remove('open');
   document.getElementById('overlay').classList.remove('show');
 }
 
@@ -2138,9 +2283,9 @@ function closeSidebar() {
    初始化：頁面載入時渲染所有資料
 ================================================================ */
 document.addEventListener('DOMContentLoaded', () => {
+  renderScrollTable();
   renderDrops();
   renderSkills();
-  renderEquips();
   renderBoss();
   // 預設顯示第一個職業面板
   const firstPanel = document.querySelector('.job-panel');
