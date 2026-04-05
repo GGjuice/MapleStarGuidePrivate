@@ -742,6 +742,7 @@
           <button class="job-btn active" data-job="nightlord" onclick="switchJob(this)">🗡️ 暗影神偷</button>
           <button class="job-btn" data-job="cannoneer" onclick="switchJob(this)">💣 重砲指揮官</button>
           <button class="job-btn" data-job="berserker" onclick="switchJob(this)">⚔️ 狂狼勇士</button>
+          <button class="job-btn" data-job="bishop" onclick="switchJob(this)">✨ 主教</button>
           <!-- TODO: 新增其他職業按鈕，例如：
           <button class="job-btn" data-job="bowmaster" onclick="switchJob(this)">🏹 弓箭手</button>
           <button class="job-btn" data-job="mage" onclick="switchJob(this)">🔮 法師</button>
@@ -1227,6 +1228,209 @@
 
           </div><!-- /武器推薦 -->
         </div><!-- /job-panel berserker -->
+
+        <!-- ======== 主教 ======== -->
+        <div class="job-panel" data-job="bishop">
+          <!-- ===== 練等攻略 ===== -->
+          <div class="card overflow-hidden mb-4">
+            <div class="text-xs font-bold uppercase tracking-wider px-4 py-3 border-b border-[var(--border)]" style="background:rgba(249,115,22,0.1); color:var(--orange); display:grid; grid-template-columns:90px 160px 180px 1fr; gap:0.75rem;">
+              <div>等級</div>
+              <div>地圖</div>
+              <div>怪物</div>
+              <div>掉落物</div>
+            </div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">8–36</div>
+              <div class="lv-map">新手村 → 林車長組隊任務</div>
+              <div class="lv-mob">猴子 → 林車長任務怪</div>
+              <div class="lv-drops">—</div>
+            </div>
+            <div class="lv-note">💬 找漢斯接一系列職業任務到二轉，全部解完約28等，打猴子到Lv.30，二轉後直接前往林車長組隊任務，打完直接36等。</div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">30–50</div>
+              <div class="lv-map">軍營<br/><span style="font-size:0.75rem;color:var(--text-muted);">遺跡發掘地</span></div>
+              <div class="lv-mob">骷髏指揮官<br/>骷髏士兵</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-scroll">手攻60%</span>
+                <span class="drop-tag drop-scroll">短/長杖魔攻60%</span>
+              </div>
+            </div>
+            <div class="lv-note">💬 拒絕沒寶的CD怪！目標骷髏指揮官（手攻60%）、骷髏士兵（短/長杖魔攻60%）。</div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">50–60</div>
+              <div class="lv-map">童話村</div>
+              <div class="lv-mob">三尾狐</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-skill">天使祝福製作法</span>
+              </div>
+            </div>
+            <div class="lv-note">💬 弱聖屬性超好打，解完十字獵人直衝。BOSS掉落天使祝福製作法。</div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">60–70</div>
+              <div class="lv-map">玩具城 / 水世界</div>
+              <div class="lv-mob">妖魔 / 小海豹</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-equip">普及型女機器人製作法</span>
+              </div>
+            </div>
+            <div class="lv-note">💬 首推妖魔（掉落普及型女機器人製作法），若天祝製作法市價高時備選小海豹。</div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">70–80</div>
+              <div class="lv-map">玩具城</div>
+              <div class="lv-mob">妖魔隊長</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-scroll">手攻60%</span>
+              </div>
+            </div>
+            <div class="lv-note">💬 地圖神好跑，掉落手攻60%直接薛爛物理職！</div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">80–120</div>
+              <div class="lv-map">瑪迦提亞城<br/><span style="font-size:0.75rem;color:var(--text-muted);">C-2區</span></div>
+              <div class="lv-mob">洛伊德<br/>奈慾洛伊德</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-scroll">手攻60%</span>
+                <span class="drop-tag drop-equip">普及型機器人製作法(男)</span>
+              </div>
+            </div>
+            <div class="lv-note">💬 警告：閒人勿進完全不推薦，沒寶的圖主教不屑打。</div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(249,115,22,0.15);color:#fdba74;">120–130</div>
+              <div class="lv-map">—</div>
+              <div class="lv-mob">怨靈發條熊隊長</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-skill">天使祝福製作法</span>
+                <span class="drop-tag drop-equip">智慧的貴族護肩製作法</span>
+              </div>
+            </div>
+            <div class="lv-note">💬 地圖好跑，天使祝福製作法還有智慧的貴族護肩製作法，發大財。</div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(239,68,68,0.15);color:#fca5a5;">130–150</div>
+              <div class="lv-map">隱藏圖<br/><span style="font-size:0.75rem;color:var(--text-muted);">寒霜</span></div>
+              <div class="lv-mob">三色翼龍</div>
+              <div class="lv-drops">—</div>
+            </div>
+            <div class="lv-note">💬 貪婪主教最痛苦、最難熬的時刻，沒有錢賺。沒關係，蹲的越低跳得越高，只能靠賽打方塊。</div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(239,68,68,0.15);color:#fca5a5;">150–165</div>
+              <div class="lv-map">悔恨之路2</div>
+              <div class="lv-mob">—</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-equip">無表情面具</span>
+              </div>
+            </div>
+            <div class="lv-note">💬 又又又復活啦，掉落無表情面具發大財啦！（無表情的面具是皮卡啾入場道具）</div>
+
+            <div class="lv-row">
+              <div class="lv-badge" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">165–200</div>
+              <div class="lv-map">未來之門練武場<br/>昭和村後街2</div>
+              <div class="lv-mob">—</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-equip">夢的雕刻</span>
+                <span class="drop-tag drop-equip">方塊/碎片</span>
+              </div>
+            </div>
+            <div class="lv-note">💬 練武場主要掉落夢的雕刻。昭和村後街2怪多又生的快，掉落方塊跟碎片機率較高。</div>
+
+            <div class="lv-row" style="border-bottom:none;">
+              <div class="lv-badge" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">175–200</div>
+              <div class="lv-map">火貍金融<br/><span style="font-size:0.75rem;color:var(--text-muted);">團練</span></div>
+              <div class="lv-mob">89妹</div>
+              <div class="lv-drops">
+                <span class="drop-tag drop-equip">天價魔標</span>
+                <span class="drop-tag drop-scroll">30攻藥水</span>
+              </div>
+            </div>
+
+          </div><!-- /練等攻略 -->
+
+          <!-- ===== 技能配點 ===== -->
+          <div class="card overflow-hidden">
+            <div class="px-4 py-3 border-b border-[var(--border)]" style="background:rgba(59,130,246,0.1); color:var(--blue); font-weight:700; font-size:0.875rem;">
+              🔮 技能配點建議
+            </div>
+
+            <!-- 1轉 -->
+            <div style="padding:1rem 1.25rem; border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">1轉 法師</span>
+              </div>
+              <div style="color:var(--text-dim);font-size:0.85rem;line-height:1.8;">
+                <span style="color:var(--orange);font-weight:600;">配點順序：</span>
+                魔力爪 20 → MP增加量 10 → 魔力護甲 15 → 魔心防禦 15 → 魔靈彈 7
+              </div>
+              <div class="lv-note" style="margin:0.5rem 0 0;">💬 魔力爪是群體攻擊技，建議點滿會比較好練。</div>
+            </div>
+
+            <!-- 2轉 -->
+            <div style="padding:1rem 1.25rem; border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">2轉 僧侶</span>
+              </div>
+              <div style="color:var(--text-dim);font-size:0.85rem;line-height:1.8;">
+                <span style="color:var(--orange);font-weight:600;">配點順序：</span>
+                神聖之箭 1 → 群體治癒 1 → 瞬間移動 1 → 咒語精通 20 → 智慧昇華 10 → 瞬間移動 20 → 祝福 15 → 群體治癒 20 → 魔力吸收 20 → 神聖之光 15
+              </div>
+              <div class="lv-note" style="margin:0.5rem 0 0;">💬 群體治癒點滿剛好60等，開始無腦刷「妖魔」。一轉點1聖箭是為了打「林車長組隊任務」。</div>
+            </div>
+
+            <!-- 3轉 -->
+            <div style="padding:1rem 1.25rem; border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">3轉 祭司</span>
+              </div>
+              <div style="color:var(--text-dim);font-size:0.85rem;line-height:1.8;">
+                <span style="color:var(--orange);font-weight:600;">配點順序：</span>
+                聖光 1 → 極速詠唱 1 → 聖光 30 → 神聖集中術 20 → 淨化 3 → 神聖祈禱 30 → 瞬移精通 10 → 其餘自由分配（除幻化術）
+              </div>
+              <div class="lv-note" style="margin:0.5rem 0 0;">💬 祈禱點滿僅20%經驗加成，建議先補滿主攻技與被動提升刷怪（薛錢）效率。</div>
+            </div>
+
+            <!-- 4轉 -->
+            <div style="padding:1rem 1.25rem; border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">4轉 主教</span>
+                <span style="font-size:0.75rem;color:var(--text-muted);">核心成型</span>
+              </div>
+              <div style="color:var(--text-dim);font-size:0.85rem;line-height:1.8;">
+                <span style="color:var(--orange);font-weight:600;">配點順序：</span>
+                天使之箭 1（需母書）→ 大師魔法 1 → 進階祝福 30 → 大師魔法 10 → 秘法狙擊 30 → 楓葉祝福 30
+              </div>
+            </div>
+
+            <div style="padding:1rem 1.25rem; border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="lv-badge" style="background:rgba(249,115,22,0.15);color:#fdba74;">4轉 主教</span>
+                <span style="font-size:0.75rem;color:var(--text-muted);">打王門檻</span>
+              </div>
+              <div style="color:var(--text-dim);font-size:0.85rem;line-height:1.8;">
+                楓葉淨化 1 → 復甦之光 10
+                <span style="color:var(--green);font-size:0.75rem;margin-left:0.5rem;">✓ 至此已具備各大Boss拓荒資格</span>
+              </div>
+            </div>
+
+            <div style="padding:1rem 1.25rem;">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="lv-badge" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">4轉 主教</span>
+                <span style="font-size:0.75rem;color:var(--text-muted);">後續補完</span>
+              </div>
+              <div style="color:var(--text-dim);font-size:0.85rem;line-height:1.8;">
+                魔力無限 30 → 天使之箭 30 → 楓葉淨化 10 → 巴哈姆特 30 → 天怒 30 → 核爆術 30
+              </div>
+              <div class="lv-note" style="margin:0.5rem 0 0;">💬 貪婪主教先點滿輔助技能蹭團比較重要。</div>
+            </div>
+
+          </div><!-- /技能配點 -->
+
+        </div><!-- /job-panel bishop -->
 
     </div><!-- /p-4 md:p-6 -->
   </main>
@@ -1966,6 +2170,28 @@ const scrollDropData = [
   { map: "沙漠", monster: "燒杯怪 (LV92)", drops: ["盾牌力量卷軸10%", "混沌卷軸60%", "寵物跳躍力卷軸60%", "矛命中卷軸60%", "槍命中卷軸60%"] },
   { map: "沙漠", monster: "鋼鐵穆太 (LV83)", drops: ["長杖魔力卷軸60%", "披風敏捷卷軸60%", "雙管槍攻擊力卷軸60%"] },
 
+  /* ===== 武陵桃園 ===== */
+  { map: "武陵桃園", monster: "松鼠 (Lv.76)", drops: ["頭盔防禦卷軸60%", "弩攻擊卷軸60%"] },
+  { map: "武陵桃園", monster: "豪豬 (Lv.77)", drops: ["上衣生命卷軸100%", "盾牌防禦卷軸60%", "弓攻擊卷軸60%", "白衣卷軸1%"] },
+  { map: "武陵桃園", monster: "黑豪豬 (Lv.79)", drops: ["手套生命卷軸100%", "單手斧命中卷軸10%", "弓攻擊卷軸60%", "寵物速度卷軸60%", "寵物跳躍力卷軸60%"] },
+  { map: "武陵桃園", monster: "毒花蛇 (Lv.81)", drops: ["鞋子跳躍卷軸10%", "短劍攻擊卷軸60%", "矛命中卷軸100%", "弓攻擊卷軸60%"] },
+  { map: "武陵桃園", monster: "紅花蛇 (Lv.81)", drops: ["套服防禦卷軸60%", "雙手劍攻擊卷軸10%", "槍命中卷軸100%"] },
+  { map: "武陵桃園", monster: "訓練用稻草人 (Lv.82)", drops: ["頭盔智力卷軸10%", "上衣生命卷軸10%", "盾牌防禦卷軸60%", "盾牌幸運卷軸10%", "盾牌生命卷軸60%", "雙刀攻擊力卷軸60%", "槍攻擊力卷軸60%", "弩攻擊力卷軸10%"] },
+  { map: "武陵桃園", monster: "訓練用木頭人 (Lv.83)", drops: ["套服防禦卷軸60%", "褲裙跳躍卷軸10%", "手套生命卷軸10%", "盾牌力量卷軸60%", "扇子攻擊力卷軸60%", "寵物跳躍力卷軸60%"] },
+  { map: "武陵桃園", monster: "書靈 (Lv.84)", drops: ["耳環敏捷卷軸60%", "褲裙跳躍卷軸10%", "手套生命卷軸10%", "盾牌生命卷軸60%", "雙手棍攻擊卷軸60%", "矛命中卷軸60%"] },
+  { map: "武陵桃園", monster: "功夫熊 (Lv.85)", drops: ["頭盔敏捷卷軸10%", "套服幸運卷軸100%", "單手劍攻擊卷軸60%", "短杖魔力卷軸60%", "長杖魔力卷軸60%", "混沌卷軸60%"] },
+  { map: "武陵桃園", monster: "梅花鹿 (Lv.88)", drops: ["上衣生命卷軸60%", "套服力量卷軸10%", "手套攻擊卷軸60%", "盾牌防禦卷軸60%", "盾牌生命卷軸10%", "長杖魔力卷軸60%", "白衣卷軸1%"] },
+  { map: "武陵桃園", monster: "柔道貓熊 (Lv.89)", drops: ["褲裙生命卷軸10%", "單手斧命中卷軸60%", "雙刀攻擊力卷軸60%", "雙手劍命中卷軸10%", "弩攻擊卷軸60%"] },
+  { map: "武陵桃園", monster: "蟠猴 (Lv.92)", drops: ["耳環生命卷軸10%", "短杖魔力卷軸60%", "雙手斧命中卷軸60%", "寵物速度卷軸100%"] },
+  { map: "武陵桃園", monster: "喵仙 (Lv.95)", drops: ["耳環智力卷軸60%", "盾牌幸運卷軸10%", "單手劍命中卷軸60%", "單手斧命中卷軸100%", "拳套攻擊卷軸60%"] },
+  { map: "武陵桃園", monster: "深山人蔘 (Lv.95)", drops: ["上衣幸運卷軸100%", "披風幸運卷軸10%", "槍命中卷軸100%", "扇子攻擊力卷軸60%"] },
+  { map: "武陵桃園", monster: "千年人蔘 (Lv.96)", drops: ["上衣幸運卷軸60%", "盾牌生命卷軸60%"] },
+  { map: "武陵桃園", monster: "鱷魚克洛克 (Lv.99)", drops: ["耳環智力卷軸60%", "上衣生命卷軸60%", "單手劍攻擊卷軸60%", "指虎攻擊卷軸10%", "寵物速度卷軸10%", "白衣卷軸1%"] },
+  { map: "武陵桃園", monster: "船員克魯 (Lv.103)", drops: ["短劍攻擊卷軸10%", "火槍攻擊卷軸10%", "雙弩槍攻擊力卷軸60%"] },
+  { map: "武陵桃園", monster: "大副凱丁 (Lv.105)", drops: ["頭盔防禦卷軸10%", "上衣幸運卷軸10%", "鞋子跳躍卷軸10%", "手套生命卷軸60%", "混沌卷軸60%"] },
+  { map: "武陵桃園", monster: "肯德隆 (Lv.108)", drops: ["耳環敏捷卷軸10%", "上衣生命卷軸10%", "鞋子速度卷軸10%", "手套敏捷卷軸60%", "指虎攻擊卷軸60%"] },
+  { map: "武陵桃園", monster: "船長 (Lv.110)", drops: ["鞋子速度卷軸10%", "褲裙生命卷軸10%", "盾牌力量卷軸10%", "長杖魔力卷軸60%", "雙手劍攻擊卷軸60%", "火槍攻擊卷軸60%", "指虎攻擊卷軸10%", "白衣卷軸1%"] },
+
   /* ===== 神木村 ===== */
   { map: "神木村", monster: "萊西 (Lv.97)", drops: ["鞋子跳躍卷軸10%", "手套生命卷軸60%", "太刀攻擊力卷軸60%", "寵物跳躍力卷軸100%", "頭盔防禦卷軸10%", "耳環生命卷軸60%", "褲裙敏捷卷軸100%"] },
   { map: "神木村", monster: "橡木甲蟲 (Lv.99)", drops: ["褲裙敏捷卷軸60%", "手套敏捷卷軸60%", "盾牌防禦卷軸10%", "單手劍命中卷軸60%", "雙手劍命中卷軸10%", "雙手棍命中卷軸60%"] },
@@ -2230,6 +2456,8 @@ function getScrollTag(name) {
   let style = '';
   if (name.includes('混沌')) {
     style = 'background:rgba(168,85,247,0.2);color:#d8b4fe;border-color:rgba(168,85,247,0.5);';
+  } else if (name.includes('白衣卷軸')) {
+    style = 'background:rgba(255,255,255,0.15);color:#f1f5f9;border-color:rgba(255,255,255,0.4);';
   } else if (name.includes('10%') || name.includes('1%')) {
     style = 'background:rgba(234,179,8,0.15);color:#fde047;border-color:rgba(234,179,8,0.5);';
   } else if (name.includes('60%')) {
