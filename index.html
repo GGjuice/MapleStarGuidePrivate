@@ -438,7 +438,7 @@
     <!-- 底部版本資訊 -->
     <div class="p-4 border-t border-[var(--border)]">
       <div class="text-[var(--text-muted)] text-xs">資料最後更新</div>
-      <div class="text-[var(--orange)] text-sm font-semibold mt-0.5">2026 年 4 月 2 日</div>
+      <div class="text-[var(--orange)] text-sm font-semibold mt-0.5">2026 年 4 月 6 日</div>
     </div>
   </aside>
 
@@ -456,7 +456,7 @@
 
       <!-- 右側標題 -->
       <div class="ml-auto text-[var(--text-muted)] text-sm">
-        楓星
+        made by GGjuice／辣椒
       </div>
     </header>
 
@@ -480,13 +480,24 @@
           </div>
         </div>
 
+        <!-- 資料庫統計 -->
+        <div class="grid grid-cols-3 gap-3 mb-6">
+          <div class="card p-4 text-center">
+            <div class="text-2xl font-black text-[var(--orange)] font-orbitron" id="stat-scrolls">—</div>
+            <div class="text-[var(--text-muted)] text-xs mt-1">卷軸掉落筆數</div>
+          </div>
+          <div class="card p-4 text-center">
+            <div class="text-2xl font-black text-[var(--blue)] font-orbitron" id="stat-skills">—</div>
+            <div class="text-[var(--text-muted)] text-xs mt-1">技能書筆數</div>
+          </div>
+          <div class="card p-4 text-center">
+            <div class="text-2xl font-black text-[var(--green)] font-orbitron" id="stat-maps">—</div>
+            <div class="text-[var(--text-muted)] text-xs mt-1">涵蓋地圖數</div>
+          </div>
+        </div>
+
         <!-- 快速進入功能卡 -->
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div class="card card-hover p-5 cursor-pointer" onclick="switchTab('drops')">
-            <div class="text-3xl mb-2">🗺️</div>
-            <div class="font-bold text-[var(--text-main)]">地圖掉落</div>
-            <div class="text-[var(--text-muted)] text-sm mt-1">查詢怪物與掉落道具</div>
-          </div>
           <div class="card card-hover p-5 cursor-pointer" onclick="switchTab('skills')">
             <div class="text-3xl mb-2">📘</div>
             <div class="font-bold text-[var(--text-main)]">技能書掉落</div>
@@ -522,116 +533,6 @@
             <div class="font-bold text-[var(--text-main)]">更多功能</div>
             <div class="text-[var(--text-muted)] text-sm mt-1">開發中，敬請期待</div>
           </div>
-        </div>
-      </div>
-
-      <!-- ==================== 地圖掉落 ==================== -->
-      <div id="tab-drops" class="tab-content">
-        <div class="flex flex-col sm:flex-row gap-3 mb-5 items-start sm:items-center justify-between">
-          <h1 class="text-xl font-bold text-[var(--orange)] flex items-center gap-2">
-            <span>🗺️</span> 地圖掉落總覽
-          </h1>
-          <div class="relative flex-1 sm:flex-none max-w-xs">
-            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
-            </svg>
-            <input id="dropsSearch" type="text" placeholder="搜尋地圖、怪物、物品…" class="search-input" oninput="filterDropsTable(this.value)" />
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="table-scroll">
-            <table class="data-table" id="dropsStaticTable">
-              <thead>
-                <tr>
-                  <th style="width:160px;">地圖</th>
-                  <th style="width:200px;">怪物</th>
-                  <th>掉落物品</th>
-                </tr>
-              </thead>
-              <tbody id="dropsStaticBody">
-                <!-- 台北101 -->
-                <tr class="drop-row" data-map="台北101" data-monster="小孩模特兒" data-drops="35等火砲T-泰坦 套服敏捷卷軸60% 裝飾品各屬性卷軸70%">
-                  <td rowspan="1" class="map-cell">台北101<br/><span style="font-size:0.7rem;color:var(--text-muted);">名人大道東部區域</span></td>
-                  <td class="text-[var(--green)]">小孩模特兒 (38)</td>
-                  <td>
-                    <span class="drop-tag drop-scroll">35等火砲T-泰坦</span>
-                    <span class="drop-tag drop-scroll">套服敏捷卷軸60%</span>
-                    <span class="drop-tag drop-scroll">裝飾品各屬性卷軸70%</span>
-                  </td>
-                </tr>
-
-                <!-- 玩具城 -->
-                <tr class="drop-row" data-map="玩具城" data-monster="粉紅發條熊" data-drops="60等火砲火焰發射器 褲裙敏捷卷軸60%">
-                  <td rowspan="1" class="map-cell">玩具城<br/><span style="font-size:0.7rem;color:var(--text-muted);">天空露臺2</span></td>
-                  <td class="text-[var(--green)]">粉紅發條熊 (51)</td>
-                  <td>
-                    <span class="drop-tag drop-scroll">60等火砲火焰發射器</span>
-                    <span class="drop-tag drop-scroll">褲裙敏捷卷軸60%</span>
-                  </td>
-                </tr>
-
-                <!-- 瑪迦提亞城 - 薩赫勒 -->
-                <tr class="drop-row" data-map="瑪迦提亞城" data-monster="沙漠地鼠" data-drops="80等火砲萊諾 弓攻擊卷軸60%">
-                  <td rowspan="2" class="map-cell" style="vertical-align:top;">瑪迦提亞城</td>
-                  <td class="text-[var(--green)]">沙漠地鼠 (77)<br/><span style="font-size:0.75rem;color:var(--text-muted);">薩赫勒地區1</span></td>
-                  <td>
-                    <span class="drop-tag drop-scroll">80等火砲萊諾</span>
-                    <span class="drop-tag drop-scroll">弓攻擊卷軸60%</span>
-                  </td>
-                </tr>
-                <tr class="drop-row" data-map="瑪迦提亞城" data-monster="強化鋼鐵穗太" data-drops="矛攻擊卷軸60% 拳套攻擊卷軸60% 火砲攻擊卷軸60%">
-                  <td class="text-[var(--green)]">強化鋼鐵穗太 (84)<br/><span style="font-size:0.75rem;color:var(--text-muted);">研究所A-3</span></td>
-                  <td>
-                    <span class="drop-tag drop-scroll">矛攻擊卷軸60%</span>
-                    <span class="drop-tag drop-scroll">拳套攻擊卷軸60%</span>
-                    <span class="drop-tag drop-scroll" style="color:#fca5a5;border-color:rgba(239,68,68,0.4);">火砲攻擊卷軸60%</span>
-                  </td>
-                </tr>
-
-                <!-- 靈藥幻境 -->
-                <tr class="drop-row" data-map="靈藥幻境" data-monster="罐靈 蔘罐靈" data-drops="90等火砲阿貝羅 手杖攻擊卷軸60% 太刀工及亞卷軸60% 艾莉亞祈禱20">
-                  <td rowspan="1" class="map-cell">靈藥幻境<br/><span style="font-size:0.7rem;color:var(--text-muted);">貧瘠的草藥田</span></td>
-                  <td class="text-[var(--green)]">罐靈 (91)<br/>蔘罐靈 (93)</td>
-                  <td>
-                    <span class="drop-tag drop-scroll" style="color:#fca5a5;border-color:rgba(239,68,68,0.4);">90等火砲阿貝羅</span>
-                    <span class="drop-tag drop-scroll">手杖攻擊卷軸60%</span>
-                    <span class="drop-tag drop-scroll">太刀工及亞卷軸60%</span>
-                    <span class="drop-tag drop-skill">艾莉亞祈禱20</span>
-                  </td>
-                </tr>
-
-                <!-- 神木村 - 米納 -->
-                <tr class="drop-row" data-map="神木村" data-monster="金屬甲蟲" data-drops="100等黃金火箭砲 雙手斧攻擊卷軸60% 弓攻擊卷軸60% 雷之鑣">
-                  <td rowspan="2" class="map-cell" style="vertical-align:top;">神木村</td>
-                  <td class="text-[var(--green)]">金屬甲蟲 (105)<br/><span style="font-size:0.75rem;color:var(--text-muted);">米納爾森林東邊境界</span></td>
-                  <td>
-                    <span class="drop-tag drop-scroll" style="color:#fca5a5;border-color:rgba(239,68,68,0.4);">100等黃金火箭砲</span>
-                    <span class="drop-tag drop-scroll">雙手斧攻擊卷軸60%</span>
-                    <span class="drop-tag drop-scroll">弓攻擊卷軸60%</span>
-                    <span class="drop-tag drop-equip">雷之鑣</span>
-                  </td>
-                </tr>
-                <tr class="drop-row" data-map="神木村" data-monster="暗黑半人馬" data-drops="100等火砲黃金火箭砲 雙管槍攻擊卷軸60%">
-                  <td class="text-[var(--green)]">暗黑半人馬 (118)<br/><span style="font-size:0.75rem;color:var(--text-muted);">暗黑半人馬馬領土</span></td>
-                  <td>
-                    <span class="drop-tag drop-scroll" style="color:#fca5a5;border-color:rgba(239,68,68,0.4);">100等火砲黃金火箭砲</span>
-                    <span class="drop-tag drop-scroll">雙管槍攻擊卷軸60%</span>
-                  </td>
-                </tr>
-
-                <!-- 玩具城 彎曲的時間 -->
-                <tr class="drop-row" data-map="玩具城 彎曲的時間" data-monster="多立百烈" data-drops="100等火砲黃金火箭砲">
-                  <td rowspan="1" class="map-cell">玩具城<br/><span style="font-size:0.7rem;color:var(--text-muted);">彎曲的時間</span></td>
-                  <td class="text-[var(--green)]">多立百烈 (114)</td>
-                  <td>
-                    <span class="drop-tag drop-scroll" style="color:#fca5a5;border-color:rgba(239,68,68,0.4);">100等火砲黃金火箭砲</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div id="dropsEmpty" class="hidden text-center py-10 text-[var(--text-muted)]">😕 找不到符合的資料</div>
         </div>
       </div>
 
@@ -708,6 +609,18 @@
             </svg>
             <input id="equipsSearch" type="text" placeholder="搜尋地圖、怪物、卷軸…" class="search-input" oninput="filterScrollTable(this.value)" />
           </div>
+        </div>
+
+        <!-- 地圖快速篩選 -->
+        <div class="flex flex-wrap gap-2 mb-4" id="scrollMapFilters">
+          <button class="skill-job-btn active" data-map="" onclick="filterScrollMap(this)">全部地圖</button>
+          <button class="skill-job-btn" data-map="維多利亞島" onclick="filterScrollMap(this)">🌿 維多利亞島</button>
+          <button class="skill-job-btn" data-map="天空之城" onclick="filterScrollMap(this)">☁️ 天空之城</button>
+          <button class="skill-job-btn" data-map="沙漠" onclick="filterScrollMap(this)">🏜️ 沙漠</button>
+          <button class="skill-job-btn" data-map="武陵桃園" onclick="filterScrollMap(this)">🌸 武陵桃園</button>
+          <button class="skill-job-btn" data-map="冰原雪域" onclick="filterScrollMap(this)">❄️ 冰原雪域</button>
+          <button class="skill-job-btn" data-map="神木村" onclick="filterScrollMap(this)">🌲 神木村</button>
+          <button class="skill-job-btn" data-map="玩具城" onclick="filterScrollMap(this)">🎠 玩具城</button>
         </div>
 
         <div class="card">
@@ -1787,297 +1700,6 @@
 </div>
 
 <script>
-/* ================================================================
-   📦 資料區 —— 修改此區域來更新攻略資料
-   格式說明：
-   - mapName : 地圖名稱
-   - monster : 怪物名稱
-   - drops   : 掉落陣列
-     - name   : 道具名稱
-     - type   : "skill" = 技能書 / "equip" = 裝備 / "material" = 材料
-================================================================ */
-const mapsData = [
-  {
-    mapName: "神木村",
-    monster: "變種侏儒怪",
-    drops: [
-      { name: "卡牌風暴20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "神木村",
-    monster: "萊西",
-    drops: [
-      { name: "黑卡20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "神木村",
-    monster: "闇黑龍王",
-    drops: [
-      { name: "楓葉祝福20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "玩具城",
-    monster: "多利百烈",
-    drops: [
-      { name: "黑卡20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "雪域廢礦",
-    monster: "狼人",
-    drops: [
-      { name: "艾麗亞的祈禱20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "雪域廢礦",
-    monster: "白狼人",
-    drops: [
-      { name: "楓葉祝福20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "雪域廢礦",
-    monster: "小獵犬",
-    drops: [
-      { name: "幻影千刃IV(盜亦有道IV)20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "水世界",
-    monster: "烏賊怪",
-    drops: [
-      { name: "靈魂竊取20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "水世界",
-    monster: "骨駭魚",
-    drops: [
-      { name: "幻影千刃IV(盜亦有道IV)20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "泰拉森林",
-    monster: "金綠水靈",
-    drops: [
-      { name: "手杖專家(進階手杖)20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "泰拉森林",
-    monster: "後負荷",
-    drops: [
-      { name: "艾麗亞的祈禱20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "泰拉森林",
-    monster: "奧芙赫班",
-    drops: [
-      { name: "楓葉祝福20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "泰拉森林",
-    monster: "歐佩龍",
-    drops: [
-      { name: "楓葉祝福20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "泰拉森林",
-    monster: "強力馬貝立克B",
-    drops: [
-      { name: "楓葉祝福20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "泰拉森林",
-    monster: "尼貝隆根戰艦",
-    drops: [
-      { name: "楓葉祝福20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "泰拉森林",
-    monster: "杜那斯",
-    drops: [
-      { name: "楓葉祝福20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "泰拉森林",
-    monster: "情資收集機A",
-    drops: [
-      { name: "幻影千刃IV(盜亦有道IV)20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "泰拉森林",
-    monster: "貝魯加墨特",
-    drops: [
-      { name: "楓葉祝福20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "沙漠",
-    monster: "哈摩斯庫拉",
-    drops: [
-      { name: "卡牌風暴20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "武陵桃園",
-    monster: "罈壺",
-    drops: [
-      { name: "手杖專家(進階手杖)20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "武陵桃園",
-    monster: "蔘罈壺",
-    drops: [
-      { name: "艾麗亞的祈禱20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "神殿",
-    monster: "回憶守護隊長",
-    drops: [
-      { name: "手杖專家(進階手杖)20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "神殿",
-    monster: "悔恨的守護兵",
-    drops: [
-      { name: "靈魂竊取20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "神殿",
-    monster: "悔恨的守護兵隊長",
-    drops: [
-      { name: "卡牌風暴20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "神殿",
-    monster: "忘卻的守護兵",
-    drops: [
-      { name: "黑卡（死神卡牌）20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "神殿",
-    monster: "皮卡啾",
-    drops: [
-      { name: "楓葉祝福30", type: "skill" },
-    ]
-  },
-  {
-    mapName: "未來之門",
-    monster: "西格諾斯",
-    drops: [
-      { name: "楓葉祝福30", type: "skill" },
-    ]
-  },
-  {
-    mapName: "昭和村",
-    monster: "黑道長老",
-    drops: [
-      { name: "楓葉祝福20", type: "skill" },
-	  { name: "楓葉祝福30", type: "skill" },
-    ]
-  },
-  {
-    mapName: "昭和村",
-    monster: "抗霸子",
-    drops: [
-      { name: "楓葉祝福20", type: "skill" },
-    ]
-  },
-  {
-    mapName: "昭和村",
-    monster: "天皇蟾蜍",
-    drops: [
-      { name: "楓葉祝福20", type: "skill" },
-	  { name: "楓葉祝福30", type: "skill" },
-    ]
-  },
-  {
-    mapName: "未來東京",
-    monster: "無名魔獸",
-    drops: [
-      { name: "幻影千刃IV(盜亦有道IV)30", type: "skill" },
-	  { name: "楓葉祝福20", type: "skill" },
-	  { name: "楓葉祝福30", type: "skill" },
-    ]
-  },
-  {
-    mapName: "未來東京",
-    monster: "普雷茲首腦",
-    drops: [
-      { name: "手杖專家(進階手杖)30", type: "skill" },
-	  { name: "楓葉祝福20", type: "skill" },
-	  { name: "楓葉祝福30", type: "skill" },
-    ]
-  },
-  {
-    mapName: "未來東京",
-    monster: "奧芙赫班",
-    drops: [
-      { name: "艾麗亞的祈禱30", type: "skill" },
-	  { name: "楓葉祝福20", type: "skill" },
-	  { name: "楓葉祝福30", type: "skill" },
-    ]
-  },
-  {
-    mapName: "未來東京",
-    monster: "杜那斯167",
-    drops: [
-      { name: "卡牌風暴30", type: "skill" },
-	  { name: "楓葉祝福20", type: "skill" },
-	  { name: "楓葉祝福30", type: "skill" },
-    ]
-  },
-  {
-    mapName: "未來東京",
-    monster: "尼伯龍根",
-    drops: [
-	  { name: "楓葉祝福20", type: "skill" },
-	  { name: "楓葉祝福30", type: "skill" },
-    ]
-  },
-  {
-    mapName: "未來東京",
-    monster: "杜那斯162",
-    drops: [
-	  { name: "楓葉祝福20", type: "skill" },
-	  { name: "楓葉祝福30", type: "skill" },
-    ]
-  },
-  {
-    mapName: "未來東京",
-    monster: "貝魯加墨特",
-    drops: [
-	  { name: "楓葉祝福20", type: "skill" },
-	  { name: "楓葉祝福30", type: "skill" },
-    ]
-  },
-  {
-    mapName: "未來東京",
-    monster: "情資收集機",
-    drops: [
-	  { name: "楓葉祝福20", type: "skill" },
-	  { name: "楓葉祝福30", type: "skill" },
-    ]
-  },
-];
 
 /* ================================================================
    技能書資料（依職業分類）
@@ -2491,6 +2113,23 @@ const scrollDropData = [
   { map: "維多利亞島", monster: "青螃蟹", drops: ["單手棍攻擊卷軸60%", "上衣幸運卷軸10%"] },
   { map: "維多利亞島", monster: "烏龜", drops: ["盾牌幸運卷軸100%", "寵物速度卷軸60%", "披風力量卷軸60%", "手套攻擊卷軸10%"] },
 
+  /* ===== 天空之城 ===== */
+  { map: "天空之城", monster: "幼黃獨角獅 (Lv.36)", drops: ["耳環智力卷軸60%", "上衣生命卷軸60%", "褲裙跳躍卷軸10%", "鞋子速度卷軸10%", "手套生命卷軸60%", "盾牌防禦卷軸60%"] },
+  { map: "天空之城", monster: "幼藍獨角獅 (Lv.36)", drops: ["耳環智力卷軸10%", "套服防禦卷軸10%", "鞋子速度卷軸60%", "盾牌防禦卷軸10%"] },
+  { map: "天空之城", monster: "幼紅獨角獅 (Lv.36)", drops: ["耳環智力卷軸100%", "上衣生命卷軸10%", "套服敏捷卷軸60%", "鞋子跳躍卷軸60%", "手套敏捷卷軸10%", "盾牌防禦卷軸100%", "盾牌生命卷軸60%"] },
+  { map: "天空之城", monster: "食人花 (Lv.40)", drops: ["披風魔防卷軸60%", "披風魔力卷軸10%", "拳套攻擊卷軸60%"] },
+  { map: "天空之城", monster: "黑食人花 (Lv.42)", drops: ["披風力量卷軸10%", "雙手棍攻擊卷軸60%"] },
+  { map: "天空之城", monster: "星光精靈 (Lv.45)", drops: ["耳環智力卷軸10%", "頭盔防禦卷軸10%"] },
+  { map: "天空之城", monster: "黃獨角獅 (Lv.46)", drops: ["披風智力卷軸10%", "披風幸運卷軸100%", "雙手劍攻擊卷軸60%", "雙手棍命中卷軸60%", "槍攻擊卷軸60%"] },
+  { map: "天空之城", monster: "藍獨角獅 (Lv.46)", drops: ["頭盔生命卷軸100%", "耳環幸運卷軸10%", "盾牌幸運卷軸60%", "披風幸運卷軸10%", "手杖攻擊力卷軸60%", "長杖魔力卷軸60%"] },
+  { map: "天空之城", monster: "紅獨角獅 (Lv.46)", drops: ["手套攻擊卷軸100%", "盾牌力量卷軸10%", "披風力量卷軸100%", "雙手棍命中卷軸60%"] },
+  { map: "天空之城", monster: "幼黑格里芬 (Lv.50)", drops: ["套服幸運卷軸100%", "矛命中卷軸100%"] },
+  { map: "天空之城", monster: "星光精靈 (Lv.50)", drops: ["盾牌防禦卷軸10%", "披風防禦卷軸10%", "披風力量卷軸100%", "短劍攻擊卷軸60%", "手杖攻擊力卷軸60%", "指虎命中卷軸60%"] },
+  { map: "天空之城", monster: "月光精靈 (Lv.52)", drops: ["耳環幸運卷軸100%", "鞋子跳躍卷軸10%", "盾牌防禦卷軸10%", "盾牌力量卷軸60%", "雙手斧命中卷軸10%", "雙手棍命中卷軸10%", "太刀攻擊力卷軸10%"] },
+  { map: "天空之城", monster: "黑格里芬 (Lv.54)", drops: ["上衣力量卷軸10%", "上衣幸運卷軸10%", "矛攻擊卷軸60%", "弩攻擊卷軸60%", "火槍攻擊卷軸60%", "火砲攻擊力卷軸60%"] },
+  { map: "天空之城", monster: "月光精靈 (Lv.55)", drops: ["耳環智力卷軸60%", "上衣生命卷軸10%", "手套生命卷軸60%", "盾牌生命卷軸10%", "單手劍攻擊卷軸10%"] },
+  { map: "天空之城", monster: "日光精靈 (Lv.65)", drops: ["耳環智力卷軸10%"] },
+
   /* ===== 沙漠 ===== */
   { map: "沙漠", monster: "D・洛伊 (LV92)", drops: ["耳環智力卷軸10%", "拳套攻擊卷軸60%", "耳環幸運卷軸100%", "短杖魔力卷軸60%", "頭盔智力卷軸10%"] },
   { map: "沙漠", monster: "小仙人掌 (LV70)", drops: ["火槍攻擊卷軸60%", "單手棍命中卷軸60%", "雙手斧攻擊卷軸10%", "寵物跳躍力卷軸100%", "單手斧攻擊卷軸10%", "鞋子跳躍卷軸10%"] },
@@ -2539,8 +2178,25 @@ const scrollDropData = [
   { map: "武陵桃園", monster: "鱷魚克洛克 (Lv.99)", drops: ["耳環智力卷軸60%", "上衣生命卷軸60%", "單手劍攻擊卷軸60%", "指虎攻擊卷軸10%", "寵物速度卷軸10%", "白衣卷軸1%"] },
   { map: "武陵桃園", monster: "船員克魯 (Lv.103)", drops: ["短劍攻擊卷軸10%", "火槍攻擊卷軸10%", "雙弩槍攻擊力卷軸60%"] },
   { map: "武陵桃園", monster: "大副凱丁 (Lv.105)", drops: ["頭盔防禦卷軸10%", "上衣幸運卷軸10%", "鞋子跳躍卷軸10%", "手套生命卷軸60%", "混沌卷軸60%"] },
-  { map: "武陵桃園", monster: "肯德隆 (Lv.108)", drops: ["耳環敏捷卷軸10%", "上衣生命卷軸10%", "鞋子速度卷軸10%", "手套敏捷卷軸60%", "指虎攻擊卷軸60%"] },
-  { map: "武陵桃園", monster: "船長 (Lv.110)", drops: ["鞋子速度卷軸10%", "褲裙生命卷軸10%", "盾牌力量卷軸10%", "長杖魔力卷軸60%", "雙手劍攻擊卷軸60%", "火槍攻擊卷軸60%", "指虎攻擊卷軸10%", "白衣卷軸1%"] },
+
+  /* ===== 冰原雪域 ===== */
+  { map: "冰原雪域", monster: "小企鵝王 (Lv.43)", drops: ["長杖魔力卷軸60%", "指虎攻擊卷軸60%", "指虎命中卷軸10%"] },
+  { map: "冰原雪域", monster: "小雪球 (Lv.45)", drops: ["耳環幸運卷軸60%", "上衣幸運卷軸60%", "手套攻擊卷軸60%", "盾牌幸運卷軸10%", "盾牌力量卷軸10%", "軍手劍命中卷軸10%", "軍手斧命中卷軸100%", "弩攻擊卷軸10%"] },
+  { map: "冰原雪域", monster: "黑色小雪球 (Lv.46)", drops: ["頭盔敏捷卷軸100%", "耳環敏捷卷軸60%", "短杖魔力卷軸60%", "雙手斧命中卷軸60%"] },
+  { map: "冰原雪域", monster: "企鵝王 (Lv.48)", drops: ["寵物跳躍力卷軸60%", "上衣力量卷軸60%", "矛命中卷軸60%", "上衣防禦卷軸60%", "弓攻擊卷軸60%"] },
+  { map: "冰原雪域", monster: "黑企鵝王 (Lv.49)", drops: ["褲裙生命卷軸100%", "上衣力量卷軸10%"] },
+  { map: "冰原雪域", monster: "野狼 (Lv.53)", drops: ["耳環生命卷軸60%", "套服力量卷軸60%", "鞋子跳躍卷軸60%", "鞋子速度卷軸100%", "披風敏捷卷軸60%", "雙手斧命中卷軸100%", "指虎命中卷軸10%", "扇子攻擊力卷軸60%"] },
+  { map: "冰原雪域", monster: "白狼 (Lv.55)", drops: ["頭盔智力卷軸100%", "盾牌防禦卷軸100%", "盾牌防禦卷軸60%", "雙手棍命中卷軸60%", "雙手棍命中卷軸10%"] },
+  { map: "冰原雪域", monster: "獨眼蝙蝠 (Lv.122)", drops: ["披風力量卷軸10%", "軍手棍攻擊卷軸10%"] },
+  { map: "冰原雪域", monster: "雪吉拉戰車 (Lv.122)", drops: ["頭盔智力卷軸60%", "褲裙敏捷卷軸60%", "披風敏捷卷軸10%", "披風幸運卷軸10%", "火槍攻擊卷軸60%", "拳套攻擊卷軸10%", "雙手斧攻擊卷軸60%", "長杖魔力卷軸60%"] },
+  { map: "冰原雪域", monster: "小獵犬 (Lv.123)", drops: ["褲裙敏捷卷軸100%", "披風智力卷軸10%", "短杖魔力卷軸60%"] },
+  { map: "冰原雪域", monster: "黑吉拉戰車 (Lv.124)", drops: ["耳環敏捷卷軸10%", "耳環生命卷軸10%", "套服智力卷軸100%", "褲裙跳躍卷軸10%", "盾牌生命卷軸60%", "長杖魔力卷軸60%", "雙手劍攻擊卷軸60%", "雙手劍命中卷軸60%", "指虎攻擊卷軸10%"] },
+  { map: "冰原雪域", monster: "地獄獵犬 (Lv.134)", drops: ["上衣生命卷軸10%", "套服敏捷卷軸10%", "單手斧攻擊卷軸60%", "短杖魔力卷軸60%"] },
+  { map: "冰原雪域", monster: "狼人 (Lv.127)", drops: ["頭盔敏捷卷軸10%", "耳環智力卷軸10%", "短劍攻擊卷軸60%", "短杖魔力卷軸60%", "拳套攻擊卷軸60%"] },
+  { map: "冰原雪域", monster: "白狼人 (Lv.129)", drops: ["手套生命卷軸10%", "盾牌防禦卷軸10%", "盾牌力量卷軸10%", "雙手劍命中卷軸100%"] },
+  { map: "冰原雪域", monster: "殭屍 (Lv.132)", drops: ["頭盔智力卷軸10%", "套服幸運卷軸100%", "弩攻擊卷軸60%", "雙弩槍攻擊力卷軸60%", "混沌卷軸60%"] },
+  { map: "冰原雪域", monster: "礦山殭屍 (Lv.132)", drops: ["頭盔敏捷卷軸60%", "上衣防禦卷軸10%", "上衣力量卷軸10%", "拳套攻擊卷軸60%"] },
+  { map: "冰原雪域", monster: "煉獄獵犬 (Lv.136)", drops: ["盾牌生命卷軸10%", "單手斧攻擊卷軸60%", "弩攻擊卷軸60%"] },
 
   /* ===== 神木村 ===== */
   { map: "神木村", monster: "萊西 (Lv.97)", drops: ["鞋子跳躍卷軸10%", "手套生命卷軸60%", "太刀攻擊力卷軸60%", "寵物跳躍力卷軸100%", "頭盔防禦卷軸10%", "耳環生命卷軸60%", "褲裙敏捷卷軸100%"] },
@@ -2613,116 +2269,9 @@ const bossesData = [
    工具函式：排序狀態管理
 ================================================================ */
 const sortState = {
-  drops:  { col: null, asc: true },
   skills: { col: null, asc: true },
   equips: { col: null, asc: true }
 };
-
-/* ================================================================
-   展開地圖資料為「每行一個掉落物」的扁平陣列
-================================================================ */
-function flattenDrops() {
-  const rows = [];
-  mapsData.forEach(map => {
-    map.drops.forEach(drop => {
-      rows.push({
-        mapName:  map.mapName,
-        monster:  map.monster,
-        dropName: drop.name,
-        type:     drop.type
-      });
-    });
-  });
-  return rows;
-}
-
-/* ================================================================
-   取得掉落物徽章 HTML
-================================================================ */
-function getBadge(type) {
-  const map = {
-    skill:    ['badge badge-skill',    '📘 技能書'],
-    equip:    ['badge badge-equip',    '⚔️ 裝備'],
-    material: ['badge badge-material', '🧪 材料']
-  };
-  const [cls, label] = map[type] || ['badge badge-common', '❓ 未知'];
-  return `<span class="${cls}">${label}</span>`;
-}
-
-/* ================================================================
-   地圖掉落：靜態表格搜尋（合併儲存格版）
-================================================================ */
-function filterDropsTable(value) {
-  const q = value.toLowerCase().trim();
-  const rows = document.querySelectorAll('#dropsStaticBody .drop-row');
-  const empty = document.getElementById('dropsEmpty');
-  let visible = 0;
-
-  rows.forEach(row => {
-    const map     = (row.dataset.map     || '').toLowerCase();
-    const monster = (row.dataset.monster || '').toLowerCase();
-    const drops   = (row.dataset.drops   || '').toLowerCase();
-    const match   = !q || map.includes(q) || monster.includes(q) || drops.includes(q);
-    row.classList.toggle('hidden-row', !match);
-    if (match) visible++;
-  });
-
-  empty.classList.toggle('hidden', visible > 0);
-}
-
-/* ================================================================
-   渲染：地圖掉落表格（舊版，保留供相容）
-================================================================ */
-let dropsAllRows = flattenDrops();
-
-function renderDrops() {
-  const searchEl = document.getElementById('dropsSearch');
-  const filterEl = document.getElementById('dropsTypeFilter');
-  if (!searchEl || !filterEl) return;
-  const search = searchEl.value.toLowerCase();
-  const typeFilter = filterEl.value;
-  const { col, asc } = sortState.drops;
-
-  let rows = dropsAllRows.filter(r => {
-    const matchSearch = !search ||
-      r.mapName.toLowerCase().includes(search) ||
-      r.monster.toLowerCase().includes(search) ||
-      r.dropName.toLowerCase().includes(search);
-    const matchType = !typeFilter || r.type === typeFilter;
-    return matchSearch && matchType;
-  });
-
-  // 排序
-  if (col) {
-    rows.sort((a, b) => {
-      const va = a[col] || '', vb = b[col] || '';
-      return asc ? va.localeCompare(vb, 'zh-TW') : vb.localeCompare(va, 'zh-TW');
-    });
-  }
-
-  const tbody = document.getElementById('dropsBody');
-  const empty = document.getElementById('dropsEmpty');
-  if (rows.length === 0) {
-    tbody.innerHTML = '';
-    empty.classList.remove('hidden');
-    return;
-  }
-  empty.classList.add('hidden');
-  tbody.innerHTML = rows.map(r => `
-    <tr>
-      <td class="text-[var(--text-main)] font-medium whitespace-nowrap">${r.mapName}</td>
-      <td class="text-[var(--green)] whitespace-nowrap">${r.monster}</td>
-      <td class="font-semibold whitespace-nowrap">${r.dropName}</td>
-      <td>${getBadge(r.type)}</td>
-    </tr>
-  `).join('');
-}
-
-function sortDrops(col) {
-  if (sortState.drops.col === col) sortState.drops.asc = !sortState.drops.asc;
-  else { sortState.drops.col = col; sortState.drops.asc = true; }
-  renderDrops();
-}
 
 /* ================================================================
    渲染：技能書頁（依職業分類資料）
@@ -2851,23 +2400,45 @@ function renderScrollTable() {
   tbody.innerHTML = html;
 }
 
+/* ================================================================
+   卷軸掉落：地圖篩選按鈕
+================================================================ */
+let currentScrollMap = '';
+
+function filterScrollMap(btn) {
+  document.querySelectorAll('#scrollMapFilters .skill-job-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentScrollMap = btn.dataset.map;
+  // 清空搜尋框並套用篩選
+  const searchEl = document.getElementById('equipsSearch');
+  if (searchEl) searchEl.value = '';
+  applyScrollFilter('', currentScrollMap);
+}
+
 function filterScrollTable(value) {
+  applyScrollFilter(value, currentScrollMap);
+}
+
+function applyScrollFilter(value, mapFilter) {
   const q = value.toLowerCase().trim();
   const empty = document.getElementById('equipsEmpty');
-
-  // 搜尋時改用單列模式（不用 rowspan）
   const tbody = document.getElementById('scrollBody');
-  if (!q) {
+
+  // 若沒有搜尋且沒有地圖篩選，還原合併儲存格模式
+  if (!q && !mapFilter) {
     renderScrollTable();
     empty.classList.add('hidden');
     return;
   }
 
-  const matched = scrollDropData.filter(entry =>
-    entry.map.toLowerCase().includes(q) ||
-    entry.monster.toLowerCase().includes(q) ||
-    entry.drops.some(d => d.toLowerCase().includes(q))
-  );
+  const matched = scrollDropData.filter(entry => {
+    const matchMap = !mapFilter || entry.map === mapFilter;
+    const matchSearch = !q ||
+      entry.map.toLowerCase().includes(q) ||
+      entry.monster.toLowerCase().includes(q) ||
+      entry.drops.some(d => d.toLowerCase().includes(q));
+    return matchMap && matchSearch;
+  });
 
   if (matched.length === 0) {
     tbody.innerHTML = '';
@@ -2984,12 +2555,20 @@ function closeSidebar() {
 ================================================================ */
 document.addEventListener('DOMContentLoaded', () => {
   renderScrollTable();
-  renderDrops();
   renderSkills();
   renderBoss();
   // 預設顯示第一個職業面板
   const firstPanel = document.querySelector('.job-panel');
   if (firstPanel) firstPanel.classList.add('active');
+
+  // 首頁統計數字
+  const totalScrollEntries = scrollDropData.reduce((sum, e) => sum + e.drops.length, 0);
+  const totalSkills = skillBookData.length;
+  const uniqueMaps = new Set(scrollDropData.map(e => e.map)).size;
+  const el = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val.toLocaleString(); };
+  el('stat-scrolls', totalScrollEntries);
+  el('stat-skills',  totalSkills);
+  el('stat-maps',    uniqueMaps);
 });
 </script>
 </body>
