@@ -3449,6 +3449,41 @@ function applyScrollFilter(value, mapFilter) {
 }
 
 /* ================================================================
+   Boss 資料
+================================================================ */
+const bossesData = [
+  /* ===== 遠征隊 Boss ===== */
+  { boss: "簡單巴洛古",       category: "遠征隊", charLimit: 3, accountLimit: 9,  reset: "每週一 04:00", difficulty: 1 },
+  { boss: "普通巴洛古",       category: "遠征隊", charLimit: 3, accountLimit: 9,  reset: "每週一 04:00", difficulty: 2 },
+  { boss: "普通炎魔",         category: "遠征隊", charLimit: 3, accountLimit: 9,  reset: "每週一 04:00", difficulty: 2 },
+  { boss: "混沌炎魔",         category: "遠征隊", charLimit: 2, accountLimit: 6,  reset: "每週一 04:00", difficulty: 4 },
+  { boss: "普通龍王",         category: "遠征隊", charLimit: 3, accountLimit: 6,  reset: "每週一 04:00", difficulty: 2 },
+  { boss: "混沌龍王",         category: "遠征隊", charLimit: 2, accountLimit: 6,  reset: "每週一 04:00", difficulty: 4 },
+  { boss: "皮卡啾",           category: "遠征隊", charLimit: 2, accountLimit: 6,  reset: "每週一 04:00", difficulty: 3 },
+  { boss: "凡雷恩",           category: "遠征隊", charLimit: 1, accountLimit: 3,  reset: "每週一 04:00", difficulty: 4 },
+  { boss: "西格諾斯",         category: "遠征隊", charLimit: 1, accountLimit: 3,  reset: "每週一 04:00", difficulty: 4 },
+  { boss: "阿卡伊農",         category: "遠征隊", charLimit: 2, accountLimit: 6,  reset: "每週一 04:00", difficulty: 5 },
+  { boss: "森蘭丸",           category: "遠征隊", charLimit: 1, accountLimit: 3,  reset: "每週一 04:00", difficulty: 5 },
+  /* ===== 每週挑戰 Boss ===== */
+  { boss: "拉圖斯",           category: "每週挑戰", charLimit: 3, accountLimit: 9,  reset: "每週一 04:00", difficulty: 3 },
+  { boss: "薛西斯",           category: "每週挑戰", charLimit: 3, accountLimit: 0,  reset: "每週一 04:00", difficulty: 3 },
+  { boss: "蟾蜍",             category: "每週挑戰", charLimit: 3, accountLimit: 9,  reset: "每週一 04:00", difficulty: 2 },
+  { boss: "大頭目",           category: "每週挑戰", charLimit: 3, accountLimit: 9,  reset: "每週一 04:00", difficulty: 3 },
+  { boss: "貝魯加墨特",       category: "每週挑戰", charLimit: 1, accountLimit: 0,  reset: "每週一 04:00", difficulty: 3 },
+  { boss: "新東京貝魯加墨特", category: "每週挑戰", charLimit: 1, accountLimit: 0,  reset: "每週一 04:00", difficulty: 4 },
+  { boss: "杜那斯",           category: "每週挑戰", charLimit: 1, accountLimit: 0,  reset: "每週一 04:00", difficulty: 3 },
+  { boss: "新東京杜那斯",     category: "每週挑戰", charLimit: 1, accountLimit: 0,  reset: "每週一 04:00", difficulty: 4 },
+  { boss: "新東京杜那斯2階", category: "每週挑戰", charLimit: 1, accountLimit: 0,  reset: "每週一 04:00", difficulty: 5 },
+  { boss: "奧芙赫班",         category: "每週挑戰", charLimit: 1, accountLimit: 0,  reset: "每週一 04:00", difficulty: 4 },
+  { boss: "新東京奧芙赫班",   category: "每週挑戰", charLimit: 1, accountLimit: 0,  reset: "每週一 04:00", difficulty: 5 },
+  { boss: "歐佩龍",           category: "每週挑戰", charLimit: 1, accountLimit: 0,  reset: "每週一 04:00", difficulty: 4 },
+  { boss: "戰艦尼貝龍根",     category: "每週挑戰", charLimit: 1, accountLimit: 0,  reset: "每週一 04:00", difficulty: 4 },
+  { boss: "新東京戰艦尼貝龍根", category: "每週挑戰", charLimit: 1, accountLimit: 0, reset: "每週一 04:00", difficulty: 5 },
+  { boss: "新東京普雷茲首腦", category: "每週挑戰", charLimit: 1, accountLimit: 0,  reset: "每週一 04:00", difficulty: 5 },
+  { boss: "新東京無名魔獸",   category: "每週挑戰", charLimit: 1, accountLimit: 0,  reset: "每週一 04:00", difficulty: 5 },
+];
+
+/* ================================================================
    渲染：每日 Boss 卡片
 ================================================================ */
 function renderBoss() {
@@ -3466,16 +3501,21 @@ function renderBoss() {
   }
   empty.classList.add('hidden');
 
-  /* 難度星星 */
-  function stars(n) {
-    return '★'.repeat(n) + '☆'.repeat(5 - n);
-  }
-  /* 難度顏色 */
+  function stars(n) { return '★'.repeat(n) + '☆'.repeat(5 - n); }
   function diffColor(n) {
     return ['', '#22c55e', '#84cc16', '#f59e0b', '#f97316', '#ef4444'][n] || '#fff';
   }
 
-  grid.innerHTML = rows.map(b => `
+  // 依分類分組
+  const categories = ['遠征隊', '每週挑戰'];
+  let html = '';
+  categories.forEach(cat => {
+    const group = rows.filter(b => b.category === cat);
+    if (!group.length) return;
+    html += `<div style="grid-column:1/-1;padding:0.25rem 0 0.5rem;color:var(--orange);font-weight:700;font-size:0.85rem;border-bottom:1px solid var(--border);margin-bottom:0.25rem;">
+      ${cat === '遠征隊' ? '🏰 遠征隊 Boss' : '⚔️ 每週挑戰 Boss'}
+    </div>`;
+    html += group.map(b => `
     <div class="boss-card">
       <div class="flex items-start justify-between gap-2 mb-3">
         <div class="font-bold text-[var(--text-main)] text-base leading-tight">${b.boss}</div>
@@ -3484,19 +3524,20 @@ function renderBoss() {
       <div class="space-y-2 text-sm">
         <div class="flex items-center gap-2">
           <span class="text-[var(--text-muted)] w-20 shrink-0">角色場次</span>
-          <span class="font-semibold text-[var(--orange)]">${b.charLimit} 場</span>
+          <span class="font-semibold text-[var(--orange)]">${b.charLimit} 次/週</span>
         </div>
         <div class="flex items-center gap-2">
           <span class="text-[var(--text-muted)] w-20 shrink-0">帳號場次</span>
-          <span class="font-semibold text-[var(--blue)]">${b.accountLimit} 場</span>
+          <span class="font-semibold text-[var(--blue)]">${b.accountLimit > 0 ? b.accountLimit + ' 次/週' : '無限制'}</span>
         </div>
         <div class="flex items-center gap-2">
           <span class="text-[var(--text-muted)] w-20 shrink-0">重置時間</span>
           <span class="text-[var(--green)]">${b.reset}</span>
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
+  });
+  grid.innerHTML = html;
 }
 
 
