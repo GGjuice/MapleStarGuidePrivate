@@ -433,12 +433,15 @@
       <div class="nav-item" onclick="switchTab('akaiyuno')" id="nav-akaiyuno">
         <span class="text-lg">🏰</span><span>阿卡伊農遠征</span>
       </div>
+      <div class="nav-item" onclick="switchTab('faq')" id="nav-faq">
+        <span class="text-lg">❓</span><span>疑難雜症解答</span>
+      </div>
     </nav>
 
     <!-- 底部版本資訊 -->
     <div class="p-4 border-t border-[var(--border)]">
       <div class="text-[var(--text-muted)] text-xs">資料最後更新</div>
-      <div class="text-[var(--orange)] text-sm font-semibold mt-0.5">2026 年 4 月 6 日</div>
+      <div class="text-[var(--orange)] text-sm font-semibold mt-0.5">2026 年 4 月 10 日</div>
     </div>
   </aside>
 
@@ -480,24 +483,43 @@
           </div>
         </div>
 
-        <!-- 資料庫統計 -->
-        <div class="grid grid-cols-3 gap-3 mb-6">
-          <div class="card p-4 text-center">
-            <div class="text-2xl font-black text-[var(--orange)] font-orbitron" id="stat-scrolls">—</div>
-            <div class="text-[var(--text-muted)] text-xs mt-1">卷軸掉落筆數</div>
+        <!-- 重置計時器 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <!-- 每日重置 -->
+          <div class="card p-5 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10" style="background: radial-gradient(ellipse at 0% 50%, #22c55e 0%, transparent 70%);"></div>
+            <div class="relative z-10">
+              <div class="flex items-center gap-2 mb-3">
+                <span style="font-size:1.3rem;">🌅</span>
+                <span style="color:var(--green);font-weight:700;font-size:0.9rem;">每日重置</span>
+                <span style="color:var(--text-muted);font-size:0.75rem;margin-left:auto;">每天 04:00 (台灣)</span>
+              </div>
+              <div id="daily-timer" style="font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;color:var(--green);letter-spacing:0.05em;text-shadow:0 0 16px rgba(34,197,94,0.5);">--:--:--</div>
+              <div style="color:var(--text-muted);font-size:0.75rem;margin-top:0.4rem;">距離下次每日重置</div>
+            </div>
           </div>
-          <div class="card p-4 text-center">
-            <div class="text-2xl font-black text-[var(--blue)] font-orbitron" id="stat-skills">—</div>
-            <div class="text-[var(--text-muted)] text-xs mt-1">技能書筆數</div>
-          </div>
-          <div class="card p-4 text-center">
-            <div class="text-2xl font-black text-[var(--green)] font-orbitron" id="stat-maps">—</div>
-            <div class="text-[var(--text-muted)] text-xs mt-1">涵蓋地圖數</div>
+          <!-- 每週重置 -->
+          <div class="card p-5 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10" style="background: radial-gradient(ellipse at 0% 50%, #f97316 0%, transparent 70%);"></div>
+            <div class="relative z-10">
+              <div class="flex items-center gap-2 mb-3">
+                <span style="font-size:1.3rem;">📅</span>
+                <span style="color:var(--orange);font-weight:700;font-size:0.9rem;">每週重置</span>
+                <span style="color:var(--text-muted);font-size:0.75rem;margin-left:auto;">週一 04:00 (台灣)</span>
+              </div>
+              <div id="weekly-timer" style="font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;color:var(--orange);letter-spacing:0.05em;text-shadow:0 0 16px rgba(249,115,22,0.5);">--:--:--</div>
+              <div style="color:var(--text-muted);font-size:0.75rem;margin-top:0.4rem;">距離下次每週重置</div>
+            </div>
           </div>
         </div>
 
         <!-- 快速進入功能卡 -->
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="card card-hover p-5 cursor-pointer" onclick="switchTab('drops')">
+            <div class="text-3xl mb-2">🗺️</div>
+            <div class="font-bold text-[var(--text-main)]">地圖掉落</div>
+            <div class="text-[var(--text-muted)] text-sm mt-1">查詢怪物與掉落道具</div>
+          </div>
           <div class="card card-hover p-5 cursor-pointer" onclick="switchTab('skills')">
             <div class="text-3xl mb-2">📘</div>
             <div class="font-bold text-[var(--text-main)]">技能書掉落</div>
@@ -528,11 +550,126 @@
             <div class="font-bold text-[var(--text-main)]">阿卡伊農遠征</div>
             <div class="text-[var(--text-muted)] text-sm mt-1">前置與遠征攻略</div>
           </div>
+          <div class="card card-hover p-5 cursor-pointer" onclick="switchTab('faq')">
+            <div class="text-3xl mb-2">❓</div>
+            <div class="font-bold text-[var(--text-main)]">疑難雜症解答</div>
+            <div class="text-[var(--text-muted)] text-sm mt-1">常見問題一次解決</div>
+          </div>
           <div class="card p-5 opacity-50">
             <div class="text-3xl mb-2">🔧</div>
             <div class="font-bold text-[var(--text-main)]">更多功能</div>
             <div class="text-[var(--text-muted)] text-sm mt-1">開發中，敬請期待</div>
           </div>
+        </div>
+      </div>
+
+      <!-- ==================== 地圖掉落 ==================== -->
+      <div id="tab-drops" class="tab-content">
+        <div class="flex flex-col sm:flex-row gap-3 mb-5 items-start sm:items-center justify-between">
+          <h1 class="text-xl font-bold text-[var(--orange)] flex items-center gap-2">
+            <span>🗺️</span> 地圖掉落總覽
+          </h1>
+          <div class="relative flex-1 sm:flex-none max-w-xs">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+            </svg>
+            <input id="dropsSearch" type="text" placeholder="搜尋地圖、怪物、物品…" class="search-input" oninput="filterDropsTable(this.value)" />
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-scroll">
+            <table class="data-table" id="dropsStaticTable">
+              <thead>
+                <tr>
+                  <th style="width:160px;">地圖</th>
+                  <th style="width:200px;">怪物</th>
+                  <th>掉落物品</th>
+                </tr>
+              </thead>
+              <tbody id="dropsStaticBody">
+                <!-- 台北101 -->
+                <tr class="drop-row" data-map="台北101" data-monster="小孩模特兒" data-drops="35等火砲T-泰坦 套服敏捷卷軸60% 裝飾品各屬性卷軸70%">
+                  <td rowspan="1" class="map-cell">台北101<br/><span style="font-size:0.7rem;color:var(--text-muted);">名人大道東部區域</span></td>
+                  <td class="text-[var(--green)]">小孩模特兒 (38)</td>
+                  <td>
+                    <span class="drop-tag drop-scroll">35等火砲T-泰坦</span>
+                    <span class="drop-tag drop-scroll">套服敏捷卷軸60%</span>
+                    <span class="drop-tag drop-scroll">裝飾品各屬性卷軸70%</span>
+                  </td>
+                </tr>
+
+                <!-- 玩具城 -->
+                <tr class="drop-row" data-map="玩具城" data-monster="粉紅發條熊" data-drops="60等火砲火焰發射器 褲裙敏捷卷軸60%">
+                  <td rowspan="1" class="map-cell">玩具城<br/><span style="font-size:0.7rem;color:var(--text-muted);">天空露臺2</span></td>
+                  <td class="text-[var(--green)]">粉紅發條熊 (51)</td>
+                  <td>
+                    <span class="drop-tag drop-scroll">60等火砲火焰發射器</span>
+                    <span class="drop-tag drop-scroll">褲裙敏捷卷軸60%</span>
+                  </td>
+                </tr>
+
+                <!-- 瑪迦提亞城 - 薩赫勒 -->
+                <tr class="drop-row" data-map="瑪迦提亞城" data-monster="沙漠地鼠" data-drops="80等火砲萊諾 弓攻擊卷軸60%">
+                  <td rowspan="2" class="map-cell" style="vertical-align:top;">瑪迦提亞城</td>
+                  <td class="text-[var(--green)]">沙漠地鼠 (77)<br/><span style="font-size:0.75rem;color:var(--text-muted);">薩赫勒地區1</span></td>
+                  <td>
+                    <span class="drop-tag drop-scroll">80等火砲萊諾</span>
+                    <span class="drop-tag drop-scroll">弓攻擊卷軸60%</span>
+                  </td>
+                </tr>
+                <tr class="drop-row" data-map="瑪迦提亞城" data-monster="強化鋼鐵穗太" data-drops="矛攻擊卷軸60% 拳套攻擊卷軸60% 火砲攻擊卷軸60%">
+                  <td class="text-[var(--green)]">強化鋼鐵穗太 (84)<br/><span style="font-size:0.75rem;color:var(--text-muted);">研究所A-3</span></td>
+                  <td>
+                    <span class="drop-tag drop-scroll">矛攻擊卷軸60%</span>
+                    <span class="drop-tag drop-scroll">拳套攻擊卷軸60%</span>
+                    <span class="drop-tag drop-scroll" style="color:#fca5a5;border-color:rgba(239,68,68,0.4);">火砲攻擊卷軸60%</span>
+                  </td>
+                </tr>
+
+                <!-- 靈藥幻境 -->
+                <tr class="drop-row" data-map="靈藥幻境" data-monster="罐靈 蔘罐靈" data-drops="90等火砲阿貝羅 手杖攻擊卷軸60% 太刀工及亞卷軸60% 艾莉亞祈禱20">
+                  <td rowspan="1" class="map-cell">靈藥幻境<br/><span style="font-size:0.7rem;color:var(--text-muted);">貧瘠的草藥田</span></td>
+                  <td class="text-[var(--green)]">罐靈 (91)<br/>蔘罐靈 (93)</td>
+                  <td>
+                    <span class="drop-tag drop-scroll" style="color:#fca5a5;border-color:rgba(239,68,68,0.4);">90等火砲阿貝羅</span>
+                    <span class="drop-tag drop-scroll">手杖攻擊卷軸60%</span>
+                    <span class="drop-tag drop-scroll">太刀工及亞卷軸60%</span>
+                    <span class="drop-tag drop-skill">艾莉亞祈禱20</span>
+                  </td>
+                </tr>
+
+                <!-- 神木村 - 米納 -->
+                <tr class="drop-row" data-map="神木村" data-monster="金屬甲蟲" data-drops="100等黃金火箭砲 雙手斧攻擊卷軸60% 弓攻擊卷軸60% 雷之鑣">
+                  <td rowspan="2" class="map-cell" style="vertical-align:top;">神木村</td>
+                  <td class="text-[var(--green)]">金屬甲蟲 (105)<br/><span style="font-size:0.75rem;color:var(--text-muted);">米納爾森林東邊境界</span></td>
+                  <td>
+                    <span class="drop-tag drop-scroll" style="color:#fca5a5;border-color:rgba(239,68,68,0.4);">100等黃金火箭砲</span>
+                    <span class="drop-tag drop-scroll">雙手斧攻擊卷軸60%</span>
+                    <span class="drop-tag drop-scroll">弓攻擊卷軸60%</span>
+                    <span class="drop-tag drop-equip">雷之鑣</span>
+                  </td>
+                </tr>
+                <tr class="drop-row" data-map="神木村" data-monster="暗黑半人馬" data-drops="100等火砲黃金火箭砲 雙管槍攻擊卷軸60%">
+                  <td class="text-[var(--green)]">暗黑半人馬 (118)<br/><span style="font-size:0.75rem;color:var(--text-muted);">暗黑半人馬馬領土</span></td>
+                  <td>
+                    <span class="drop-tag drop-scroll" style="color:#fca5a5;border-color:rgba(239,68,68,0.4);">100等火砲黃金火箭砲</span>
+                    <span class="drop-tag drop-scroll">雙管槍攻擊卷軸60%</span>
+                  </td>
+                </tr>
+
+                <!-- 玩具城 彎曲的時間 -->
+                <tr class="drop-row" data-map="玩具城 彎曲的時間" data-monster="多立百烈" data-drops="100等火砲黃金火箭砲">
+                  <td rowspan="1" class="map-cell">玩具城<br/><span style="font-size:0.7rem;color:var(--text-muted);">彎曲的時間</span></td>
+                  <td class="text-[var(--green)]">多立百烈 (114)</td>
+                  <td>
+                    <span class="drop-tag drop-scroll" style="color:#fca5a5;border-color:rgba(239,68,68,0.4);">100等火砲黃金火箭砲</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="dropsEmpty" class="hidden text-center py-10 text-[var(--text-muted)]">😕 找不到符合的資料</div>
         </div>
       </div>
 
@@ -921,10 +1058,9 @@
           <button class="job-btn" data-job="cannoneer" onclick="switchJob(this)">💣 重砲指揮官</button>
           <button class="job-btn" data-job="berserker" onclick="switchJob(this)">⚔️ 狂狼勇士</button>
           <button class="job-btn" data-job="bishop" onclick="switchJob(this)">✨ 主教</button>
-          <!-- TODO: 新增其他職業按鈕，例如：
-          <button class="job-btn" data-job="bowmaster" onclick="switchJob(this)">🏹 弓箭手</button>
-          <button class="job-btn" data-job="mage" onclick="switchJob(this)">🔮 法師</button>
-          -->
+          <button class="job-btn" data-job="shinobi" onclick="switchJob(this)">🥷 影武者</button>
+          <button class="job-btn" data-job="bowmaster" onclick="switchJob(this)">🏹 箭神</button>
+          <button class="job-btn" data-job="demonslayer" onclick="switchJob(this)">😈 惡魔殺手</button>
         </div>
 
         <!-- ===== 職業攻略內容區 ===== -->
@@ -1695,11 +1831,785 @@
 
         </div><!-- /job-panel bishop -->
 
+        <!-- ======== 影武者 ======== -->
+        <div class="job-panel" data-job="shinobi">
+          <!-- 轉職說明 -->
+          <div class="card overflow-hidden mb-4">
+            <div style="background:rgba(168,85,247,0.12);border-bottom:1px solid var(--border);padding:0.75rem 1.25rem;">
+              <span style="color:#d8b4fe;font-weight:700;font-size:1rem;">🥷 影武者 轉職說明</span>
+            </div>
+            <div style="padding:1rem 1.25rem;font-size:0.875rem;color:var(--text-dim);line-height:1.9;">
+              <div style="background:rgba(249,115,22,0.08);border-radius:0.5rem;padding:0.75rem 1rem;margin-bottom:1rem;">
+                <span style="color:var(--orange);font-weight:700;">⚠️ 創角提醒：</span>選擇「冒險家」後，創角欄位下方有個勾勾，勾選後默認創立影武者。
+              </div>
+              <div style="margin-bottom:0.5rem;color:var(--text-main);font-weight:600;">轉職路線：</div>
+              <div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:1rem;">
+                <span style="background:rgba(34,197,94,0.15);color:#86efac;padding:0.2rem 0.6rem;border-radius:0.25rem;font-size:0.8rem;">1轉：冒險家盜賊 (10等)</span>
+                <span style="color:var(--text-muted);">→</span>
+                <span style="background:rgba(59,130,246,0.15);color:#93c5fd;padding:0.2rem 0.6rem;border-radius:0.25rem;font-size:0.8rem;">2轉：下忍 (20等)</span>
+                <span style="color:var(--text-muted);">→</span>
+                <span style="background:rgba(59,130,246,0.15);color:#93c5fd;padding:0.2rem 0.6rem;border-radius:0.25rem;font-size:0.8rem;">2轉+：中忍 (30等)</span>
+                <span style="color:var(--text-muted);">→</span>
+                <span style="background:rgba(168,85,247,0.15);color:#d8b4fe;padding:0.2rem 0.6rem;border-radius:0.25rem;font-size:0.8rem;">3轉：上忍 (55等)</span>
+                <span style="color:var(--text-muted);">→</span>
+                <span style="background:rgba(168,85,247,0.15);color:#d8b4fe;padding:0.2rem 0.6rem;border-radius:0.25rem;font-size:0.8rem;">3轉+：隱忍 (70等)</span>
+                <span style="color:var(--text-muted);">→</span>
+                <span style="background:rgba(249,115,22,0.15);color:#fdba74;padding:0.2rem 0.6rem;border-radius:0.25rem;font-size:0.8rem;">4轉：影武者 (120等)</span>
+              </div>
+              <div style="background:rgba(239,68,68,0.08);border-left:3px solid #f87171;padding:0.5rem 0.75rem;border-radius:0 0.25rem 0.25rem 0;font-size:0.82rem;">
+                ❗ 影武者所有轉職任務都必須解，否則無法轉職。建議到達轉職等級再去解任務（1~20等除外，那段邊練邊解）。
+              </div>
+            </div>
+          </div>
+
+          <!-- 轉職任務 -->
+          <div class="card overflow-hidden mb-4">
+            <div style="background:rgba(59,130,246,0.1);border-bottom:1px solid var(--border);padding:0.75rem 1.25rem;">
+              <span style="color:var(--blue);font-weight:700;">📋 轉職任務流程</span>
+            </div>
+            <div style="padding:1rem 1.25rem;display:flex;flex-direction:column;gap:0.5rem;font-size:0.85rem;">
+              <div style="display:flex;gap:0.75rem;padding:0.5rem;border-radius:0.375rem;background:rgba(34,197,94,0.05);">
+                <span style="color:var(--green);font-weight:700;min-width:4rem;">任務1</span>
+                <span style="color:var(--text-dim);">10等時頭頂出現信件 → 與達克魯對話完成轉職</span>
+              </div>
+              <div style="display:flex;gap:0.75rem;padding:0.5rem;border-radius:0.375rem;">
+                <span style="color:var(--green);font-weight:700;min-width:4rem;">任務2</span>
+                <span style="color:var(--text-dim);">得到達克魯信任 → 狩獵10隻菇菇仔（六條岔道）</span>
+              </div>
+              <div style="display:flex;gap:0.75rem;padding:0.5rem;border-radius:0.375rem;background:rgba(34,197,94,0.05);">
+                <span style="color:var(--green);font-weight:700;min-width:4rem;">任務3</span>
+                <span style="color:var(--text-dim);">解決木妖（前往勇士之村）</span>
+              </div>
+              <div style="display:flex;gap:0.75rem;padding:0.5rem;border-radius:0.375rem;">
+                <span style="color:var(--green);font-weight:700;min-width:4rem;">任務4</span>
+                <span style="color:var(--text-dim);">調查：依序找 內拉 → 後街吉姆 → 權達開 → 鴻亞</span>
+              </div>
+              <div style="display:flex;gap:0.75rem;padding:0.5rem;border-radius:0.375rem;background:rgba(34,197,94,0.05);">
+                <span style="color:var(--green);font-weight:700;min-width:4rem;">任務5</span>
+                <span style="color:var(--text-dim);">找2轉教官 → 前往地鐵轉乘區（位置在下層）</span>
+              </div>
+              <div style="display:flex;gap:0.75rem;padding:0.5rem;border-radius:0.375rem;">
+                <span style="color:var(--green);font-weight:700;min-width:4rem;">任務6</span>
+                <span style="color:var(--text-dim);">打20個秘密地圖：藍水靈（魔法森林）、綠菇菇（弓箭手村）</span>
+              </div>
+              <div style="display:flex;gap:0.75rem;padding:0.5rem;border-radius:0.375rem;background:rgba(34,197,94,0.05);">
+                <span style="color:var(--green);font-weight:700;min-width:4rem;">任務7</span>
+                <span style="color:var(--text-dim);">收集樹葉 → 勇士之村 找黑木妖收集20個</span>
+              </div>
+              <div style="display:flex;gap:0.75rem;padding:0.5rem;border-radius:0.375rem;">
+                <span style="color:var(--green);font-weight:700;min-width:4rem;">任務8</span>
+                <span style="color:var(--text-dim);">張貼布告 → 到酒吧設立炸彈（有內建任務提示，跟著走）</span>
+              </div>
+              <div style="display:flex;gap:0.75rem;padding:0.5rem;border-radius:0.375rem;background:rgba(34,197,94,0.05);">
+                <span style="color:var(--green);font-weight:700;min-width:4rem;">任務9</span>
+                <span style="color:var(--text-dim);">收集影武者印章各5個：三眼章魚 / 藍水靈 / 蝙蝠 / 黑木妖</span>
+              </div>
+              <div style="display:flex;gap:0.75rem;padding:0.5rem;border-radius:0.375rem;">
+                <span style="color:var(--green);font-weight:700;min-width:4rem;">任務10</span>
+                <span style="color:var(--text-dim);">西巴 → 妍羽 → 雪姬 對話完成 → 20等可進行2轉</span>
+              </div>
+              <div style="display:flex;gap:0.75rem;padding:0.5rem;border-radius:0.375rem;background:rgba(59,130,246,0.05);">
+                <span style="color:#93c5fd;font-weight:700;min-width:4rem;">任務11</span>
+                <span style="color:var(--text-dim);">28等開啟【建議30等再來】：從西巴接「目擊者」→ 找權達開 → 勇士之村找麥吉 → 回覆雪姬</span>
+              </div>
+              <div style="display:flex;gap:0.75rem;padding:0.5rem;border-radius:0.375rem;background:rgba(59,130,246,0.05);">
+                <span style="color:#93c5fd;font-weight:700;min-width:4rem;">任務12</span>
+                <span style="color:var(--text-dim);">雪姬要找回父親的日記本 → 墮落城市酒吧的秘密房間 → 30等可轉中忍</span>
+              </div>
+              <div style="display:flex;gap:0.75rem;padding:0.5rem;border-radius:0.375rem;background:rgba(168,85,247,0.05);">
+                <span style="color:#d8b4fe;font-weight:700;min-width:4rem;">任務13</span>
+                <span style="color:var(--text-dim);">54等開啟【建議55等再來】：冰原雪域長老公館 → 擊敗100隻白狼、蒐集50個狼尾 → 55等後完成轉上忍</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 練等地點 -->
+          <div class="card overflow-hidden mb-4">
+            <div class="text-xs font-bold uppercase tracking-wider px-4 py-3 border-b border-[var(--border)]" style="background:rgba(249,115,22,0.1); color:var(--orange); display:grid; grid-template-columns:90px 160px 180px 1fr; gap:0.75rem;">
+              <div>等級</div><div>地圖</div><div>怪物</div><div>備註</div>
+            </div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">10–20</div><div class="lv-map">墮落城市周圍</div><div class="lv-mob">三眼章魚</div><div class="lv-drops">搭配職業任務一起做</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">20–30</div><div class="lv-map">石巨人寺院</div><div class="lv-mob">火焰石巨人</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">30–40</div><div class="lv-map">組隊副本</div><div class="lv-mob">消失的地鐵 / 墮落廣場頂樓 CD</div><div class="lv-drops">主題副本：菇阿桃王國 → 接消失的地鐵</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">40–45</div><div class="lv-map">墮落廣場頂樓 CD</div><div class="lv-mob">Lv41 / Lv42</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">45–50</div><div class="lv-map">寧靜的沼澤</div><div class="lv-mob">土龍 (Lv50)</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">50–55</div><div class="lv-map">童話村</div><div class="lv-mob">月妙 (Lv55) / 三尾狐 (Lv62)</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">55–65</div><div class="lv-map">童話村</div><div class="lv-mob">三尾狐 (Lv62)</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">65–75</div><div class="lv-map">玩具城</div><div class="lv-mob">進化妖魔 (Lv74)</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(249,115,22,0.15);color:#fdba74;">75–85</div><div class="lv-map">瑪迦提亞城</div><div class="lv-mob">鋰礦穆太 (Lv86)</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(249,115,22,0.15);color:#fdba74;">85–100</div><div class="lv-map">瑪迦提亞城 C-2</div><div class="lv-mob">洛伊德 (Lv88) / 奈歐洛伊德 (Lv89)<br/>閒人勿進 賽伊德 (Lv95)</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(239,68,68,0.15);color:#fca5a5;">100–110</div><div class="lv-map">玩具城後半部</div><div class="lv-mob">怨靈發條熊 (Lv110)</div><div class="lv-drops">目標：夢幻龍之雙刀 / 多力百列 Lv114 / 怨靈發條熊隊長 Lv116</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(239,68,68,0.15);color:#fca5a5;">110–125</div><div class="lv-map">玩具城後半部</div><div class="lv-mob">多力百列 (Lv114)<br/>怨靈發條熊隊長 (Lv116)</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">125–130</div><div class="lv-map">龍森林入口</div><div class="lv-mob">藍色雙角龍 (Lv127)</div><div class="lv-drops">—</div></div>
+            <div class="lv-row" style="border-bottom:none;"><div class="lv-badge" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">130–140</div><div class="lv-map">寒酸冰龍隱藏圖</div><div class="lv-mob">三色翼龍 (Lv134/138/141)</div><div class="lv-drops">—</div></div>
+          </div>
+
+          <!-- 技能配點 -->
+          <div class="card overflow-hidden">
+            <div class="px-4 py-3 border-b border-[var(--border)]" style="background:rgba(168,85,247,0.1);color:#d8b4fe;font-weight:700;font-size:0.875rem;">🔮 技能配點建議（需準備 SP 重製卷）</div>
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-1"><span class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">1轉</span><span style="font-size:0.75rem;color:var(--text-muted);">冒險家盜賊 (10~30等，共61點)</span></div>
+              <div style="color:var(--text-dim);font-size:0.84rem;line-height:1.9;">
+                劈空斬10（<span style="color:#f87171;">中忍轉職後需洗掉</span>），其餘技能點數存下
+              </div>
+            </div>
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-1"><span class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">2轉</span><span style="font-size:0.75rem;color:var(--text-muted);">下忍 (共需84點，缺23點由中忍/上忍補)</span></div>
+              <div style="color:var(--text-dim);font-size:0.84rem;line-height:1.9;">
+                三重斬1（<span style="color:#f87171;">中忍後洗掉</span>）→ 雙刀精通20 → 神速雙刀20 → 幻化術20（由中忍+上忍點數補）→ 詛咒術3 → 隱身術10（由中忍+上忍補）
+              </div>
+            </div>
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-1"><span class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">2轉+</span><span style="font-size:0.75rem;color:var(--text-muted);">中忍 (30~55等，共61點)</span></div>
+              <div style="color:var(--text-dim);font-size:0.84rem;line-height:1.9;">
+                優先：旋風斬1 → 自我速度激發20 → 旋風斬20<br/>
+                自我速度激發20 / 旋風斬20 / 黑暗抵抗20 / 分身斬1
+              </div>
+            </div>
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-1"><span class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">3轉</span><span style="font-size:0.75rem;color:var(--text-muted);">上忍 (55~70等，共48點)</span></div>
+              <div style="color:var(--text-dim);font-size:0.84rem;line-height:1.9;">
+                優先：二段跳1 → 雙刃旋1 → 躍空斬1 → 二段跳15<br/>
+                二段跳15 / 雙刃旋8 / 照明彈5 / 躍空斬20
+              </div>
+            </div>
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-1"><span class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">3轉+</span><span style="font-size:0.75rem;color:var(--text-muted);">隱忍 (70~120等，共需120點)</span></div>
+              <div style="color:var(--text-dim);font-size:0.84rem;line-height:1.9;">
+                優先：翔空落葉斬1 → 替身術1 → 血腥風暴1 → 替身術30 → 血腥風暴10 → 翔空落葉斬30<br/>
+                血腥風暴10 / 進階隱身10 / 替身術30 / 召喚貓頭鷹20 / 翔空落葉斬20 / 隱．鎖鏈地獄20 / 竊取生命10<br/>
+                <span style="color:var(--text-muted);font-size:0.78rem;">此階段共151點可用，共需120點，剩餘31點補回前期技能</span>
+              </div>
+            </div>
+            <div style="padding:1rem 1.25rem;">
+              <div class="flex items-center gap-2 mb-1"><span class="lv-badge" style="background:rgba(249,115,22,0.15);color:#fdba74;">4轉</span><span style="font-size:0.75rem;color:var(--text-muted);">影武者 (120等+)</span></div>
+              <div style="color:var(--text-dim);font-size:0.84rem;line-height:1.9;">
+                優先：銳利1 → 幻影箭1 → 短劍護佑1 → 絕殺刃1 → 荊棘特效1 → 銳利10 → 荊棘特效30 → 絕殺刃30<br/>
+                全部點滿。
+              </div>
+            </div>
+          </div>
+        </div><!-- /job-panel shinobi -->
+
+        <!-- ======== 箭神 ======== -->
+        <div class="job-panel" data-job="bowmaster">
+          <div class="card overflow-hidden mb-4">
+            <div style="background:rgba(34,197,94,0.1);border-bottom:1px solid var(--border);padding:0.75rem 1.25rem;">
+              <span style="color:var(--green);font-weight:700;font-size:1rem;">🏹 箭神 攻略總覽</span>
+            </div>
+            <div style="padding:1rem 1.25rem;font-size:0.85rem;color:var(--text-dim);line-height:1.8;">
+              <span style="color:var(--orange);font-weight:600;">⚠️ 注意：</span>不要照測試服練等路線走！楓星經驗獲取很重要的途徑是打王，純粹照練等路線走玩起來會很牢。
+              <br/>箭神前中期較辛苦，但130等後會心滿即是各大王團的香餑餑，後期輸出 T0 等級。
+            </div>
+          </div>
+
+          <!-- 練等路線 -->
+          <div class="card overflow-hidden mb-4">
+            <div class="text-xs font-bold uppercase tracking-wider px-4 py-3 border-b border-[var(--border)]" style="background:rgba(249,115,22,0.1); color:var(--orange); display:grid; grid-template-columns:90px 160px 180px 1fr; gap:0.75rem;">
+              <div>等級</div><div>地圖</div><div>怪物</div><div>建議掉落物</div>
+            </div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">1–10</div><div class="lv-map">楓島</div><div class="lv-mob">—</div><div class="lv-drops">解任務</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">10–20</div><div class="lv-map">弓箭手村</div><div class="lv-mob">綠菇菇 / 刺菇菇</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">20–30</div><div class="lv-map">石巨人寺院</div><div class="lv-mob">石巨人 / 混種</div><div class="lv-drops"><span class="drop-tag drop-equip">弓攻擊60%</span><span class="drop-tag drop-equip">手攻60%</span></div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">30–37</div><div class="lv-map">菇菇王城</div><div class="lv-mob">—</div><div class="lv-drops">解任務</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">37–45</div><div class="lv-map">組隊CD</div><div class="lv-mob">—</div><div class="lv-drops"><span class="drop-tag drop-equip">40等女下衣</span><span class="drop-tag drop-equip">50等弓</span></div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">45–55</div><div class="lv-map">童話村</div><div class="lv-mob">月妙 / 九尾妖狐</div><div class="lv-drops"><span class="drop-tag drop-equip">50等鞋</span><span class="drop-tag drop-equip">50等手</span><span class="drop-tag drop-equip">60/70頭</span><span class="drop-tag drop-equip">70等弓</span></div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">55–65</div><div class="lv-map">—</div><div class="lv-mob">鬼怪</div><div class="lv-drops"><span class="drop-tag drop-equip">70等頭</span><span class="drop-tag drop-skill">天使祝福</span></div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">65–70</div><div class="lv-map">—</div><div class="lv-mob">小蛇</div><div class="lv-drops"><span class="drop-tag drop-equip">70/80等女套</span></div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">70–75</div><div class="lv-map">—</div><div class="lv-mob">地鼠</div><div class="lv-drops"><span class="drop-tag drop-equip">60等弓</span><span class="drop-tag drop-equip">80等手</span></div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">75–85</div><div class="lv-map">卡帕萊特 C-2</div><div class="lv-mob">洛伊德 / 奈歐洛伊德</div><div class="lv-drops"><span class="drop-tag drop-equip">80等女套</span><span class="drop-tag drop-equip">80/90等鞋</span><span class="drop-tag drop-equip">80等弓</span></div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(249,115,22,0.15);color:#fdba74;">85–120</div><div class="lv-map">閒人勿入 / 金勾2</div><div class="lv-mob">賽伊德 / 船員克魯 / 大副凱丁</div><div class="lv-drops"><span class="drop-tag drop-equip">100等女套</span><span class="drop-tag drop-equip">混沌60</span><span class="drop-tag drop-scroll">混沌卷軸60%</span></div></div>
+            <div class="lv-note">💬 98–120也可去綠船</div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(239,68,68,0.15);color:#fca5a5;">120–130</div><div class="lv-map">綠船</div><div class="lv-mob">—</div><div class="lv-drops"><span class="drop-tag drop-equip">80等男/女套</span><span class="drop-tag drop-equip">80/90等手</span><span class="drop-tag drop-equip">70等弓</span></div></div>
+            <div class="lv-note">💬 120等必解十字軍團任務（獎勵很肥）。建議不要等120才一次解，要提早累積十字硬幣。125開始可以單吃拉圖（一週3場）。</div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(239,68,68,0.15);color:#fca5a5;">130–136</div><div class="lv-map">神木村</div><div class="lv-mob">白狼人 / 雪毛怪人 / 格瑞芬多 / 噴火龍</div><div class="lv-drops"><span class="drop-tag drop-equip">85等耳環</span><span class="drop-tag drop-equip">90/100等弓</span><span class="drop-tag drop-equip">130等弓臉</span></div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">136–145</div><div class="lv-map">翼龍峽谷</div><div class="lv-mob">翼龍系列</div><div class="lv-drops"><span class="drop-tag drop-equip">100等鞋</span><span class="drop-tag drop-equip">120等力腰</span><span class="drop-tag drop-equip">120等弓臉</span></div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">145–150</div><div class="lv-map">—</div><div class="lv-mob">蛋龍</div><div class="lv-drops"><span class="drop-tag drop-equip">100等頭/鞋/手/弓</span><span class="drop-tag drop-equip">120等弓臉/敏肩</span><span class="drop-tag drop-equip">130合金箭</span></div></div>
+            <div class="lv-row" style="border-bottom:none;"><div class="lv-badge" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">150–165</div><div class="lv-map">本能寺</div><div class="lv-mob">—</div><div class="lv-drops"><span class="drop-tag drop-equip">100等手/弓/女套</span><span class="drop-tag drop-equip">120等霓翎頭/手</span></div></div>
+          </div>
+
+          <!-- 心法 -->
+          <div class="card overflow-hidden mb-4">
+            <div class="px-4 py-3 border-b border-[var(--border)]" style="background:rgba(34,197,94,0.1);color:var(--green);font-weight:700;font-size:0.875rem;">💡 練功心法</div>
+            <div style="padding:1rem 1.25rem;display:flex;flex-direction:column;gap:0.75rem;font-size:0.85rem;color:var(--text-dim);">
+              <div style="display:flex;gap:0.5rem;"><span style="color:var(--orange);font-weight:700;min-width:1.5rem;">1.</span><span>不要等120才解十字軍團！隨等級慢慢開啟解完，硬幣累積更多，每天15次傳送門打完，硬幣多、經驗也不俗。</span></div>
+              <div style="display:flex;gap:0.5rem;"><span style="color:var(--orange);font-weight:700;min-width:1.5rem;">2.</span><span>練功練到疲乏時，打附近的王或解高CP任務（天空、冰原20名聲任務、沙漠超稀有鋰母礦任務…）或解王的前置。</span></div>
+              <div style="display:flex;gap:0.5rem;"><span style="color:var(--orange);font-weight:700;min-width:1.5rem;">3.</span><span>每天的怪公3場及組隊100硬幣必打。</span></div>
+              <div style="background:rgba(34,197,94,0.08);border-radius:0.375rem;padding:0.75rem;border-left:3px solid var(--green);">技巧：箭雨 vs 火焰箭看地圖怪物分佈決定。有時二段跳進去箭雨，有時在外面放火焰箭，透過練習找到最適合自己的節奏。</div>
+            </div>
+          </div>
+
+          <!-- 技能配點 -->
+          <div class="card overflow-hidden">
+            <div class="px-4 py-3 border-b border-[var(--border)]" style="background:rgba(59,130,246,0.1);color:var(--blue);font-weight:700;font-size:0.875rem;">🔮 技能配點建議</div>
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-1"><span class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">1轉</span></div>
+              <div style="color:var(--text-dim);font-size:0.84rem;line-height:1.9;">二連箭11其餘滿：斷魂箭1 → 精通射手15 → 霸王箭20 → 斷魂箭15 → 二連箭11</div>
+            </div>
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-1"><span class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">2轉</span></div>
+              <div style="color:var(--text-dim);font-size:0.84rem;line-height:1.9;">銀鷹召喚11其餘滿：炸彈箭1 → 精準之弓5 → 快速之弓5 → 無形之箭1 → 雙重跳躍1 → 銀鷹召喚1 → 體能訓練10 → 精準之弓20 → 炸彈箭20 → 雙重跳躍10 → 終極之弓20 → 無形之箭10 → 快速之弓20 → 銀鷹召喚11</div>
+            </div>
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-1"><span class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">3轉</span></div>
+              <div style="color:var(--text-dim);font-size:0.84rem;line-height:1.9;">四連箭11其餘滿：火焰衝擊1 → 致命箭5 → 箭雨1 → 替身術1 → 四連箭1 → 箭雨20 → 集中20 → 躲避10 → 致命箭15 → 火焰衝擊20 → 四連箭11 → 替身術15 → 召喚鳳凰20 → 吸血箭20</div>
+            </div>
+            <div style="padding:1rem 1.25rem;">
+              <div class="flex items-center gap-2 mb-2"><span class="lv-badge" style="background:rgba(249,115,22,0.15);color:#fdba74;">4轉</span></div>
+              <div style="display:flex;flex-direction:column;gap:0.6rem;font-size:0.83rem;color:var(--text-dim);">
+                <div style="background:var(--bg-panel);border-radius:0.375rem;padding:0.6rem 0.8rem;"><span style="color:var(--green);font-weight:700;">Lv120–130</span>（綁定，無其他選擇）：暴風1 → 終極火焰1 → 精銳替身1 → <span style="color:var(--gold);">會心30</span>（必點，這是你進王團的籌碼）</div>
+                <div style="background:var(--bg-panel);border-radius:0.375rem;padding:0.6rem 0.8rem;"><span style="color:var(--blue);font-weight:700;">Lv131–140</span>（分歧）：
+                  <br/>裝備強：精通先滿 → 鳳凰後滿
+                  <br/>小資玩家：鳳凰先滿（增血量、雙防、抗性）→ 精通後滿</div>
+                <div style="background:var(--bg-panel);border-radius:0.375rem;padding:0.6rem 0.8rem;"><span style="color:#d8b4fe;font-weight:700;">Lv151–160</span>：暴風神射30</div>
+                <div style="background:var(--bg-panel);border-radius:0.375rem;padding:0.6rem 0.8rem;"><span style="color:var(--gold);font-weight:700;">Lv161–170</span>：爆發30（%敏潛能高時）→ 進階終極攻擊30</div>
+                <div style="background:var(--bg-panel);border-radius:0.375rem;padding:0.6rem 0.8rem;"><span style="color:var(--orange);font-weight:700;">Lv181–200</span>：精銳替身術15 → 楓葉淨化3 → 楓葉祝福29 → 終極火焰衝擊5</div>
+              </div>
+              <div class="lv-note" style="margin-top:1rem;">
+                💬 <strong>四轉初期：</strong>我會心滿，保證不斷。<br/>
+                💬 <strong>四轉中期：</strong>拜託活著！<br/>
+                💬 <strong>四轉後期：</strong>輸出我來，楓祝你們補。<br/>
+                終極火焰只點1的原因：中後期以「團練」為主，隊友在意的是你的會心有沒有斷，而非火焰等級。楓祝也很晚點——賣點是會心滿，不是楓祝30。
+              </div>
+            </div>
+          </div>
+        </div><!-- /job-panel bowmaster -->
+
+        <!-- ======== 惡魔殺手 ======== -->
+        <div class="job-panel" data-job="demonslayer">
+          <div class="card overflow-hidden mb-4">
+            <div style="background:rgba(244,63,94,0.1);border-bottom:1px solid var(--border);padding:0.75rem 1.25rem;">
+              <span style="color:#f43f5e;font-weight:700;font-size:1rem;">😈 惡魔殺手 職業說明</span>
+            </div>
+            <div style="padding:1rem 1.25rem;">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.75rem;font-size:0.84rem;">
+                <div style="background:var(--bg-panel);border-radius:0.5rem;padding:0.75rem;"><div style="color:var(--green);font-weight:700;margin-bottom:0.3rem;">練功能力</div><div style="color:var(--text-dim);">T1 中前段強度。1轉鐮刀刮石巨人，2轉各種聚怪，3轉靠普攻+口臭佈雷斯有不錯的野怪經驗。</div></div>
+                <div style="background:var(--bg-panel);border-radius:0.5rem;padding:0.75rem;"><div style="color:var(--blue);font-weight:700;margin-bottom:0.3rem;">機動性</div><div style="color:var(--text-dim);">有上跳（注意：跳太低的平台請勿上跳，下降時間久）。滑翔加上跳機動性佳。</div></div>
+                <div style="background:var(--bg-panel);border-radius:0.5rem;padding:0.75rem;"><div style="color:var(--orange);font-weight:700;margin-bottom:0.3rem;">打王前期</div><div style="color:var(--text-dim);">混龍前的王：多體王 DF 補充快，主攻技可以一直戳，惡殺的主場。</div></div>
+                <div style="background:var(--bg-panel);border-radius:0.5rem;padding:0.75rem;"><div style="color:#f43f5e;font-weight:700;margin-bottom:0.3rem;">打王後期</div><div style="color:var(--text-dim);">160等後：收集DF受限，但有30秒無限DF爆發。從平砍職業變成微爆發職業。</div></div>
+                <div style="background:var(--bg-panel);border-radius:0.5rem;padding:0.75rem;"><div style="color:#d8b4fe;font-weight:700;margin-bottom:0.3rem;">輔助能力</div><div style="color:var(--text-dim);">吶喊降防15秒可讓物理輸出提升約8-10%。綁王10秒（攻略女皇最後非常有用）。</div></div>
+              </div>
+              <div class="lv-note" style="margin-top:0.75rem;">💬 四轉送的120武器<strong>不要丟掉</strong>！攻速比一般單手棍/斧快，有女皇/夢幻龍之前最強武器，未來替換後還可轉成練功用武器。</div>
+              <div class="lv-note" style="margin-top:0.5rem;">💬 <strong>2轉</strong>要去水池旁找喵怪仙人（水池位置在出生地左邊二張圖）。<strong>4轉</strong>要按否（表達不滿足現在力量才能四轉）。象徵/惡魔盾在埃德爾斯坦武器店有賣。</div>
+            </div>
+          </div>
+
+          <!-- 練等地點 -->
+          <div class="card overflow-hidden mb-4">
+            <div class="text-xs font-bold uppercase tracking-wider px-4 py-3 border-b border-[var(--border)]" style="background:rgba(249,115,22,0.1); color:var(--orange); display:grid; grid-template-columns:90px 160px 180px 1fr; gap:0.75rem;">
+              <div>等級</div><div>地圖</div><div>怪物</div><div>備註</div>
+            </div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">10–20</div><div class="lv-map">—</div><div class="lv-mob">路燈</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">20–30</div><div class="lv-map">石巨人寺院</div><div class="lv-mob">寒冰/火焰石巨人</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">30–40</div><div class="lv-map">—</div><div class="lv-mob">鬼兔尼</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">40–50</div><div class="lv-map">—</div><div class="lv-mob">CD</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">50–60</div><div class="lv-map">奇幻村</div><div class="lv-mob">土龍及後面各種龍</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">60–80</div><div class="lv-map">納希沙漠</div><div class="lv-mob">沙漠地鼠 / 毒蠍</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(234,179,8,0.15);color:#fde047;">80–100</div><div class="lv-map">卡帕萊特研究所</div><div class="lv-mob">C-2 / 閒人勿入</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(249,115,22,0.15);color:#fdba74;">100–120</div><div class="lv-map">綠船 / 金勾2</div><div class="lv-mob">人馬迷你地城</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(239,68,68,0.15);color:#fca5a5;">120–130</div><div class="lv-map">獅子王城</div><div class="lv-mob">—</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">130–145</div><div class="lv-map">翼龍峽谷</div><div class="lv-mob">（有倒地騎士那張）</div><div class="lv-drops">—</div></div>
+            <div class="lv-row"><div class="lv-badge" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">145–160</div><div class="lv-map">本能寺前院</div><div class="lv-mob">—</div><div class="lv-drops">—</div></div>
+            <div class="lv-row" style="border-bottom:none;"><div class="lv-badge" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">165–200</div><div class="lv-map">練武場 / 昭和街道2 / 火貍金融</div><div class="lv-mob">—</div><div class="lv-drops">160–165可在未來之門攻守村或繼續本能寺</div></div>
+          </div>
+
+          <!-- 技能配點 -->
+          <div class="card overflow-hidden">
+            <div class="px-4 py-3 border-b border-[var(--border)]" style="background:rgba(244,63,94,0.1);color:#f43f5e;font-weight:700;font-size:0.875rem;">🔮 技能配點建議</div>
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-1"><span class="lv-badge" style="background:rgba(34,197,94,0.15);color:#86efac;">1轉</span></div>
+              <div style="color:var(--text-dim);font-size:0.84rem;line-height:1.9;">
+                <span style="color:var(--blue);font-weight:600;">有寵物：</span>惡魔狂斬1 → 魔力鐮刀1 → 惡魔推進器1 → 黑暗敏捷10 → 惡魔狂斬10 → 惡魔推進器20 → HP增加10 → 魔力鐮刀15<br/>
+                <span style="color:var(--orange);font-weight:600;">沒寵物：</span>惡魔狂斬1 → 魔力鐮刀1 → 黑暗敏捷10 → 惡魔推進器20 → 惡魔狂斬10 → HP增加10 → 魔力鐮刀15
+              </div>
+              <div class="lv-note" style="margin-top:0.5rem;">💬 HP 是加總量，不會因早晚點損失血量。</div>
+            </div>
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-1"><span class="lv-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;">2轉</span></div>
+              <div style="color:var(--text-dim);font-size:0.84rem;line-height:1.9;">次強化1 → 靈魂吸收1 → 黑暗疾風步1 → 憤怒20 → 體能訓練5 → 武器精通10 → 靈魂吸收20 → 黑暗疾風步20 → 黑暗復仇10 → 惡魔追擊8（追擊是移動招，看個人手法）</div>
+            </div>
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);">
+              <div class="flex items-center gap-2 mb-1"><span class="lv-badge" style="background:rgba(168,85,247,0.15);color:#d8b4fe;">3轉</span></div>
+              <div style="color:var(--text-dim);font-size:0.84rem;line-height:1.9;">2次強化1 → 惡魔佈雷斯1 → 死亡之握1 → 集中精神1 → 強化惡魔之力5 → 集中精神20 → 邪惡酷刑10 → 惡魔佈雷斯20 → 黑暗耐力10 → 力量防禦10 → 血腥烏鴉10 → 死亡之握20 → 黑暗審判18</div>
+              <div class="lv-note" style="margin-top:0.5rem;">💬 集中精神加攻速加快吸收DF，可以更快拉怪+口臭打群怪。審判僵直大，不喜歡的可以跟拉怪互換。</div>
+            </div>
+            <div style="padding:1rem 1.25rem;">
+              <div class="flex items-center gap-2 mb-2"><span class="lv-badge" style="background:rgba(249,115,22,0.15);color:#fdba74;">4轉</span></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;font-size:0.83rem;">
+                <div style="background:var(--bg-panel);border-radius:0.5rem;padding:0.75rem;">
+                  <div style="color:var(--orange);font-weight:700;margin-bottom:0.35rem;">💪 大腿打王派</div>
+                  <div style="color:var(--text-dim);">最終強化1 → 惡魔衝擊1 → 魔力吶喊1 → 變形20/30 → 進階武器精通20/30 → 無限力量15 → 惡魔衝擊20/30 → 魔力吶喊20 → 黑暗拘束10 → 堅硬肌膚28 → 楓葉祝福30 → 吸血鬼之觸15</div>
+                </div>
+                <div style="background:var(--bg-panel);border-radius:0.5rem;padding:0.75rem;">
+                  <div style="color:var(--blue);font-weight:700;margin-bottom:0.35rem;">🛡️ 偏輔助派</div>
+                  <div style="color:var(--text-dim);">最終強化1 → 惡魔衝擊1 → 魔力吶喊1 → 變形20/30 → 進階武器精通20/30 → 魔力吶喊20 → 黑暗拘束10 → 無限力量15 → 惡魔衝擊20/30 → 堅硬肌膚28 → 楓葉祝福30 → 吸血鬼之觸15</div>
+                </div>
+              </div>
+              <div class="lv-note" style="margin-top:0.75rem;">
+                💬 <strong>堅硬肌膚28＝減傷10%＝30</strong>，所以點28就好，200等再補滿。<br/>
+                💬 <strong>變形30 vs 20：</strong>傷害差距約10-15%。如果技能書太貴就先投資武器，20也可以用。<br/>
+                💬 <strong>大腿打王：</strong>無限力量15後可無限DF 30秒，這30秒全灌衝擊。高階王可補吶喊降防增傷。<br/>
+                💬 <strong>輔助派：</strong>讓隊友最大輸出，在機制摸透、打王能力提升後再逐步調整。
+              </div>
+            </div>
+          </div>
+        </div><!-- /job-panel demonslayer -->
+
+    </div><!-- /p-4 md:p-6 -->
+
+      <!-- ==================== 疑難雜症解答 ==================== -->
+      <div id="tab-faq" class="tab-content p-4 md:p-6">
+        <h1 class="text-xl font-bold flex items-center gap-2 mb-2" style="color:var(--gold);">
+          <span>❓</span> 疑難雜症解答
+        </h1>
+        <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:1.5rem;">楓星常見問題整理，遇到卡關先來這裡查！</p>
+
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+
+          <!-- Q1 -->
+          <div class="card overflow-hidden">
+            <div style="background:rgba(234,179,8,0.1);border-bottom:1px solid var(--border);padding:0.75rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+              <span style="background:rgba(234,179,8,0.2);color:var(--gold);font-weight:700;padding:0.1rem 0.5rem;border-radius:0.25rem;font-size:0.8rem;">Q1</span>
+              <span style="color:var(--text-main);font-weight:600;">冒險家四轉只能打噴火龍跟格瑞芬多嗎？</span>
+            </div>
+            <div style="padding:0.875rem 1.25rem;color:var(--text-dim);font-size:0.875rem;line-height:1.8;">
+              可以到<strong style="color:var(--orange);">「玩具城左邊」</strong>的<strong style="color:var(--orange);">「愛奧斯塔」66樓</strong>找 NPC，花 <strong>1000萬楓幣</strong>買密咒給神木村長塔塔曼，換取兩個勳章，即可解鎖其他區域。
+            </div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="card overflow-hidden">
+            <div style="background:rgba(234,179,8,0.1);border-bottom:1px solid var(--border);padding:0.75rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+              <span style="background:rgba(234,179,8,0.2);color:var(--gold);font-weight:700;padding:0.1rem 0.5rem;border-radius:0.25rem;font-size:0.8rem;">Q2</span>
+              <span style="color:var(--text-main);font-weight:600;">皇家騎士團怎麼沒有4轉技能？</span>
+            </div>
+            <div style="padding:0.875rem 1.25rem;color:var(--text-dim);font-size:0.875rem;line-height:1.8;">
+              因為<strong style="color:#f87171;">皇家騎士團根本就沒有4轉！</strong>轉職任務前面會掛「轉職」兩個紅字的才是，沒有就是沒有。<br/>
+              不過，冒險家可以解任務獲取騎士團的技能——就是要打「<strong>元露</strong>」那個任務。
+            </div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="card overflow-hidden">
+            <div style="background:rgba(234,179,8,0.1);border-bottom:1px solid var(--border);padding:0.75rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+              <span style="background:rgba(234,179,8,0.2);color:var(--gold);font-weight:700;padding:0.1rem 0.5rem;border-radius:0.25rem;font-size:0.8rem;">Q3</span>
+              <span style="color:var(--text-main);font-weight:600;">有沒有開放終極冒險家？</span>
+            </div>
+            <div style="padding:0.875rem 1.25rem;color:var(--text-dim);font-size:0.875rem;line-height:1.8;">
+              目前<strong style="color:#f87171;">沒有開放</strong>終極冒險家。但冒險家可以解任務獲取騎士團的技能（要打元露那個任務）。
+            </div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="card overflow-hidden">
+            <div style="background:rgba(234,179,8,0.1);border-bottom:1px solid var(--border);padding:0.75rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+              <span style="background:rgba(234,179,8,0.2);color:var(--gold);font-weight:700;padding:0.1rem 0.5rem;border-radius:0.25rem;font-size:0.8rem;">Q4</span>
+              <span style="color:var(--text-main);font-weight:600;">怪物公園 / 遠征隊 次數更新時間？</span>
+            </div>
+            <div style="padding:0.875rem 1.25rem;font-size:0.875rem;line-height:1.8;display:flex;gap:1rem;flex-wrap:wrap;">
+              <div style="background:rgba(34,197,94,0.08);border-radius:0.375rem;padding:0.5rem 0.75rem;">
+                <span style="color:var(--green);font-weight:700;">每日重置：</span><span style="color:var(--text-dim);">每日凌晨 4:00</span>
+              </div>
+              <div style="background:rgba(59,130,246,0.08);border-radius:0.375rem;padding:0.5rem 0.75rem;">
+                <span style="color:var(--blue);font-weight:700;">每週重置：</span><span style="color:var(--text-dim);">每週一 凌晨 4:00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="card overflow-hidden">
+            <div style="background:rgba(234,179,8,0.1);border-bottom:1px solid var(--border);padding:0.75rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+              <span style="background:rgba(234,179,8,0.2);color:var(--gold);font-weight:700;padding:0.1rem 0.5rem;border-radius:0.25rem;font-size:0.8rem;">Q5</span>
+              <span style="color:var(--text-main);font-weight:600;">為什麼等不到往天空之城的船？</span>
+            </div>
+            <div style="padding:0.875rem 1.25rem;color:var(--text-dim);font-size:0.875rem;line-height:1.8;">
+              <strong style="color:var(--orange);">不要等！</strong>天空之城的船 1 小時才 1 班，搭上去還要超久才能到。<br/>
+              請跟 NPC 買 <strong>木製飛機</strong>或<strong>紅色飛機</strong>，隨時能搭乘。<br/>
+              <span style="color:var(--text-muted);font-size:0.82rem;">※ 木製 vs 紅色：紅色比正常搭乘時間少兩分鐘。</span>
+            </div>
+          </div>
+
+          <!-- Q6 -->
+          <div class="card overflow-hidden">
+            <div style="background:rgba(234,179,8,0.1);border-bottom:1px solid var(--border);padding:0.75rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+              <span style="background:rgba(234,179,8,0.2);color:var(--gold);font-weight:700;padding:0.1rem 0.5rem;border-radius:0.25rem;font-size:0.8rem;">Q6</span>
+              <span style="color:var(--text-main);font-weight:600;">口袋欄位怎麼打開？</span>
+            </div>
+            <div style="padding:0.875rem 1.25rem;color:var(--text-dim);font-size:0.875rem;line-height:1.8;">
+              條件：<strong style="color:var(--orange);">魅力等級達到 30</strong> → 跟左邊燈泡接取「<strong>獻給有魅力之人的任務</strong>」→ 透過採集獲取「<strong>一朵玫瑰花</strong>」→ 完成任務即可開啟。<br/>
+              <span style="color:var(--text-muted);font-size:0.82rem;">💬 沒耐心的話可以多花楓幣跟玩家買玫瑰花。</span>
+            </div>
+          </div>
+
+          <!-- Q7 -->
+          <div class="card overflow-hidden">
+            <div style="background:rgba(234,179,8,0.1);border-bottom:1px solid var(--border);padding:0.75rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+              <span style="background:rgba(234,179,8,0.2);color:var(--gold);font-weight:700;padding:0.1rem 0.5rem;border-radius:0.25rem;font-size:0.8rem;">Q7</span>
+              <span style="color:var(--text-main);font-weight:600;">怎麼去 101 大道？</span>
+            </div>
+            <div style="padding:0.875rem 1.25rem;color:var(--text-dim);font-size:0.875rem;line-height:1.8;">
+              到<strong style="color:var(--orange);">墮落城市的地鐵售票處</strong> → 光點按上 → 選「<strong>墮落城市廣場的地鐵</strong>」即可前往。
+            </div>
+          </div>
+
+          <!-- Q8 -->
+          <div class="card overflow-hidden">
+            <div style="background:rgba(234,179,8,0.1);border-bottom:1px solid var(--border);padding:0.75rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+              <span style="background:rgba(234,179,8,0.2);color:var(--gold);font-weight:700;padding:0.1rem 0.5rem;border-radius:0.25rem;font-size:0.8rem;">Q8</span>
+              <span style="color:var(--text-main);font-weight:600;">怎麼去日本神社？</span>
+            </div>
+            <div style="padding:0.875rem 1.25rem;color:var(--text-dim);font-size:0.875rem;line-height:1.8;">
+              到<strong style="color:var(--orange);">砲台路六條岔道</strong> → 繩索爬上去 → 看到那隻<strong>鵜鶘鳥</strong> → 按牠即可傳送到日本神社。
+            </div>
+          </div>
+
+          <!-- Q9 -->
+          <div class="card overflow-hidden">
+            <div style="background:rgba(234,179,8,0.1);border-bottom:1px solid var(--border);padding:0.75rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+              <span style="background:rgba(234,179,8,0.2);color:var(--gold);font-weight:700;padding:0.1rem 0.5rem;border-radius:0.25rem;font-size:0.8rem;">Q9</span>
+              <span style="color:var(--text-main);font-weight:600;">怎麼到未來東京（台場）？</span>
+            </div>
+            <div style="padding:0.875rem 1.25rem;color:var(--text-dim);font-size:0.875rem;line-height:1.8;">
+              先到<strong style="color:var(--orange);">日本神社</strong>（見 Q8）→ 神社內有一個<strong>鳥居（木頭的拱門）</strong> → 按上進去就是未來東京（台場）。
+            </div>
+          </div>
+
+          <!-- Q10 -->
+          <div class="card overflow-hidden">
+            <div style="background:rgba(234,179,8,0.1);border-bottom:1px solid var(--border);padding:0.75rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+              <span style="background:rgba(234,179,8,0.2);color:var(--gold);font-weight:700;padding:0.1rem 0.5rem;border-radius:0.25rem;font-size:0.8rem;">Q10</span>
+              <span style="color:var(--text-main);font-weight:600;">方塊的差異？可以洗到什麼框？</span>
+            </div>
+            <div style="padding:0.875rem 1.25rem;font-size:0.875rem;">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0.6rem;margin-bottom:0.75rem;">
+                <div style="background:rgba(100,116,139,0.15);border-radius:0.375rem;padding:0.6rem 0.75rem;border:1px solid rgba(147,197,253,0.3);">
+                  <div style="color:#93c5fd;font-weight:700;margin-bottom:0.2rem;">可疑的方塊</div>
+                  <div style="color:var(--text-dim);">最高洗到 <span style="color:#d8b4fe;font-weight:700;">稀有（紫色）</span></div>
+                </div>
+                <div style="background:rgba(234,179,8,0.08);border-radius:0.375rem;padding:0.6rem 0.75rem;border:1px solid rgba(234,179,8,0.3);">
+                  <div style="color:var(--gold);font-weight:700;margin-bottom:0.2rem;">奇幻方塊</div>
+                  <div style="color:var(--text-dim);">最高洗到 <span style="color:#fde047;font-weight:700;">罕見（黃色）</span></div>
+                </div>
+                <div style="background:rgba(34,197,94,0.08);border-radius:0.375rem;padding:0.6rem 0.75rem;border:1px solid rgba(34,197,94,0.3);">
+                  <div style="color:var(--green);font-weight:700;margin-bottom:0.2rem;">大師方塊</div>
+                  <div style="color:var(--text-dim);">最高洗到 <span style="color:#86efac;font-weight:700;">傳說（綠色）</span></div>
+                </div>
+              </div>
+              <div style="color:var(--text-muted);font-size:0.82rem;">稀有度排行（最高到最低）：<span style="color:#86efac;">傳說（綠）</span> ＞ <span style="color:#fde047;">罕見（金）</span> ＞ <span style="color:#d8b4fe;">稀有（紫）</span> ＞ <span style="color:#93c5fd;">特殊（藍）</span></div>
+            </div>
+          </div>
+
+          <!-- Q11 -->
+          <div class="card overflow-hidden">
+            <div style="background:rgba(234,179,8,0.1);border-bottom:1px solid var(--border);padding:0.75rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+              <span style="background:rgba(234,179,8,0.2);color:var(--gold);font-weight:700;padding:0.1rem 0.5rem;border-radius:0.25rem;font-size:0.8rem;">Q11</span>
+              <span style="color:var(--text-main);font-weight:600;">英雄 / 聖騎 該玩單手還是雙手？</span>
+            </div>
+            <div style="padding:0.875rem 1.25rem;color:var(--text-dim);font-size:0.875rem;line-height:1.8;">
+              答案是<strong style="color:var(--orange);">單手！</strong><br/>
+              因為都有潛能系統，單手 + 盾牌只搞潛能，就能海放雙手好幾條街。<strong>盾牌都不用沖，只搞潛能就好。</strong>
+            </div>
+          </div>
+
+        </div><!-- /faq list -->
+      </div><!-- /tab-faq -->
+
     </div><!-- /p-4 md:p-6 -->
   </main>
 </div>
 
 <script>
+/* ================================================================
+   📦 資料區 —— 修改此區域來更新攻略資料
+   格式說明：
+   - mapName : 地圖名稱
+   - monster : 怪物名稱
+   - drops   : 掉落陣列
+     - name   : 道具名稱
+     - type   : "skill" = 技能書 / "equip" = 裝備 / "material" = 材料
+================================================================ */
+const mapsData = [
+  {
+    mapName: "神木村",
+    monster: "變種侏儒怪",
+    drops: [
+      { name: "卡牌風暴20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "神木村",
+    monster: "萊西",
+    drops: [
+      { name: "黑卡20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "神木村",
+    monster: "闇黑龍王",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "玩具城",
+    monster: "多利百烈",
+    drops: [
+      { name: "黑卡20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "雪域廢礦",
+    monster: "狼人",
+    drops: [
+      { name: "艾麗亞的祈禱20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "雪域廢礦",
+    monster: "白狼人",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "雪域廢礦",
+    monster: "小獵犬",
+    drops: [
+      { name: "幻影千刃IV(盜亦有道IV)20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "水世界",
+    monster: "烏賊怪",
+    drops: [
+      { name: "靈魂竊取20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "水世界",
+    monster: "骨駭魚",
+    drops: [
+      { name: "幻影千刃IV(盜亦有道IV)20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "金綠水靈",
+    drops: [
+      { name: "手杖專家(進階手杖)20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "後負荷",
+    drops: [
+      { name: "艾麗亞的祈禱20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "奧芙赫班",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "歐佩龍",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "強力馬貝立克B",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "尼貝隆根戰艦",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "杜那斯",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "情資收集機A",
+    drops: [
+      { name: "幻影千刃IV(盜亦有道IV)20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "泰拉森林",
+    monster: "貝魯加墨特",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "沙漠",
+    monster: "哈摩斯庫拉",
+    drops: [
+      { name: "卡牌風暴20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "武陵桃園",
+    monster: "罈壺",
+    drops: [
+      { name: "手杖專家(進階手杖)20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "武陵桃園",
+    monster: "蔘罈壺",
+    drops: [
+      { name: "艾麗亞的祈禱20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "神殿",
+    monster: "回憶守護隊長",
+    drops: [
+      { name: "手杖專家(進階手杖)20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "神殿",
+    monster: "悔恨的守護兵",
+    drops: [
+      { name: "靈魂竊取20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "神殿",
+    monster: "悔恨的守護兵隊長",
+    drops: [
+      { name: "卡牌風暴20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "神殿",
+    monster: "忘卻的守護兵",
+    drops: [
+      { name: "黑卡（死神卡牌）20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "神殿",
+    monster: "皮卡啾",
+    drops: [
+      { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來之門",
+    monster: "西格諾斯",
+    drops: [
+      { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "昭和村",
+    monster: "黑道長老",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "昭和村",
+    monster: "抗霸子",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+    ]
+  },
+  {
+    mapName: "昭和村",
+    monster: "天皇蟾蜍",
+    drops: [
+      { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "無名魔獸",
+    drops: [
+      { name: "幻影千刃IV(盜亦有道IV)30", type: "skill" },
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "普雷茲首腦",
+    drops: [
+      { name: "手杖專家(進階手杖)30", type: "skill" },
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "奧芙赫班",
+    drops: [
+      { name: "艾麗亞的祈禱30", type: "skill" },
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "杜那斯167",
+    drops: [
+      { name: "卡牌風暴30", type: "skill" },
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "尼伯龍根",
+    drops: [
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "杜那斯162",
+    drops: [
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "貝魯加墨特",
+    drops: [
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+  {
+    mapName: "未來東京",
+    monster: "情資收集機",
+    drops: [
+	  { name: "楓葉祝福20", type: "skill" },
+	  { name: "楓葉祝福30", type: "skill" },
+    ]
+  },
+];
 
 /* ================================================================
    技能書資料（依職業分類）
@@ -2239,39 +3149,121 @@ const scrollDropData = [
 
   { map: "神木村", monster: "化石龍長老 (Lv.153)", drops: ["耳環生命卷軸60%", "套裝力量卷軸100%", "盾牌幸運卷軸60%", "披風防禦卷軸60%", "披風力量卷軸60%", "雙手棍攻擊卷軸60%", "雙手棍命中卷軸10%", "指虎攻擊卷軸60%", "寵物跳躍力卷軸100%"] },
 ];
-/* ================================================================
-   Boss 資料
-   - boss      : Boss 名稱
-   - dailyLimit: 每日可挑戰次數
-   - reset     : 重置時間說明
-   - difficulty: 難度標示（1-5）
-   - recommend : 建議等級
-================================================================ */
-const bossesData = [
-  { boss: "普通魔王巴洛谷",  charLimit: 3,  accountLimit: 12, reset: "每週一 00:00", difficulty: 1 },
-  { boss: "困難魔王巴洛谷",  charLimit: 3,  accountLimit: 12, reset: "每週一 00:00", difficulty: 1 },
-  { boss: "普通炎魔",        charLimit: 3,  accountLimit: 9,  reset: "每週一 00:00", difficulty: 1 },
-  { boss: "混沌炎魔",        charLimit: 2,  accountLimit: 6,  reset: "每週一 00:00", difficulty: 1 },
-  { boss: "普通暗黑龍王",    charLimit: 3,  accountLimit: 9,  reset: "每週一 00:00", difficulty: 1 },
-  { boss: "混沌暗黑龍王",    charLimit: 2,  accountLimit: 6,  reset: "每週一 00:00", difficulty: 1 },
-  { boss: "普通皮卡丘",      charLimit: 2,  accountLimit: 6,  reset: "每週一 00:00", difficulty: 1 },
-  { boss: "普通凡雷恩",      charLimit: 1,  accountLimit: 3,  reset: "每週一 00:00", difficulty: 1 },
-  { boss: "普通西格諾斯",    charLimit: 1,  accountLimit: 3,  reset: "每週一 00:00", difficulty: 1 },
-  { boss: "普通阿卡伊農",    charLimit: 2,  accountLimit: 6,  reset: "每週一 00:00", difficulty: 1 },
-  { boss: "普通森蘭丸",      charLimit: 1,  accountLimit: 3,  reset: "每週一 00:00", difficulty: 1 },
-  { boss: "拉圖斯",          charLimit: 3,  accountLimit: 9,  reset: "每週一 00:00", difficulty: 1 },
-  { boss: "東京未來東京王",  charLimit: 1,  accountLimit: 4,  reset: "每週一 00:00", difficulty: 1 },
-  { boss: "天皇蟾蜍",        charLimit: 3,  accountLimit: 9,  reset: "每週一 00:00", difficulty: 1 },
-  { boss: "黑道長老",        charLimit: 3,  accountLimit: 9,  reset: "每週一 00:00", difficulty: 1 },
-];
 
 /* ================================================================
    工具函式：排序狀態管理
 ================================================================ */
 const sortState = {
+  drops:  { col: null, asc: true },
   skills: { col: null, asc: true },
   equips: { col: null, asc: true }
 };
+
+/* ================================================================
+   展開地圖資料為「每行一個掉落物」的扁平陣列
+================================================================ */
+function flattenDrops() {
+  const rows = [];
+  mapsData.forEach(map => {
+    map.drops.forEach(drop => {
+      rows.push({
+        mapName:  map.mapName,
+        monster:  map.monster,
+        dropName: drop.name,
+        type:     drop.type
+      });
+    });
+  });
+  return rows;
+}
+
+/* ================================================================
+   取得掉落物徽章 HTML
+================================================================ */
+function getBadge(type) {
+  const map = {
+    skill:    ['badge badge-skill',    '📘 技能書'],
+    equip:    ['badge badge-equip',    '⚔️ 裝備'],
+    material: ['badge badge-material', '🧪 材料']
+  };
+  const [cls, label] = map[type] || ['badge badge-common', '❓ 未知'];
+  return `<span class="${cls}">${label}</span>`;
+}
+
+/* ================================================================
+   地圖掉落：靜態表格搜尋（合併儲存格版）
+================================================================ */
+function filterDropsTable(value) {
+  const q = value.toLowerCase().trim();
+  const rows = document.querySelectorAll('#dropsStaticBody .drop-row');
+  const empty = document.getElementById('dropsEmpty');
+  let visible = 0;
+
+  rows.forEach(row => {
+    const map     = (row.dataset.map     || '').toLowerCase();
+    const monster = (row.dataset.monster || '').toLowerCase();
+    const drops   = (row.dataset.drops   || '').toLowerCase();
+    const match   = !q || map.includes(q) || monster.includes(q) || drops.includes(q);
+    row.classList.toggle('hidden-row', !match);
+    if (match) visible++;
+  });
+
+  empty.classList.toggle('hidden', visible > 0);
+}
+
+/* ================================================================
+   渲染：地圖掉落表格（舊版，保留供相容）
+================================================================ */
+let dropsAllRows = flattenDrops();
+
+function renderDrops() {
+  const searchEl = document.getElementById('dropsSearch');
+  const filterEl = document.getElementById('dropsTypeFilter');
+  if (!searchEl || !filterEl) return;
+  const search = searchEl.value.toLowerCase();
+  const typeFilter = filterEl.value;
+  const { col, asc } = sortState.drops;
+
+  let rows = dropsAllRows.filter(r => {
+    const matchSearch = !search ||
+      r.mapName.toLowerCase().includes(search) ||
+      r.monster.toLowerCase().includes(search) ||
+      r.dropName.toLowerCase().includes(search);
+    const matchType = !typeFilter || r.type === typeFilter;
+    return matchSearch && matchType;
+  });
+
+  // 排序
+  if (col) {
+    rows.sort((a, b) => {
+      const va = a[col] || '', vb = b[col] || '';
+      return asc ? va.localeCompare(vb, 'zh-TW') : vb.localeCompare(va, 'zh-TW');
+    });
+  }
+
+  const tbody = document.getElementById('dropsBody');
+  const empty = document.getElementById('dropsEmpty');
+  if (rows.length === 0) {
+    tbody.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td class="text-[var(--text-main)] font-medium whitespace-nowrap">${r.mapName}</td>
+      <td class="text-[var(--green)] whitespace-nowrap">${r.monster}</td>
+      <td class="font-semibold whitespace-nowrap">${r.dropName}</td>
+      <td>${getBadge(r.type)}</td>
+    </tr>
+  `).join('');
+}
+
+function sortDrops(col) {
+  if (sortState.drops.col === col) sortState.drops.asc = !sortState.drops.asc;
+  else { sortState.drops.col = col; sortState.drops.asc = true; }
+  renderDrops();
+}
 
 /* ================================================================
    渲染：技能書頁（依職業分類資料）
@@ -2551,24 +3543,51 @@ function closeSidebar() {
 }
 
 /* ================================================================
+   重置計時器（台灣時間 UTC+8）
+================================================================ */
+function tickTimers() {
+  var now = new Date();
+  var utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+  var twNow = new Date(utcMs + 8 * 3600000);
+
+  // 每日：下一個 04:00
+  var dailyTarget = new Date(twNow);
+  dailyTarget.setHours(4, 0, 0, 0);
+  if (twNow >= dailyTarget) dailyTarget.setDate(dailyTarget.getDate() + 1);
+
+  // 每週：下一個週一 04:00（getDay: 0=Sun 1=Mon）
+  var weeklyTarget = new Date(twNow);
+  weeklyTarget.setHours(4, 0, 0, 0);
+  var dow = twNow.getDay();
+  var daysToMon = dow === 1 && twNow < weeklyTarget ? 0 : (8 - dow) % 7 || 7;
+  weeklyTarget.setDate(weeklyTarget.getDate() + daysToMon);
+
+  function fmt(ms) {
+    var t = Math.max(0, Math.floor(ms / 1000));
+    var s = t % 60, m = Math.floor(t / 60) % 60;
+    var h = Math.floor(t / 3600) % 24, d = Math.floor(t / 86400);
+    var p = function(n) { return String(n).padStart(2, '0'); };
+    return (d > 0 ? d + 'd ' : '') + p(h) + ':' + p(m) + ':' + p(s);
+  }
+
+  var de = document.getElementById('daily-timer');
+  var we = document.getElementById('weekly-timer');
+  if (de) de.textContent = fmt(dailyTarget - twNow);
+  if (we) we.textContent = fmt(weeklyTarget - twNow);
+}
+
+/* ================================================================
    初始化：頁面載入時渲染所有資料
 ================================================================ */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
+  tickTimers();
+  setInterval(tickTimers, 1000);
   renderScrollTable();
+  renderDrops();
   renderSkills();
   renderBoss();
-  // 預設顯示第一個職業面板
-  const firstPanel = document.querySelector('.job-panel');
+  var firstPanel = document.querySelector('.job-panel');
   if (firstPanel) firstPanel.classList.add('active');
-
-  // 首頁統計數字
-  const totalScrollEntries = scrollDropData.reduce((sum, e) => sum + e.drops.length, 0);
-  const totalSkills = skillBookData.length;
-  const uniqueMaps = new Set(scrollDropData.map(e => e.map)).size;
-  const el = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val.toLocaleString(); };
-  el('stat-scrolls', totalScrollEntries);
-  el('stat-skills',  totalSkills);
-  el('stat-maps',    uniqueMaps);
 });
 </script>
 </body>
